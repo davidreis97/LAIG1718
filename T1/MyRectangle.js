@@ -2,11 +2,13 @@
  * MyRectangle
  * @constructor
  */
-function MyRectangle(scene, width, height) {
+function MyRectangle(scene, leftTopX, leftTopY, bottomRightX, bottomRightY) {
     CGFobject.call(this, scene);
 
-    this.width = width;
-    this.height = height;
+    this.minX = leftTopX;
+    this.maxX = bottomRightX;
+    this.minY = bottomRightY;
+    this.maxY = leftTopY;
 
     this.initBuffers();
 };
@@ -22,25 +24,26 @@ MyRectangle.prototype.constructor = MyRectangle;
     0------3
 */
 
+//Sets default texCoords
 MyRectangle.prototype.initBuffers = function () {
     this.vertices = [];                            
     this.normals = [];                      
     this.texCoords = [];
     this.indices = [];
 
-    this.vertices.push(-this.width/2, -this.height/2, 0);
+    this.vertices.push(this.minX, this.minY, 0);
     this.texCoords.push(0, 0);
     this.normals.push(0, 0, 1);
 
-    this.vertices.push(-this.width/2, this.height/2, 0);
+    this.vertices.push(this.minX, this.maxY, 0);
     this.texCoords.push(0, 1);
     this.normals.push(0, 0, 1);
 
-    this.vertices.push(this.width/2, this.height/2, 0);
+    this.vertices.push(this.maxX, this.maxX, 0);
     this.texCoords.push(1, 1);
     this.normals.push(0, 0, 1);
 
-    this.vertices.push(this.width/2, -this.height/2, 0);
+    this.vertices.push(this.maxX, this.minY, 0);
     this.texCoords.push(1, 0);
     this.normals.push(0, 0, 1);
 
@@ -49,4 +52,16 @@ MyRectangle.prototype.initBuffers = function () {
 
     this.primitiveType = this.scene.gl.TRIANGLES;
     this.initGLBuffers();
+}
+
+MyRectangle.prototype.setAmpFactor = function(ampS,ampT){
+    this.texCoords = [];
+
+    var s = (this.maxX - this.minX)/ampS;
+    var t = (this.maxY - this.minY)/ampT;
+
+    this.texCoords.push(0,0);
+    this.texCoords.push(0,t);
+    this.texCoords.push(s,t);
+    this.texCoords.push(s,0);
 }
