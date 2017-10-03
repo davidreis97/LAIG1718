@@ -1311,7 +1311,7 @@ MySceneGraph.prototype.parseNodes = function(nodesNode) {
                     break;
                 }
             }
-            
+
             // Retrieves information about children.
             var descendantsIndex = specsNames.indexOf("DESCENDANTS");
             if (descendantsIndex == -1)
@@ -1341,15 +1341,16 @@ MySceneGraph.prototype.parseNodes = function(nodesNode) {
 					if (descendants[j].nodeName == "LEAF")
 					{
                         var type = this.reader.getItem(descendants[j], 'type', ['rectangle', 'cylinder', 'sphere', 'triangle']);
-                        var args = this.reader.getString(descendants[j], 'args');
-						
+                        var args = this.reader.getString(descendants[j], 'args').split(" ").map(Number);
+
+                        console.log(args);
+
 						if (type != null && args != null)
 							this.log("   Leaf: "+ type);
 						else
 							this.warn("Error in leaf");
                         
-                        var mgf = new MyGraphLeaf(this,descendants[j]);
-                        mgf.setTypeArgs(type,args);
+                        var mgf = new MyGraphLeaf(this,descendants[j],this.scene, type, args);
                         
                         //parse leaf
 						this.nodes[nodeID].addLeaf(mgf);
@@ -1396,7 +1397,7 @@ MySceneGraph.prototype.log = function(message) {
 MySceneGraph.prototype.generateDefaultMaterial = function() {
     var materialDefault = new CGFappearance(this.scene);
     materialDefault.setShininess(1);
-    materialDefault.setSpecular(0, 0, 0, 1);
+    materialDefault.setSpecular(0.2, 0.2, 0.2, 1);
     materialDefault.setDiffuse(0.5, 0.5, 0.5, 1);
     materialDefault.setAmbient(0, 0, 0, 1);
     materialDefault.setEmission(0, 0, 0, 1);
@@ -1425,8 +1426,32 @@ MySceneGraph.generateRandomString = function(length) {
 /**
  * Displays the scene, processing each node, starting in the root node.
  */
-MySceneGraph.prototype.displayScene = function() {
-	// entry point for graph rendering
-	// remove log below to avoid performance issues
-	this.log("Graph should be rendered here...");
+MySceneGraph.prototype.displayScene = function(nodeID, matID) {
+    try{
+var materialID = matID;
+
+    if(nodeID != null){
+        var node = this.nodes[nodeID];
+
+        if(node.materialID != "null"){
+            materialID = node.materialID;
+        }
+
+        this.scene.multMatrix(node.transformMatrix);
+        
+        for (var index = 0; index < node.children.length; index++){
+            this.scene.pushMatrix();
+            this.materials[materialID].apply();
+            this.displayScene(node.children[index],materialID);
+            this.scene.popMatrix();
+        }
+
+        for (var index = 0; index < node.leaves.length; index++){
+            this.materials[materialID].apply();
+            node.leaves[index].display();
+        }
+    }
+    }catch(err){
+        console.log(node.nodeID);
+    }
 }

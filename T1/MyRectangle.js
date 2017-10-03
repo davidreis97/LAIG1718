@@ -39,7 +39,7 @@ MyRectangle.prototype.initBuffers = function () {
     this.texCoords.push(0, 1);
     this.normals.push(0, 0, 1);
 
-    this.vertices.push(this.maxX, this.maxX, 0);
+    this.vertices.push(this.maxX, this.maxY, 0);
     this.texCoords.push(1, 1);
     this.normals.push(0, 0, 1);
 
