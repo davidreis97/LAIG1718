@@ -921,6 +921,8 @@ MySceneGraph.prototype.parseTextures = function(texturesNode) {
 
     if (!oneTextureDefined)
         return "at least one texture must be defined in the TEXTURES block";
+
+    console.log(this.textures);
     
     console.log("Parsed textures");
 }
@@ -1426,9 +1428,9 @@ MySceneGraph.generateRandomString = function(length) {
 /**
  * Displays the scene, processing each node, starting in the root node.
  */
-MySceneGraph.prototype.displayScene = function(nodeID, matID) {
-    try{
-var materialID = matID;
+MySceneGraph.prototype.displayScene = function(nodeID, matID, texID) {
+    var materialID = matID;
+    var textureID = texID;
 
     if(nodeID != null){
         var node = this.nodes[nodeID];
@@ -1437,12 +1439,27 @@ var materialID = matID;
             materialID = node.materialID;
         }
 
+        if(node.textureID != "null"){
+            textureID = node.textureID;
+        }
+
+        
+        if(textureID == "clear"){
+            this.materials[materialID].setTexture(null);
+        }else{
+            try{
+                this.materials[materialID].setTexture(this.textures[textureID][0]);
+            }catch(err){
+                console.log(textureID);
+            }
+        }
+
         this.scene.multMatrix(node.transformMatrix);
         
         for (var index = 0; index < node.children.length; index++){
             this.scene.pushMatrix();
             this.materials[materialID].apply();
-            this.displayScene(node.children[index],materialID);
+            this.displayScene(node.children[index],materialID, textureID);
             this.scene.popMatrix();
         }
 
@@ -1450,8 +1467,5 @@ var materialID = matID;
             this.materials[materialID].apply();
             node.leaves[index].display();
         }
-    }
-    }catch(err){
-        console.log(node.nodeID);
     }
 }
