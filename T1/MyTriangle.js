@@ -3,7 +3,7 @@
  * @constructor
  */
 function MyTriangle(scene, v1x, v1y, v1z, v2x, v2y, v2z, v3x, v3y, v3z) {
-	GFobject.call(this,scene);
+	CGFobject.call(this,scene);
 	
 	this.v1x = v1x;
 	this.v1y = v1y;
@@ -14,11 +14,6 @@ function MyTriangle(scene, v1x, v1y, v1z, v2x, v2y, v2z, v3x, v3y, v3z) {
 	this.v3x = v3x;
 	this.v3y = v3y;
 	this.v3z = v3z;
-	
-	this.minS = 0;
-	this.minT = 0;
-	this.maxS = 1;
-	this.maxT = 1;
 
 	this.initBuffers();
 };
@@ -31,47 +26,50 @@ MyTriangle.prototype.constructor=MyTriangle;
  */
 MyTriangle.prototype.initBuffers = function () {
 	this.vertices = [
-        this.v1x, this.v1y, this.v1z,
-        this.v2x, this.v2y, this.v2z,
-        this.v3x, this.v3y, this.v3z
-	];
+            this.v1x, this.v1y, this.v1z,
+            this.v2x, this.v2y, this.v2z,
+            this.v3x, this.v3y, this.v3z
+			];
 
 	this.indices = [ 0, 1, 2 ];
-
 
     this.normals = [
     0, 0, 1,
     0, 0, 1,
     0, 0, 1 ];
     
-    var ab = Math.sqrt(Math.pow(this.v2x-this.v1x, 2) + Math.pow(this.v2y-this.v1y, 2) + Math.pow(this.v2z-this.v1z, 2));
-    var bc = Math.sqrt(Math.pow(this.v2x-this.v3x, 2) + Math.pow(this.v2y-this.v3y, 2) + Math.pow(this.v2z-this.v3z, 2));
-    var ac = Math.sqrt(Math.pow(this.v1x-this.v3x, 2) + Math.pow(this.v1y-this.v3y, 2) + Math.pow(this.v1z-this.v3z, 2));
-    var alpha = Math.acos((Math.pow(bc, 2) + Math.pow(ab, 2) - Math.pow(ac, 2))/(2*ab*bc));
+    var a = Math.sqrt(Math.pow(this.v1x-this.v3x, 2) + Math.pow(this.v1y-this.v3y, 2) + Math.pow(this.v1z-this.v3z, 2));
+	var b = Math.sqrt(Math.pow(this.v2x-this.v1x, 2) + Math.pow(this.v2y-this.v1y, 2) + Math.pow(this.v2z-this.v1z, 2));
+    var c = Math.sqrt(Math.pow(this.v3x-this.v2x, 2) + Math.pow(this.v3y-this.v2y, 2) + Math.pow(this.v3z-this.v2z, 2));
+    var beta = Math.acos((Math.pow(a, 2) - Math.pow(b, 2) + Math.pow(c, 2))/(2*a*c));
     
     this.texCoords = [
-		this.minS, this.minT,
-		this.maxS, this.minT,
-		(ab - bc*Math.cos(alpha))/ab, bc*Math.sin(alpha)/ab
+		0, 0,
+		1, 0,
+		(c - a*Math.cos(beta))/c, a*Math.sin(beta)/c
     ];
 		
 	this.primitiveType=this.scene.gl.TRIANGLES;
 	this.initGLBuffers();
 };
 
-MyTriangle.prototype.setAmpFactor = function(ampS,ampT){
-    var ab = Math.sqrt(Math.pow(this.v2x-this.v1x, 2) + Math.pow(this.v2y-this.v1y, 2) + Math.pow(this.v2z-this.v1z, 2));
-    var bc = Math.sqrt(Math.pow(this.v2x-this.v3x, 2) + Math.pow(this.v2y-this.v3y, 2) + Math.pow(this.v2z-this.v3z, 2));
-    var ac = Math.sqrt(Math.pow(this.v1x-this.v3x, 2) + Math.pow(this.v1y-this.v3y, 2) + Math.pow(this.v1z-this.v3z, 2));
-    var alpha = Math.acos((Math.pow(bc, 2) + Math.pow(ab, 2) - Math.pow(ac, 2))/(2*ab*bc));
+/**
+ * Updates the Triangle amplification factors
+ * @param amplif_s s domain amplification factor
+ * @param amplif_t t domain amplification factor
+ */
+MyTriangle.prototype.setAmplifFactor = function(ampS, ampT) {
+    
+    var a = Math.sqrt(Math.pow(this.v1x-this.v3x, 2) + Math.pow(this.v1y-this.v3y, 2) + Math.pow(this.v1z-this.v3z, 2));
+	var b = Math.sqrt(Math.pow(this.v2x-this.v1x, 2) + Math.pow(this.v2y-this.v1y, 2) + Math.pow(this.v2z-this.v1z, 2));
+    var c = Math.sqrt(Math.pow(this.v3x-this.v2x, 2) + Math.pow(this.v3y-this.v2y, 2) + Math.pow(this.v3z-this.v2z, 2));
+    var beta = Math.acos((Math.pow(a, 2) - Math.pow(b, 2) + Math.pow(c, 2))/(2*a*c));
     
     this.texCoords = [
-		this.minS, this.minT,
-		this.maxS, this.minT*ab/ampS,
-		((ab - bc*Math.cos(alpha))/ab)*ab/ampS, (bc*Math.sin(alpha)/ab)*ab/ampT
+		0, 0,
+		1, 0,
+		(c - a*Math.cos(beta))/c*c/ampS, a*Math.sin(beta)/c*c/ampT
     ];	
 	
 	this.updateTexCoordsGLBuffers();
-
-    
 }
