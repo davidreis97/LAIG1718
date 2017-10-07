@@ -17,12 +17,12 @@ function MyCylinder(scene, args) {
 	this.stacks = args[3];
 	this.slices = args[4];
 
-	if(args.length = 5){
+	if(args.length == 5){
 		this.top_cap = 0;
 		this.bottom_cap = 0;
 	}
 
-	if(args.length = 7){
+	if(args.length == 7){
 		this.top_cap = args[5];
 		this.bottom_cap = args[6];
 	}
@@ -83,21 +83,26 @@ MyCylinder.prototype.initBuffers = function () {
     if(this.bottom_cap){
     	this.vertices.push(0,0,0);
     	this.normals.push(0, 0, -1);
-    	var lastVertex = this.vertices.length - 1;
+    	var lastVertex = (this.vertices.length/3) - 1;
 
-    	for (var slice = 1; slice < this.slices; slice++) {
-	        this.indices.push(lastVertex, slice, slice + 1);
+    	for (var slice = 0; slice < (this.slices-1); slice++) {
+	        this.indices.push(lastVertex, slice + 1,slice);
 	    }
-	    this.indices.push(lastVertex, this.slices, 1);
+	    this.indices.push(lastVertex, 0,(this.slices-1));
 	}
     
-
     if(this.top_cap){
     	this.vertices.push(0, 0, this.height);
     	this.normals.push(0, 0, 1);
+        var lastVertex = (this.vertices.length/3) - 1;
 
+        for (var index = this.stacks * (this.slices); index+1 < (this.stacks * (this.slices+1)); index++) {
+            this.indices.push(lastVertex,index,index + 1);
+        }
+        this.indices.push(lastVertex,this.stacks * (this.slices+1) - 1, this.stacks * (this.slices));
     }
 
+    /* Textures not working
     var s = 0;
 	var t = 0;
 	var sinc = 1/this.slices;
@@ -109,7 +114,7 @@ MyCylinder.prototype.initBuffers = function () {
 		}
 		s = 0;
 		t += tinc;
-	}
+	}*/
 
     this.primitiveType = this.scene.gl.TRIANGLES;
     this.initGLBuffers();
