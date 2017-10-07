@@ -2,135 +2,116 @@
  * MyCylinder
  * @constructor
  */
- function MyCylinder(scene, slices, stacks, inside = false) {
- 	CGFobject.call(this,scene);
-	
-	this.slices = slices;
-	this.stacks = stacks;
-	this.inside = inside;
 
- 	this.initBuffers();
- };
+var degToRad = Math.PI / 180.0;
 
- MyCylinder.prototype = Object.create(CGFobject.prototype);
- MyCylinder.prototype.constructor = MyCylinder;
+//args: height, bottom_radius, top_radius, stacks, slices, top_cap, bottom_cap
 
- MyCylinder.prototype.initBuffers = function() {
- 	
-	var z = 0;
-	var y = 0;
-	var x = 0;
+function MyCylinder(scene, args) {
+    CGFobject.call(this, scene);
 
-	var currentAngle = 0;
+    
+    this.height = args[0];
+	this.bottom_radius = args[1];
+	this.top_radius = args[2];
+	this.stacks = args[3];
+	this.slices = args[4];
 
-	this.vertices = [];
-	this.normals = [];
-	this.indices = [];
+	if(args.length = 5){
+		this.top_cap = 0;
+		this.bottom_cap = 0;
+	}
 
-	this.texCoords = [];
+	if(args.length = 7){
+		this.top_cap = args[5];
+		this.bottom_cap = args[6];
+	}
 
-	var low = 0;
-	var high = 0;
-	var step = 1/this.stacks;
+    this.initBuffers();
+};
+
+MyCylinder.prototype = Object.create(CGFobject.prototype);
+MyCylinder.prototype.constructor = MyCylinder;
+
+MyCylinder.prototype.initBuffers = function () {
+
+    this.vertices = [];
+    this.indices = [];
+    this.normals = [];
+    this.texCoords = [];
+
+    var radius_inc = (this.top_radius - this.bottom_radius)/this.stacks;
+
+    var inc=2*Math.PI / (this.slices);
 
 
-	var xtext = 0;
-	var ytext = 1;
 
-	var yTextInc = 1/this.stacks;
-	var xTextInc = 1/this.slices;
+	//---------------vertices/normals--------------------
 
-	for (var j = 0; j < this.stacks; j++){
-		
-		xtext = 0;
+    for (var j= 0; j <= this.stacks; j++) {
 
-		for (var i = 0; i < this.slices; i++){ //Atencao! A colocacao de vertices nao é 1 2 3 4 mas sim 1 3 5 7
-			this.texCoords.push(xtext,ytext);  //     									5 6 7 8         2 4 6 8
-			this.texCoords.push(xtext,ytext-yTextInc);
-			xtext += xTextInc;
+        for (var i = 0; i < this.slices; i++) {
+         
+            this.vertices.push((this.bottom_radius + j*radius_inc) * Math.cos(i * inc), (this.bottom_radius + j*radius_inc) * Math.sin(i * inc), this.height * j / this.stacks);
+
+            if(this.height>0){
+            	var angle = Math.atan(Math.abs(this.top_radius-this.bottom_radius)/this.height);
+            	this.normals.push(Math.cos(angle)*Math.cos(i*inc),
+						Math.cos(angle)*Math.sin(i*inc),
+						Math.sin(angle));
+            }
+
+        }
+    }
+
+
+	//--------------indices------------------------
+    for (var j = 1; j <= this.stacks; j++) {
+
+        this.indices.push(j*this.slices + this.slices - 1, j*this.slices - 1, j * this.slices - this.slices);
+		this.indices.push(j*this.slices + this.slices - 1, j * this.slices - this.slices, j*this.slices);
+        
+
+        for (var i = 1; i < this.slices; i++) {
+
+           this.indices.push(j * this.slices + i - 1, j * this.slices - this.slices + i - 1, j * this.slices - this.slices + i);
+           this.indices.push(j * this.slices + i - 1, j * this.slices - this.slices + i, j * this.slices + i);
+
+        }
+    }
+
+    if(this.bottom_cap){
+    	this.vertices.push(0,0,0);
+    	this.normals.push(0, 0, -1);
+    	var lastVertex = this.vertices.length - 1;
+
+    	for (var slice = 1; slice < this.slices; slice++) {
+	        this.indices.push(lastVertex, slice, slice + 1);
+	    }
+	    this.indices.push(lastVertex, this.slices, 1);
+	}
+    
+
+    if(this.top_cap){
+    	this.vertices.push(0, 0, this.height);
+    	this.normals.push(0, 0, 1);
+
+    }
+
+    var s = 0;
+	var t = 0;
+	var sinc = 1/this.slices;
+	var tinc = 1/this.stacks;
+	for (var a = 0; a <= this.stacks; a++) {
+		for (var b = 0; b < this.slices; b++) {
+			this.texCoords.push(s, t);
+			s += sinc;
 		}
-
-		ytext -= yTextInc;
+		s = 0;
+		t += tinc;
 	}
 
-	/*
-	this.vertices.push(0,0,1); //Colocacao de um vertice no centro para a criacao da tampa
-	this.normals.push(0,0,1);*/
+    this.primitiveType = this.scene.gl.TRIANGLES;
+    this.initGLBuffers();
 
-
-	for(var j = 0; j < this.stacks && !this.inside; j++){
-		low = high;
-		high += step;
-		currentAngle = 0;
-
-		for (var i = 0; i < this.slices; i++) {
-			z = 0;
-
-			x = Math.sin(currentAngle);
-			y = Math.cos(currentAngle);
-
-			this.vertices.push(x, y, low); //Bottom 0
-			this.vertices.push(x, y, high); //Top 1
-			
-			this.normals.push(x, y, 0); //Bottom 
-			this.normals.push(x, y, 0); //Bottom 
-
-			currentAngle += ((Math.PI * 2) / this.slices);
-			x = Math.sin(currentAngle);
-			y = Math.cos(currentAngle);
-
-			if(i != this.slices-1){
-				this.indices.push(0 + ((i * 2) + (j*2*this.slices)), 1 + ((i * 2) + (j*2*this.slices)), 2 + ((i * 2) + (j*2*this.slices)));
-				this.indices.push(1 + ((i * 2) + (j*2*this.slices)), 3 + ((i * 2) + (j*2*this.slices)), 2 + ((i * 2) + (j*2*this.slices)));
-			}else{ //Caso seja a ultima face, os vertices têm de conectar com os vertices da primeira.
-				this.indices.push(0 + ((i * 2) + (j*2*this.slices)), 1 + ((i * 2) + (j*2*this.slices)), 0 + (j*2*this.slices));
-				this.indices.push(1 + ((i * 2) + (j*2*this.slices)), 1 + (j*2*this.slices), 0 + (j*2*this.slices));
-			}
-
-		}
-
-	}
-
-	for(var j = 0; j < this.stacks && this.inside; j++){
-		low = high;
-		high += step;
-		currentAngle = 0;
-
-		for (var i = 0; i < this.slices; i++) {
-			z = 0;
-
-			x = Math.sin(currentAngle);
-			y = Math.cos(currentAngle);
-
-			this.vertices.push(x, y, low); //Bottom 0
-			this.vertices.push(x, y, high); //Top 1
-			
-			this.normals.push(-x, -y, 0); //Bottom 
-			this.normals.push(-x, -y, 0); //Bottom 
-
-			currentAngle += ((Math.PI * 2) / this.slices);
-			x = Math.sin(currentAngle);
-			y = Math.cos(currentAngle);
-
-			if(i != this.slices-1){
-				this.indices.push(1 + ((i * 2) + (j*2*this.slices)), 0 + ((i * 2) + (j*2*this.slices)), 2 + ((i * 2) + (j*2*this.slices)));
-				this.indices.push(3 + ((i * 2) + (j*2*this.slices)), 1 + ((i * 2) + (j*2*this.slices)), 2 + ((i * 2) + (j*2*this.slices)));
-			}else{ //Caso seja a ultima face, os vertices têm de conectar com os vertices da primeira.
-				this.indices.push(1 + ((i * 2) + (j*2*this.slices)), 0 + ((i * 2) + (j*2*this.slices)), 0 + (j*2*this.slices));
-				this.indices.push(1 + (j*2*this.slices), 1 + ((i * 2) + (j*2*this.slices)), 0 + (j*2*this.slices));
-			}
-
-		}
-
-	}
-
-	
-	/*
-	for(var i = 0; i < (this.slices*2)-2; i += 2){ //Criacao de uma tampa
-		this.indices.push(0, 4 + i + (this.slices * 2 * (this.stacks-1)), 2 + i + (this.slices * 2 * (this.stacks-1)));
-	}
-	this.indices.push(0,2,this.slices*2); //Ultimo triangulo => (centro, primeiro vertice, ultimo vertice)	*/
-
- 	this.primitiveType = this.scene.gl.TRIANGLES;
- 	this.initGLBuffers();
- };
+};

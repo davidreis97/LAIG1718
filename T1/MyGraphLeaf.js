@@ -23,7 +23,8 @@ MyGraphLeaf.prototype.display = function(){
 			rectangle.display();
 			break;
 		case "cylinder":
-			//console.log("Trying to render cylinder");
+			var cylinder = new MyCylinder(this.scene, this.args);
+			cylinder.display();
 			break;
 		case "sphere":
 			var sphere = new MySphere(this.scene,this.args[0],this.args[1],this.args[2]);
