@@ -80,9 +80,23 @@ MyCylinder.prototype.initBuffers = function () {
         }
     }
 
+    var s = 0;
+    var t = 0;
+    var sinc = 1/this.slices;
+    var tinc = 1/this.stacks;
+    for (var a = 0; a <= this.stacks; a++) {
+        for (var b = 0; b < this.slices; b++) {
+            this.texCoords.push(s, t);
+            s += sinc;
+        }
+        s = 0;
+        t += tinc;
+    }
+    
     if(this.bottom_cap){
     	this.vertices.push(0,0,0);
     	this.normals.push(0, 0, -1);
+        this.texCoords.push(0.5, 0.5);
     	var lastVertex = (this.vertices.length/3) - 1;
 
     	for (var slice = 0; slice < (this.slices-1); slice++) {
@@ -94,6 +108,7 @@ MyCylinder.prototype.initBuffers = function () {
     if(this.top_cap){
     	this.vertices.push(0, 0, this.height);
     	this.normals.push(0, 0, 1);
+        this.texCoords.push(0.5, 0.5);
         var lastVertex = (this.vertices.length/3) - 1;
 
         for (var index = this.stacks * (this.slices); index+1 < (this.stacks * (this.slices+1)); index++) {
@@ -101,20 +116,6 @@ MyCylinder.prototype.initBuffers = function () {
         }
         this.indices.push(lastVertex,this.stacks * (this.slices+1) - 1, this.stacks * (this.slices));
     }
-
-    /* Textures not working
-    var s = 0;
-	var t = 0;
-	var sinc = 1/this.slices;
-	var tinc = 1/this.stacks;
-	for (var a = 0; a <= this.stacks; a++) {
-		for (var b = 0; b < this.slices; b++) {
-			this.texCoords.push(s, t);
-			s += sinc;
-		}
-		s = 0;
-		t += tinc;
-	}*/
 
     this.primitiveType = this.scene.gl.TRIANGLES;
     this.initGLBuffers();
