@@ -17,18 +17,34 @@
    <LIGHTS>
       <LIGHT id="light0">
          <enable value="1" />
-         <position x="5" y="10" z="5" w="1" />
+         <position x="5" y="20" z="5" w="1" />
          <ambient r="1" g="1" b="1" a="1.0" />        	 
          <diffuse r="1.0" g="1.0" b="1.0" a="1.0" />        
          <specular r="1.0" g="1.0" b="1.0" a="1.0" /> 
      </LIGHT>
+
+    <LIGHT id="light1">                                    
+        <enable value ="1" />                             
+        <position x="20" y="20" z="20" w="1" />             
+        <ambient r="0.2" g="0.2" b="0.2" a="1.0" />       
+        <diffuse r="1.0" g="1.0" b="1.0" a="1.0" />        
+        <specular r="1.0" g="1.0" b="1.0" a="1.0" />       
+    </LIGHT>
+
  </LIGHTS>
 
  <TEXTURES>
-  <TEXTURE id="rocks">
-   <file path="images/rocks.jpg" />                
-   <amplif_factor s="1" t="1" />                           
-</TEXTURE>
+
+    <TEXTURE id="rocks">
+       <file path="images/rocks.jpg" />                
+       <amplif_factor s="1" t="1" />                           
+    </TEXTURE>
+
+    <TEXTURE id="vidral">
+        <file path="images/vidral.jpg" />               
+        <amplif_factor s="15" t="10" />                           
+    </TEXTURE>
+
 </TEXTURES>
 
 <MATERIALS>
@@ -161,6 +177,8 @@
             <LEAF  type="rectangle" args="0 5 5 0" />        
         </DESCENDANTS>
     </NODE>
+
+
 
     <!-- Walls and Floors -->
 
@@ -362,6 +380,49 @@
 
         <DESCENDANTS>
             <LEAF id="sphere1" type="sphere" args="3 20 20" />
+        </DESCENDANTS>
+    </NODES>
+
+    <NODE id="newLamp">       
+        <MATERIAL id="null" />     
+        <TEXTURE id="null" />                   
+
+        <ROTATION axis="y" angle="90" />
+        <SCALE sx="0.5" sy="0.5" sz="1.5" />
+        
+        <DESCENDANTS>
+
+            <NODEREF id="newLampShade" />
+            <NODEREF id="newLampPost" />
+            <NODEREF id="newLampFoot" />
+   
+        </DESCENDANTS>
+    </NODE>
+
+    <NODE id="newLampShade">
+        <MATERIAL id="null"/>
+        <TEXTURE id="null"/>
+
+        <DESCENDANTS>
+            <LEAF id="shade" type="cylinder" args="5 8 4 20 20" />
+        </DESCENDANTS>
+    </NODE>
+
+    <NODE id="newLampPost">
+        <MATERIAL id="null"/>
+        <TEXTURE id="null"/>
+
+        <DESCENDANTS>
+            <LEAF id="post" type="cylinder" args="15 1 1 20 20" />
+        </DESCENDANTS>
+    </NODE>
+
+    <NODE id="newLampFoot">
+        <MATERIAL id="null"/>
+        <TEXTURE id="null"/>
+
+        <DESCENDANTS>
+            <LEAF id="foot" type="cylinder" args="3 5 5 20 20 1 1" />
         </DESCENDANTS>
     </NODES>
 
