@@ -113,7 +113,6 @@
             <NODEREF id="furniture" />
             <NODEREF id="lampposts" />
             <NODEREF id="television" />
-            <NODEREF id="cube" />
             <NODEREF id="armChair" />
         </DESCENDANTS>
     </NODE>
@@ -395,7 +394,7 @@
             <NODEREF id="newLampShade" />
             <NODEREF id="newLampPost" />
             <NODEREF id="newLampFoot" />
-            
+
         </DESCENDANTS>
     </NODE>
 
@@ -515,34 +514,165 @@
 
 
     <NODE id="armChair">       
-        <MATERIAL id="blackReflectiveMaterial"/>
-        <TEXTURE id="null"/>                 
+        <MATERIAL id="null"/>
+        <TEXTURE id="clear"/>                
 
-        <!--<ROTATION axis="y" angle="90" />-->
+        <ROTATION axis="y" angle="180" />
+        <TRANSLATION x="-30" y="0" z="-16" />
         
         <DESCENDANTS>
 
             <NODEREF id="chairBase" />
             <NODEREF id="legs" />
             <NODEREF id="chairBack" />
-            <NODEREF id="armRests" />   
+            <NODEREF id="armRests" />
         </DESCENDANTS>
     </NODE>
 
     <NODE id="chairBase">       
-        <MATERIAL id="redMaterial"/>
+        <MATERIAL id="null"/>
         <TEXTURE id="null"/>
-        
 
-        <TRANSLATION x="2.5" y="4" z="2.5" />
-        <ROTATION axis="x" angle="90" />
-        <SCALE sx="1" sy="1.25" sz="1" />
+
+        <TRANSLATION x="0" y="1.5" z="0" />
+        <SCALE sx="1.5" sy="0.7" sz="1.5" />
 
         <DESCENDANTS>
             <NODEREF id="cube"/>
         </DESCENDANTS>
 
     </NODE>
+
+    <NODE id="chairBack">       
+        <MATERIAL id="null"/>
+        <TEXTURE id="null"/>
+
+
+        <TRANSLATION x="0" y="1.5" z="0" />
+        <SCALE sx="0.4" sy="2" sz="1.5" />
+
+        <DESCENDANTS>
+            <NODEREF id="cube"/>
+        </DESCENDANTS>
+
+    </NODE>
+
+    <NODE id="legs">       
+        <MATERIAL id="null"/>
+        <TEXTURE id="null"/>
+
+
+        <TRANSLATION x="0.75" y="0" z="6.5" />
+        <ROTATION axis="x" angle="-90" />
+
+        <DESCENDANTS>
+            <NODEREF id="leg1"/>
+            <NODEREF id="leg2"/>
+            <NODEREF id="leg3"/>
+            <NODEREF id="leg4"/>
+        </DESCENDANTS>
+
+    </NODE>
+
+    <NODE id="leg1">       
+        <MATERIAL id="null"/>
+        <TEXTURE id="null"/>
+
+
+        <TRANSLATION x="0" y="0" z="0" />
+        <SCALE sx="1" sy="1" sz="1" />
+
+        <DESCENDANTS>
+            <LEAF id="leg" type="cylinder" args="1.5 0.2 0.3 10 10 1 1" />
+        </DESCENDANTS>
+
+    </NODE>
+
+    <NODE id="leg2">       
+        <MATERIAL id="null"/>
+        <TEXTURE id="null"/>
+
+
+        <TRANSLATION x="6" y="0" z="0" />
+        <SCALE sx="1" sy="1" sz="1" />
+
+        <DESCENDANTS>
+            <LEAF id="leg" type="cylinder" args="1.5 0.2 0.3 10 10 1 1" />
+        </DESCENDANTS>
+
+    </NODE>
+
+    <NODE id="leg3">       
+        <MATERIAL id="null"/>
+        <TEXTURE id="null"/>
+
+
+        <TRANSLATION x="0" y="6" z="0" />
+        <SCALE sx="1" sy="1" sz="1" />
+
+        <DESCENDANTS>
+            <LEAF id="leg" type="cylinder" args="1.5 0.2 0.3 10 10 1 1" />
+        </DESCENDANTS>
+
+    </NODE>
+
+    <NODE id="leg4">       
+        <MATERIAL id="null"/>
+        <TEXTURE id="null"/>
+
+
+        <TRANSLATION x="6" y="6" z="0" />
+        <SCALE sx="1" sy="1" sz="1" />
+
+        <DESCENDANTS>
+            <LEAF id="leg" type="cylinder" args="1.5 0.2 0.3 10 10 1 1" />
+        </DESCENDANTS>
+
+    </NODE>
+
+    <NODE id="armRests">       
+        <MATERIAL id="null"/>
+        <TEXTURE id="null"/>
+
+
+        <TRANSLATION x="0.75" y="0" z="6.5" />
+        <ROTATION axis="x" angle="-90" />
+
+        <DESCENDANTS>
+            <NODEREF id="armRest1"/>
+            <NODEREF id="armRest2"/>
+        </DESCENDANTS>
+
+    </NODE>
+
+    <NODE id="armRest1">       
+        <MATERIAL id="null"/>
+        <TEXTURE id="null"/>
+
+
+        <TRANSLATION x="-0.75" y="-1" z="4" />
+        <SCALE sx="1.5" sy="0.3" sz="0.7" />
+
+
+        <DESCENDANTS>
+            <NODEREF id="cube"/>
+        </DESCENDANTS>
+    </NODE>
+
+    <NODE id="armRest2">       
+        <MATERIAL id="null"/>
+        <TEXTURE id="null"/>
+
+
+        <TRANSLATION x="-0.75" y="5" z="4" />
+        <SCALE sx="1.5" sy="0.3" sz="0.7" />
+
+        <DESCENDANTS>
+            <NODEREF id="cube"/>
+        </DESCENDANTS>
+    </NODE>
+
+
 
 
 
