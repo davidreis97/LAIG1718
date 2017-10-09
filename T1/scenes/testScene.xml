@@ -23,7 +23,7 @@
          <specular r="1.0" g="1.0" b="1.0" a="1.0" /> 
      </LIGHT>
 
-    <LIGHT id="light1">                                    
+     <LIGHT id="light1">                                    
         <enable value ="1" />                             
         <position x="20" y="20" z="20" w="1" />             
         <ambient r="0.2" g="0.2" b="0.2" a="1.0" />       
@@ -31,18 +31,23 @@
         <specular r="1.0" g="1.0" b="1.0" a="1.0" />       
     </LIGHT>
 
- </LIGHTS>
+</LIGHTS>
 
- <TEXTURES>
+<TEXTURES>
 
     <TEXTURE id="rocks">
        <file path="images/rocks.jpg" />                
        <amplif_factor s="1" t="1" />                           
+   </TEXTURE>
+
+   <TEXTURE id="vidral">
+    <file path="images/vidral.jpg" />               
+    <amplif_factor s="15" t="10" />                           
     </TEXTURE>
 
-    <TEXTURE id="vidral">
-        <file path="images/vidral.jpg" />               
-        <amplif_factor s="15" t="10" />                           
+     <TEXTURE id="ecraTV">
+    <file path="images/jornal-da-noite-sic.jpg" />               
+    <amplif_factor s="15" t="10" />                           
     </TEXTURE>
 
 </TEXTURES>
@@ -71,6 +76,22 @@
        <ambient r="0.2" g="0" b="0" a="1" />         
        <emission r="0.0" g="0.0" b="0.0" a="1" />        
    </MATERIAL>
+
+   <MATERIAL id="blackReflectiveMaterial">                                  
+       <shininess value="1" />
+       <specular r="0.2" g="0.2" b="0.2" a="1" />        
+       <diffuse r="0" g="0" b="0" a="1" />        
+       <ambient r="0" g="0" b="0" a="1" />         
+       <emission r="0.0" g="0.0" b="0.0" a="1" />        
+   </MATERIAL>
+
+   <MATERIAL id="tvScreenMaterial">                                  
+       <shininess value="1" />
+       <specular r="0.3" g="0.3" b="0.3" a="1" />        
+       <diffuse r="0.8" g="0.8" b="0.8" a="1" />        
+       <ambient r="0.2" g="0.2" b="0.2" a="1" />         
+       <emission r="0.7" g="0.7" b="0.7" a="1" />        
+   </MATERIAL>
 </MATERIALS>
 
 <NODES>
@@ -85,6 +106,7 @@
             <NODEREF id="walls" />
             <NODEREF id="furniture" />
             <NODEREF id="lampposts" />
+            <NODEREF id="television" />
         </DESCENDANTS>
     </NODE>
 
@@ -348,58 +370,27 @@
         <TRANSLATION x="20" y="0" z="5"/>
 
         <DESCENDANTS>
-            <NODEREF id="lamppost"/>
-        </DESCENDANTS>
-    </NODE>
-
-    <NODE id="lamppost">
-        <MATERIAL id="null"/>
-        <TEXTURE id="null"/>
-
-        <ROTATION axis="x" angle="90"/>
-        <TRANSLATION x="0" y="0" z="-10"/>
-
-        <DESCENDANTS>
-            <NODEREF id="lampcolumn"/>
             <NODEREF id="lamp"/>
         </DESCENDANTS>
     </NODE>
 
-    <NODE id="lampcolumn">
-        <MATERIAL id="null"/>
-        <TEXTURE id="clear"/> <!-- TODO: Change after textures fixed in cylinder with top and bot -->
-
-        <DESCENDANTS>
-            <LEAF type="cylinder" args="10 1 1 20 20 1 1" /> 
-        </DESCENDANTS>
-    </NODE>
-
-    <NODE id="lamp">
-        <MATERIAL id="null"/>
-        <TEXTURE id="null"/>
-
-        <DESCENDANTS>
-            <LEAF id="sphere1" type="sphere" args="3 20 20" />
-        </DESCENDANTS>
-    </NODES>
-
-    <NODE id="newLamp">       
+    <NODE id="lamp">       
         <MATERIAL id="null" />     
         <TEXTURE id="null" />                   
 
         <ROTATION axis="y" angle="90" />
         <SCALE sx="0.5" sy="0.5" sz="1.5" />
-        
+
         <DESCENDANTS>
 
-            <NODEREF id="newLampShade" />
-            <NODEREF id="newLampPost" />
-            <NODEREF id="newLampFoot" />
-   
+            <NODEREF id="lampShade" />
+            <NODEREF id="lampSupport" />
+            <NODEREF id="lampFeet" />
+
         </DESCENDANTS>
     </NODE>
 
-    <NODE id="newLampShade">
+    <NODE id="lampShade">
         <MATERIAL id="null"/>
         <TEXTURE id="null"/>
 
@@ -408,7 +399,7 @@
         </DESCENDANTS>
     </NODE>
 
-    <NODE id="newLampPost">
+    <NODE id="lampSupport">
         <MATERIAL id="null"/>
         <TEXTURE id="null"/>
 
@@ -417,13 +408,98 @@
         </DESCENDANTS>
     </NODE>
 
-    <NODE id="newLampFoot">
+    <NODE id="lampFeet">
         <MATERIAL id="null"/>
         <TEXTURE id="null"/>
 
         <DESCENDANTS>
             <LEAF id="foot" type="cylinder" args="3 5 5 20 20 1 1" />
         </DESCENDANTS>
-    </NODES>
+    </NODE>
+
+    <NODE id="television">
+        <MATERIAL id="blackReflectiveMaterial"/>
+        <TEXTURE id="clear"/>
+
+        <SCALE sx="1.3" sy="1.3" sz="1.3"/>
+        <TRANSLATION x="20" y="0" z="14" />
+        <ROTATION axis="y" angle="-90" />
+
+        <DESCENDANTS>
+            <NODEREF id="tvSupport"/>
+            <NODEREF id="tvBox"/>
+            <NODEREF id="tvScreen"/>
+            <NODEREF id="tvButton"/>
+        </DESCENDANTS>
+    </NODE>
+
+    <NODE id="tvSupport">
+        <MATERIAL id="null"/>
+        <TEXTURE id="null"/>
+
+        <DESCENDANTS>
+            <NODEREF id="supportFoot"/>
+            <NODEREF id="supportHolder"/>
+        </DESCENDANTS>
+    </NODE>
+
+    <NODE id="supportFoot">
+        <MATERIAL id="null"/>
+        <TEXTURE id="null"/>
+
+        <SCALE sx="0.5" sy="0.1" sz="0.3"/>
+
+        <DESCENDANTS>
+            <NODEREF id="cube"/>
+        </DESCENDANTS>
+    </NODE>
+
+    <NODE id="supportHolder">
+        <MATERIAL id="null"/>
+        <TEXTURE id="null"/>
+
+        <TRANSLATION x="1.25" y="2" z="0.75"/>
+        <ROTATION axis="x" angle="90" />
+
+        <DESCENDANTS>
+            <LEAF id="foot" type="cylinder" args="2 0.2 0.2 10 10 1 1" />
+        </DESCENDANTS>
+    </NODE>
+
+    <NODE id="tvBox">
+        <MATERIAL id="null"/>
+        <TEXTURE id="null"/>
+
+        <TRANSLATION x="-2.75" y="2" z="0.75"/>
+        <SCALE sx="1.5" sy="0.85" sz="0.02"/>
+
+        <DESCENDANTS>
+            <NODEREF id="cube"/>
+        </DESCENDANTS>
+    </NODE>
+
+    <NODE id="tvScreen">
+        <MATERIAL id="tvScreenMaterial"/>
+        <TEXTURE id="ecraTV"/>
+
+        <TRANSLATION x="-2.5" y="2.175" z="0.88"/>
+        <DESCENDANTS>
+            <LEAF type="rectangle" args="0 3.9 7 0"/>        
+        </DESCENDANTS>
+    </NODE>
+
+    <NODE id="tvButton">
+        <MATERIAL id="redMaterial"/>
+        <TEXTURE id="null"/>
+
+        <TRANSLATION x="3.4" y="2.05" z="0.88"/>
+        <SCALE sx="0.02" sy="0.02" sz="0.02"/>
+        
+        <DESCENDANTS>
+            <NODEREF id="cube"/>        
+        </DESCENDANTS>
+    </NODE>
+
+</NODES>
 
 </SCENE>

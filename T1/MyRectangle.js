@@ -32,19 +32,19 @@ MyRectangle.prototype.initBuffers = function () {
     this.indices = [];
 
     this.vertices.push(this.minX, this.minY, 0);
-    this.texCoords.push(0, 0);
-    this.normals.push(0, 0, 1);
-
-    this.vertices.push(this.minX, this.maxY, 0);
     this.texCoords.push(0, 1);
     this.normals.push(0, 0, 1);
 
+    this.vertices.push(this.minX, this.maxY, 0);
+    this.texCoords.push(0, 0);
+    this.normals.push(0, 0, 1);
+
     this.vertices.push(this.maxX, this.maxY, 0);
-    this.texCoords.push(1, 1);
+    this.texCoords.push(1, 0);
     this.normals.push(0, 0, 1);
 
     this.vertices.push(this.maxX, this.minY, 0);
-    this.texCoords.push(1, 0);
+    this.texCoords.push(1, 1);
     this.normals.push(0, 0, 1);
 
     this.indices = [0,2,1,
