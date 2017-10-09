@@ -1147,6 +1147,7 @@ MySceneGraph.prototype.parseMaterials = function(materialsNode) {
         newMaterial.setDiffuse(diffuseComponent[0], diffuseComponent[1], diffuseComponent[2], diffuseComponent[3]);
         newMaterial.setSpecular(specularComponent[0], specularComponent[1], specularComponent[2], specularComponent[3]);
         newMaterial.setEmission(emissionComponent[0], emissionComponent[1], emissionComponent[2], emissionComponent[3]);
+        newMaterial.setTextureWrap("REPEAT", "REPEAT");
         this.materials[materialID] = newMaterial;
         oneMaterialDefined = true;
     }
@@ -1403,6 +1404,7 @@ MySceneGraph.prototype.generateDefaultMaterial = function() {
     materialDefault.setDiffuse(0.5, 0.5, 0.5, 1);
     materialDefault.setAmbient(0, 0, 0, 1);
     materialDefault.setEmission(0, 0, 0, 1);
+    materialDefault.setTextureWrap("REPEAT", "REPEAT");
 
     // Generates random material ID not currently in use.
     this.defaultMaterialID = null;
@@ -1431,6 +1433,7 @@ MySceneGraph.generateRandomString = function(length) {
 MySceneGraph.prototype.displayScene = function(nodeID, matID, texID) {
     var materialID = matID;
     var textureID = texID;
+    var tex_scale_values = [];
 
     if(nodeID != null){
         var node = this.nodes[nodeID];
@@ -1446,12 +1449,12 @@ MySceneGraph.prototype.displayScene = function(nodeID, matID, texID) {
         
         if(textureID == "clear"){
             this.materials[materialID].setTexture(null);
+            tex_scale_values[0] = 1;
+            tex_scale_values[1] = 1;
         }else{
-            try{
-                this.materials[materialID].setTexture(this.textures[textureID][0]);
-            }catch(err){
-                console.log(textureID);
-            }
+            this.materials[materialID].setTexture(this.textures[textureID][0]);
+            tex_scale_values[0] = this.textures[textureID][1];
+            tex_scale_values[1] = this.textures[textureID][2];
         }
 
         this.scene.multMatrix(node.transformMatrix);
@@ -1465,7 +1468,7 @@ MySceneGraph.prototype.displayScene = function(nodeID, matID, texID) {
 
         for (var index = 0; index < node.leaves.length; index++){
             this.materials[materialID].apply();
-            node.leaves[index].display();
+            node.leaves[index].display(tex_scale_values);
         }
     }
 }
