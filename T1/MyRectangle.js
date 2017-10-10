@@ -5,10 +5,21 @@
 function MyRectangle(scene, args, tex_scale_values) {
     CGFobject.call(this, scene);
 
-    this.minX = args[0];
-    this.maxY = args[1];
-    this.maxX = args[2];
-    this.minY = args[3];
+    if(this.args.length == 4){ //For rectangles created through default LMX definition
+        this.minX = args[0];
+        this.maxY = args[1];
+        this.maxX = args[2];
+        this.minY = args[3];
+        this.minZ = 0;
+        this.maxZ = 0;
+    }else if(this.args.length == 6){ //For rectangles created through our primitive MyCube
+        this.minX = args[0];
+        this.minY = args[1];
+        this.minZ = args[2];
+        this.maxX = args[3];
+        this.maxY = args[4];
+        this.maxZ = args[5];
+    }
 
     this.ampS = tex_scale_values[0];
     this.ampT = tex_scale_values[1];
@@ -34,16 +45,18 @@ MyRectangle.prototype.initBuffers = function () {
     this.texCoords = [];
     this.indices = [];
 
-    this.vertices.push(this.minX, this.minY, 0);
+
+    //TODO - If rectangles are displayed in the wrong place/orientation, this is probably what's wrong
+    this.vertices.push(this.minX, this.minY, this.minZ);
     this.normals.push(0, 0, 1);
 
-    this.vertices.push(this.minX, this.maxY, 0);
+    this.vertices.push(this.minX, this.maxY, this.maxZ);
     this.normals.push(0, 0, 1);
 
-    this.vertices.push(this.maxX, this.maxY, 0);
+    this.vertices.push(this.maxX, this.maxY, this.maxZ);
     this.normals.push(0, 0, 1);
 
-    this.vertices.push(this.maxX, this.minY, 0);
+    this.vertices.push(this.maxX, this.minY, this.minZ);
     this.normals.push(0, 0, 1);
 
     this.indices = [0,2,1,
