@@ -26,6 +26,7 @@ MySphere.prototype.initBuffers = function () {
 	this.vertices = [];
 	this.normals = [];
 	this.indices = [];
+	this.texCoords = [];
 
 	var theta = 0;
 	var phi = 0;
@@ -41,6 +42,7 @@ MySphere.prototype.initBuffers = function () {
 			z = Math.sin(phi)*this.radius;
 
 			this.vertices.push(x,y,z);
+			this.texCoords.push(1,1);
 			this.normals.push(x,y,z);
 
 			x = Math.cos(phi+phiInc) * Math.cos(theta)*this.radius;
@@ -48,6 +50,7 @@ MySphere.prototype.initBuffers = function () {
 			z = Math.sin(phi+phiInc)*this.radius;
 
 			this.vertices.push(x,y,z);
+			this.texCoords.push(-1,1);
 			this.normals.push(x,y,z);
 
 			x = Math.cos(phi) * Math.cos(theta + thetaInc)*this.radius;
@@ -55,6 +58,7 @@ MySphere.prototype.initBuffers = function () {
 			z = Math.sin(phi)*this.radius;
 
 			this.vertices.push(x,y,z);
+			this.texCoords.push(1,-1);
 			this.normals.push(x,y,z);
 
 			x = Math.cos(phi+phiInc) * Math.cos(theta + thetaInc)*this.radius;
@@ -63,6 +67,7 @@ MySphere.prototype.initBuffers = function () {
 			
 			this.vertices.push(x,y,z);
 			this.normals.push(x,y,z);
+			this.texCoords.push(-1,-1);
 
 			this.indices.push(0 + (i*4) + (j*this.slices*4), 2 + (i*4) + (j*this.slices*4), 1 + (i*4) + (j*this.slices*4));
 			this.indices.push(1 + (i*4) + (j*this.slices*4), 2 + (i*4) + (j*this.slices*4), 3 + (i*4) + (j*this.slices*4));
