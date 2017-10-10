@@ -5,14 +5,14 @@
 function MyRectangle(scene, args, tex_scale_values) {
     CGFobject.call(this, scene);
 
-    if(this.args.length == 4){ //For rectangles created through default LMX definition
+    if(args.length == 4){ //For rectangles created through default LMX definition
         this.minX = args[0];
         this.maxY = args[1];
         this.maxX = args[2];
         this.minY = args[3];
         this.minZ = 0;
         this.maxZ = 0;
-    }else if(this.args.length == 6){ //For rectangles created through our primitive MyCube
+    }else if(args.length == 6){ //For rectangles created through our primitive MyCube
         this.minX = args[0];
         this.minY = args[1];
         this.minZ = args[2];

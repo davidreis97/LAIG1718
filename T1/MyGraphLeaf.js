@@ -31,8 +31,8 @@ MyGraphLeaf.prototype.display = function(tex_scale_factor){
 			sphere.display();
 			break;
 		case "cube":
-			//var cube = new MyCube(this.scene,);
-			//cube.display();
+			var cube = new MyCube(this.scene, this.args, tex_scale_factor);
+			cube.display();
 			break;
 		default:
 			break;
