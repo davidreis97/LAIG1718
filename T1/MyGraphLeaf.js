@@ -8,7 +8,8 @@ function MyGraphLeaf(graph, xmlelem, scene, type, args) {
 
     this.scene = scene;
     this.type = type;
-    this.args = args;
+	this.args = args;
+	
 }
 
 
@@ -33,6 +34,10 @@ MyGraphLeaf.prototype.display = function(tex_scale_factor){
 		case "cube":
 			var cube = new MyCube(this.scene, this.args, tex_scale_factor);
 			cube.display();
+			break;
+		case "patch":
+			var patch = new MyPatch(this.scene, this.args);
+			patch.display();
 			break;
 		default:
 			break;

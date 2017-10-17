@@ -1343,20 +1343,67 @@ MySceneGraph.prototype.parseNodes = function(nodesNode) {
                 else
 					if (descendants[j].nodeName == "LEAF")
 					{
-                        var type = this.reader.getItem(descendants[j], 'type', ['rectangle', 'cylinder', 'sphere', 'triangle', 'cube']);
+                        var type = this.reader.getItem(descendants[j], 'type', ['rectangle', 'cylinder', 'sphere', 'triangle', 'cube', 'patch']);
                         var args = this.reader.getString(descendants[j], 'args').split(" ").map(Number);
-
-                        console.log(args);
-
-						if (type != null && args != null)
-							this.log("   Leaf: "+ type);
-						else
-							this.warn("Error in leaf");
                         
-                        var mgf = new MyGraphLeaf(this,descendants[j],this.scene, type, args);
+                        var checkArgNumbers = [];
+                        checkArgNumbers['rectangle'] = [4];
+                        checkArgNumbers['cylinder'] = [5,6,7];
+                        checkArgNumbers['sphere'] = [3];
+                        checkArgNumbers['triangle'] = [9];
+                        checkArgNumbers['cube'] = [6];
+                        checkArgNumbers['patch'] = [4];
+
+                        if(checkArgNumbers[type].indexOf(args.length) < 0){
+                            console.error("Wrong number of arguments in " + type + " leaf: Got " + args.length + " expected " + checkArgNumbers[type]);
+                            //TODO - Decide what to do next
+                        }
                         
+                        if(type == 'patch'){
+                            var finalArgs = [];
+
+                            if (descendants[j].children.length != args[0]){
+                                console.error("Number of CPLINE doesn't match the patch's args");
+                                //TODO - Decide what to do next
+                            }
+                            
+                            for(var cplineCounter = 0; cplineCounter < descendants[j].children.length; cplineCounter++){
+                                finalArgs[cplineCounter] = [];
+                                var cpline = descendants[j].children[cplineCounter];
+                                
+                                if(cpline.nodeName != "CPLINE"){
+                                    console.error("All descendants of patch must be CPLINE");
+                                    //TODO - Decide what to do next
+                                }else if(cpline.children.length != args[1]){
+                                    console.error("Number of CPOINT doesn't match the patch's args");
+                                    //TODO - Decide what to do next
+                                }
+
+                                for(var cpointCounter = 0; cpointCounter < cpline.children.length; cpointCounter++){
+                                    finalArgs[cplineCounter][cpointCounter] = [];
+                                    var cpoint = cpline.children[cpointCounter];
+
+                                    var xx = this.reader.getFloat(cpoint, 'xx');
+                                    var yy = this.reader.getFloat(cpoint, 'yy');
+                                    var zz = this.reader.getFloat(cpoint, 'zz');
+                                    var ww = this.reader.getFloat(cpoint, 'ww');
+
+                                    finalArgs[cplineCounter][cpointCounter] = [xx,yy,zz,ww];
+                                }
+                            }
+
+                            args.push(finalArgs);
+                        }
+
+                        if (type != null && args != null)
+                            this.log("   Leaf: " + type);
+                        else
+                            this.warn("Error in leaf");
+
+                        var mgf = new MyGraphLeaf(this, descendants[j], this.scene, type, args);
+
                         //parse leaf
-						this.nodes[nodeID].addLeaf(mgf);
+                        this.nodes[nodeID].addLeaf(mgf);
                         sizeChildren++;
 					}
 					else
