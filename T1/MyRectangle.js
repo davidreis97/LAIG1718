@@ -47,17 +47,48 @@ MyRectangle.prototype.initBuffers = function () {
 
 
     //TODO - If rectangles are displayed in the wrong place/orientation, this is probably what's wrong
-    this.vertices.push(this.minX, this.minY, this.minZ);
-    this.normals.push(0, 0, 1);
 
-    this.vertices.push(this.minX, this.maxY, this.maxZ);
-    this.normals.push(0, 0, 1);
+    if(this.minX == this.maxX){
+        this.vertices.push(this.minX, this.minY, this.minZ)
+        this.vertices.push(this.minX, this.maxY, this.minZ)
+        this.vertices.push(this.minX, this.maxY, this.maxZ)
+        this.vertices.push(this.minX, this.minY, this.maxZ)
+    }
+    else{
+        this.vertices.push(this.minX, this.maxY, this.maxZ); //2
+        //this.normals.push(0, 0, 1);
 
-    this.vertices.push(this.maxX, this.maxY, this.maxZ);
-    this.normals.push(0, 0, 1);
+        this.vertices.push(this.minX, this.minY, this.minZ); //1
+        //this.normals.push(0, 0, 1);
 
-    this.vertices.push(this.maxX, this.minY, this.minZ);
-    this.normals.push(0, 0, 1);
+        this.vertices.push(this.maxX, this.minY, this.minZ); //4
+        //this.normals.push(0, 0, 1);
+        
+        this.vertices.push(this.maxX, this.maxY, this.maxZ); //3
+        //this.normals.push(0, 0, 1);
+    }
+
+    
+
+    if(this.minX == this.maxX){
+        this.normals.push(1, 0, 0);
+        this.normals.push(1, 0, 0);
+        this.normals.push(1, 0, 0);
+        this.normals.push(1, 0, 0);
+    }
+    if(this.minY == this.maxY){
+        this.normals.push(0, 1, 0);
+        this.normals.push(0, 1, 0);
+        this.normals.push(0, 1, 0);
+        this.normals.push(0, 1, 0);
+    }
+    if(this.minZ == this.maxZ){
+        this.normals.push(0, 0, 1);
+        this.normals.push(0, 0, 1);
+        this.normals.push(0, 0, 1);
+        this.normals.push(0, 0, 1);
+    }
+
 
     this.indices = [0,2,1,
                     0,3,2];
