@@ -109,8 +109,8 @@
 
         <DESCENDANTS>
             <NODEREF id="leftBlock" />
-            <!--<NODEREF id="middleBlock" />
-            <NODEREF id="rightBlock" />-->
+            <NODEREF id="middleBlock" />
+            <NODEREF id="rightBlock" />
         </DESCENDANTS>
     </NODE>
 
@@ -119,7 +119,7 @@
 
     <NODE id="leftBlock">
         <MATERIAL id="null" />
-        <TEXTURE id="clear" />
+        <TEXTURE id="null" />
 
         <DESCENDANTS>
             <!--<NODEREF id="chimney" />-->
@@ -130,35 +130,67 @@
 
     <NODE id="blockLeft">
         <MATERIAL id="null" />
-        <TEXTURE id="vidral" />
+        <TEXTURE id="null" />´
+
+        <TRANSLATION x="2" y="0" z="17"/>
 
         <DESCENDANTS>
-            <LEAF  type="cube" args="0 0 0 15 9 18" />
+            <LEAF  type="cube" args="0 0 0 8 9 7" />
         </DESCENDANTS>
     </NODE>
 
-   
-    <NODE id="floor">
+    <NODE id="middleBlock">
         <MATERIAL id="null" />
         <TEXTURE id="null" />
 
-        <ROTATION axis="x" angle="-90" />
-        <TRANSLATION x="0" y="-30" z="0" />
-        <SCALE sx="1" sy="1.5" sz="1" />  
+        <TRANSLATION x="0" y="0" z="7"/>
 
         <DESCENDANTS>
-            <NODEREF id="wall"/>
+            <NODEREF id="blockMiddle" />
+            <!-- <NODEREF id="roof" />-->
         </DESCENDANTS>
     </NODE>
 
-    <NODE id="wall">
+    <NODE id="blockMiddle">
         <MATERIAL id="null" />
         <TEXTURE id="null" />
 
         <DESCENDANTS>
-            <LEAF  type="rectangle" args="0 20 30 0" />
+            <LEAF  type="cube" args="0 0 0 10 9 10" />
         </DESCENDANTS>
     </NODE>
+
+    <NODE id="rightBlock">
+        <MATERIAL id="null" />
+        <TEXTURE id="null" />
+
+        <DESCENDANTS>
+            <NODEREF id="blockRightBack" />
+            <NODEREF id="garage" />
+            <!-- <NODEREF id="roof" />-->
+        </DESCENDANTS>
+    </NODE>
+
+    <NODE id="blockRightBack">
+        <MATERIAL id="null" />
+        <TEXTURE id="null" />
+
+        <DESCENDANTS>
+            <LEAF  type="cube" args="0 0 0 8 7 7" />
+        </DESCENDANTS>
+    </NODE>
+    
+    <NODE id="garage">
+        <MATERIAL id="null" />
+        <TEXTURE id="null" />
+
+        <TRANSLATION x="8" y="0" z="0"/>
+
+        <DESCENDANTS>
+            <LEAF  type="cube" args="0 0 0 4 5 8" />
+        </DESCENDANTS>
+    </NODE>
+
 
 </NODES>
 
