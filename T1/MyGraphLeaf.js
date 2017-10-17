@@ -16,7 +16,7 @@ function MyGraphLeaf(graph, xmlelem, scene, type, args) {
 MyGraphLeaf.prototype.display = function(tex_scale_factor){
 	switch(this.type){
 		case "triangle":
-			var triangle = new MyTriangle(this.scene,this.args[0],this.args[1],this.args[2],this.args[3],this.args[4],this.args[5],this.args[6],this.args[7],this.args[8]);
+			var triangle = new MyTriangle(this.scene,this.args,tex_scale_factor);
 			triangle.display();
 			break;
 		case "rectangle":
@@ -28,7 +28,7 @@ MyGraphLeaf.prototype.display = function(tex_scale_factor){
 			cylinder.display();
 			break;
 		case "sphere":
-			var sphere = new MySphere(this.scene,this.args[0],this.args[1],this.args[2]);
+			var sphere = new MySphere(this.scene,this.args);
 			sphere.display();
 			break;
 		case "cube":

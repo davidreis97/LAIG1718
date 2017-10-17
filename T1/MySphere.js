@@ -2,12 +2,12 @@
  * MySphere
  * @constructor
  */
-function MySphere(scene, radius, stacks, slices) {
+function MySphere(scene, args) {
 	CGFobject.call(this, scene);
 
-	this.radius = radius;
-	this.stacks = stacks;
-	this.slices = slices;
+	this.radius = args[0];
+	this.stacks = args[1];
+	this.slices = args[2];
 
 	this.initBuffers();
 };

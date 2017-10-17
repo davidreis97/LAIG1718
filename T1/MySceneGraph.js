@@ -1356,7 +1356,6 @@ MySceneGraph.prototype.parseNodes = function(nodesNode) {
 
                         if(checkArgNumbers[type].indexOf(args.length) < 0){
                             console.error("Wrong number of arguments in " + type + " leaf: Got " + args.length + " expected " + checkArgNumbers[type]);
-                            //TODO - Decide what to do next
                         }
                         
                         if(type == 'patch'){
@@ -1364,7 +1363,6 @@ MySceneGraph.prototype.parseNodes = function(nodesNode) {
 
                             if (descendants[j].children.length != args[0]){
                                 console.error("Number of CPLINE doesn't match the patch's args");
-                                //TODO - Decide what to do next
                             }
                             
                             for(var cplineCounter = 0; cplineCounter < descendants[j].children.length; cplineCounter++){
@@ -1373,15 +1371,17 @@ MySceneGraph.prototype.parseNodes = function(nodesNode) {
                                 
                                 if(cpline.nodeName != "CPLINE"){
                                     console.error("All descendants of patch must be CPLINE");
-                                    //TODO - Decide what to do next
                                 }else if(cpline.children.length != args[1]){
                                     console.error("Number of CPOINT doesn't match the patch's args");
-                                    //TODO - Decide what to do next
                                 }
 
                                 for(var cpointCounter = 0; cpointCounter < cpline.children.length; cpointCounter++){
                                     finalArgs[cplineCounter][cpointCounter] = [];
                                     var cpoint = cpline.children[cpointCounter];
+
+                                    if(cpline.nodeName != "CPOINT"){
+                                        console.error("All descendants of CPLINE must be CPOINT");
+                                    }
 
                                     var xx = this.reader.getFloat(cpoint, 'xx');
                                     var yy = this.reader.getFloat(cpoint, 'yy');
