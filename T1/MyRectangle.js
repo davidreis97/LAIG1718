@@ -67,22 +67,22 @@ MyRectangle.prototype.initBuffers = function () {
     
 
     if(this.minX == this.maxX){
-        this.normals.push(1, 0, 0);
-        this.normals.push(1, 0, 0);
-        this.normals.push(1, 0, 0);
-        this.normals.push(1, 0, 0);
+        this.normals.push(-1, 0, 0);
+        this.normals.push(-1, 0, 0);
+        this.normals.push(-1, 0, 0);
+        this.normals.push(-1, 0, 0);
     }
     if(this.minY == this.maxY){
-        this.normals.push(0, 1, 0);
-        this.normals.push(0, 1, 0);
-        this.normals.push(0, 1, 0);
-        this.normals.push(0, 1, 0);
+        this.normals.push(0, -1, 0);
+        this.normals.push(0, -1, 0);
+        this.normals.push(0, -1, 0);
+        this.normals.push(0, -1, 0);
     }
     if(this.minZ == this.maxZ){
-        this.normals.push(0, 0, 1);
-        this.normals.push(0, 0, 1);
-        this.normals.push(0, 0, 1);
-        this.normals.push(0, 0, 1);
+        this.normals.push(0, 0, -1);
+        this.normals.push(0, 0, -1);
+        this.normals.push(0, 0, -1);
+        this.normals.push(0, 0, -1);
     }
 
 
