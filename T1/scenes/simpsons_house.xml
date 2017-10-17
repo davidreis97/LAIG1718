@@ -123,17 +123,17 @@
 
         <DESCENDANTS>
             <!--<NODEREF id="chimney" />-->
-            <NODEREF id="block" />
+            <NODEREF id="blockLeft" />
             <!-- <NODEREF id="roof" />-->
         </DESCENDANTS>
     </NODE>
 
-    <NODE id="block">
+    <NODE id="blockLeft">
         <MATERIAL id="null" />
-        <TEXTURE id="null" />
+        <TEXTURE id="vidral" />
 
         <DESCENDANTS>
-            <LEAF  type="cube" args="0 0 0 10 10 10" />
+            <LEAF  type="cube" args="0 0 0 15 9 18" />
         </DESCENDANTS>
     </NODE>
 

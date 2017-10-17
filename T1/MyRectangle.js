@@ -49,23 +49,19 @@ MyRectangle.prototype.initBuffers = function () {
     //TODO - If rectangles are displayed in the wrong place/orientation, this is probably what's wrong
 
     if(this.minX == this.maxX){
-        this.vertices.push(this.minX, this.minY, this.minZ)
-        this.vertices.push(this.minX, this.maxY, this.minZ)
-        this.vertices.push(this.minX, this.maxY, this.maxZ)
-        this.vertices.push(this.minX, this.minY, this.maxZ)
+        this.vertices.push(this.minX, this.maxY, this.minZ);
+        this.vertices.push(this.minX, this.minY, this.minZ);
+        this.vertices.push(this.minX, this.minY, this.maxZ);
+        this.vertices.push(this.minX, this.maxY, this.maxZ);
     }
     else{
-        this.vertices.push(this.minX, this.maxY, this.maxZ); //2
-        //this.normals.push(0, 0, 1);
-
         this.vertices.push(this.minX, this.minY, this.minZ); //1
-        //this.normals.push(0, 0, 1);
+
+        this.vertices.push(this.minX, this.maxY, this.maxZ); //2
+
+        this.vertices.push(this.maxX, this.maxY, this.maxZ); //3
 
         this.vertices.push(this.maxX, this.minY, this.minZ); //4
-        //this.normals.push(0, 0, 1);
-        
-        this.vertices.push(this.maxX, this.maxY, this.maxZ); //3
-        //this.normals.push(0, 0, 1);
     }
 
     
