@@ -98,14 +98,14 @@ MyRectangle.prototype.initBuffers = function () {
     var difZ = (this.maxZ - this.minZ);
 
     if(difX == 0){
-        var s = (this.maxZ - this.minZ)/this.ampS;
-        var t = (this.maxY - this.minY)/this.ampT;
+        var s = difZ/this.ampS;
+        var t = difY/this.ampT;
     }else if(difY == 0){
-        var s = (this.maxX - this.minX)/this.ampS;
-        var t = (this.maxZ - this.minZ)/this.ampT;
+        var s = difX/this.ampS;
+        var t = difZ/this.ampT;
     }else{
-        var s = (this.maxX - this.minX)/this.ampS;
-        var t = (this.maxY - this.minY)/this.ampT;
+        var s = difX/this.ampS;
+        var t = difY/this.ampT;
     }
 
     this.texCoords.push(0,t);
