@@ -146,7 +146,55 @@
         <DESCENDANTS>
             <NODEREF id="blockMiddle" />
             <!-- <NODEREF id="middleBlockTriangles">  TOTOTOTOTOTODO--> 
-            <!-- <NODEREF id="middleBlockRoof" /> -->
+            <NODEREF id="middleBlockRoof" />
+        </DESCENDANTS>
+    </NODE>
+
+    <!-- right/middle block roof -->
+    <NODE id="middleBlockRoof">
+        <MATERIAL id="null" />
+        <TEXTURE id="null" />
+
+        <DESCENDANTS>
+            <NODEREF id="blockMiddleFrontRoof1" />
+            <NODEREF id="blockMiddleFrontRoof2" />
+            <NODEREF id="blockMiddleBackRoof" />
+        </DESCENDANTS>
+    </NODE>
+
+    <NODE id="blockMiddleFrontRoof1">
+        <MATERIAL id="null" />
+        <TEXTURE id="null" />
+
+        <TRANSLATION x="-0.95" y="8.53" z="-1"/>
+        <ROTATION axis="z" angle="27"/>
+
+        <DESCENDANTS>
+            <LEAF type="cube" args="0 0 0 7 0.2 11" />
+        </DESCENDANTS>
+    </NODE>
+
+    <NODE id="blockMiddleFrontRoof2">
+        <MATERIAL id="null" />
+        <TEXTURE id="null" />
+
+        <TRANSLATION x="-0.1" y="8.97" z="8"/>
+        <ROTATION axis="z" angle="27"/>
+
+        <DESCENDANTS>
+            <LEAF type="cube" args="0 0 0 6 0.2 11" />
+        </DESCENDANTS>
+    </NODE>
+
+    <NODE id="blockMiddleBackRoof">
+        <MATERIAL id="null" />
+        <TEXTURE id="null" />
+
+        <TRANSLATION x="5.1" y="11.7" z="-1"/>
+        <ROTATION axis="z" angle="-27"/>
+
+        <DESCENDANTS>
+            <LEAF type="cube" args="0 0 0 7 0.2 20" />
         </DESCENDANTS>
     </NODE>
 
