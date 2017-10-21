@@ -1506,16 +1506,16 @@ MySceneGraph.prototype.displayScene = function(nodeID, matID, texID) {
 
         this.scene.multMatrix(node.transformMatrix);
         
+        for (var index = 0; index < node.leaves.length; index++){
+            this.materials[materialID].apply();
+            node.leaves[index].display(tex_scale_values);
+        }
+
         for (var index = 0; index < node.children.length; index++){
             this.scene.pushMatrix();
             this.materials[materialID].apply();
             this.displayScene(node.children[index],materialID, textureID);
             this.scene.popMatrix();
-        }
-
-        for (var index = 0; index < node.leaves.length; index++){
-            this.materials[materialID].apply();
-            node.leaves[index].display(tex_scale_values);
         }
     }
 }

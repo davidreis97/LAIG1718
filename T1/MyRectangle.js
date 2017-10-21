@@ -104,10 +104,10 @@ MyRectangle.prototype.initBuffers = function () {
         var t = difY/this.ampT;
     }
 
-    this.texCoords.push(0,t);
     this.texCoords.push(0,0);
-    this.texCoords.push(s,0);
+    this.texCoords.push(0,t);
     this.texCoords.push(s,t);
+    this.texCoords.push(s,0);
 
     this.primitiveType = this.scene.gl.TRIANGLES;
     this.initGLBuffers();
