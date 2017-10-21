@@ -120,9 +120,66 @@
         <TEXTURE id="null" />
 
         <DESCENDANTS>
-            <!--<NODEREF id="chimney" />-->
+            <NODEREF id="chimney" />
             <NODEREF id="blockLeft" />
             <!-- <NODEREF id="roof" />-->
+        </DESCENDANTS>
+    </NODE>
+
+    <NODE id="chimney">
+        <MATERIAL id="null" />
+        <TEXTURE id="null" />´
+
+        <TRANSLATION x="4" y="0" z="24"/>
+
+        <DESCENDANTS>
+            <NODEREF id="bottom" />
+            <NODEREF id="middle" />
+            <NODEREF id="diagonal" />
+            <NODEREF id="top" />
+        </DESCENDANTS>
+    </NODE>
+
+    <NODE id="bottom">
+        <MATERIAL id="null" />
+        <TEXTURE id="null" />´
+
+        <DESCENDANTS>
+            <LEAF  type="cube" args="0 0 0 3 5 1" />
+        </DESCENDANTS>
+    </NODE>
+
+    <NODE id="middle">
+        <MATERIAL id="null" />
+        <TEXTURE id="null" />´
+
+        <TRANSLATION x="0" y="5" z="0" />
+
+        <DESCENDANTS>
+            <LEAF  type="cube" args="0 0 0 2.2 7 1" />
+        </DESCENDANTS>
+    </NODE>
+
+    <NODE id="diagonal">
+        <MATERIAL id="null" />
+        <TEXTURE id="null" />´
+
+        <TRANSLATION x="2.4" y="4.2" z="0" />
+        <ROTATION axis="z" angle="45" />
+
+        <DESCENDANTS>
+            <LEAF  type="cube" args="0 0 0 1 1.5 1" />
+        </DESCENDANTS>
+    </NODE>
+
+    <NODE id="top">
+        <MATERIAL id="null" />
+        <TEXTURE id="null" />´
+
+        <TRANSLATION x="-0.3" y="12" z="-0.25" />
+
+        <DESCENDANTS>
+            <LEAF  type="cube" args="0 0 0 2.8 0.7 1.5" />
         </DESCENDANTS>
     </NODE>
 
@@ -182,7 +239,7 @@
         <ROTATION axis="z" angle="27"/>
 
         <DESCENDANTS>
-            <LEAF type="cube" args="0 0 0 6 0.2 11" />
+            <LEAF type="cube" args="0 0 0 6 0.2 9" />
         </DESCENDANTS>
     </NODE>
 
@@ -194,7 +251,7 @@
         <ROTATION axis="z" angle="-27"/>
 
         <DESCENDANTS>
-            <LEAF type="cube" args="0 0 0 7 0.2 20" />
+            <LEAF type="cube" args="0 0 0 7 0.2 18" />
         </DESCENDANTS>
     </NODE>
 
