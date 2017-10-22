@@ -5,6 +5,8 @@
 function MyRectangle(scene, args, tex_scale_values) {
     CGFobject.call(this, scene);
 
+    this.args = args;
+
     if(args.length == 4){ //For rectangles created through default LMX definition
         this.minX = args[0];
         this.maxY = args[1];
@@ -64,27 +66,64 @@ MyRectangle.prototype.initBuffers = function () {
         this.vertices.push(this.maxX, this.minY, this.minZ); //4
     }
 
+    if(this.args.length == 4){
+        if(this.minX == this.maxX){
+            this.normals.push(-1, 0, 0);
+            this.normals.push(-1, 0, 0);
+            this.normals.push(-1, 0, 0);
+            this.normals.push(-1, 0, 0);
+        }
+        if(this.minY == this.maxY){
+            this.normals.push(0, -1, 0);
+            this.normals.push(0, -1, 0);
+            this.normals.push(0, -1, 0);
+            this.normals.push(0, -1, 0);
+        }
+        if(this.minZ == this.maxZ){
+            this.normals.push(0, 0, -1);
+            this.normals.push(0, 0, -1);
+            this.normals.push(0, 0, -1);
+            this.normals.push(0, 0, -1);
+        }
+
+    }else{
+        if(this.minX == this.maxX && ((this.minY > this.maxY) || (this.minZ > this.maxZ))){
+            this.normals.push(-1, 0, 0);
+            this.normals.push(-1, 0, 0);
+            this.normals.push(-1, 0, 0);
+            this.normals.push(-1, 0, 0);
+         }else if(this.minX == this.maxX){
+            this.normals.push(1, 0, 0);
+            this.normals.push(1, 0, 0);
+            this.normals.push(1, 0, 0);
+            this.normals.push(1, 0, 0);
+        }
+        
+        if(this.minY == this.maxY && ((this.minY < this.maxY) || (this.minZ < this.maxZ))){
+            this.normals.push(0, -1, 0);
+            this.normals.push(0, -1, 0);
+            this.normals.push(0, -1, 0);
+            this.normals.push(0, -1, 0);
+        }else if(this.minY == this.maxY){
+            this.normals.push(0, 1, 0);
+            this.normals.push(0, 1, 0);
+            this.normals.push(0, 1, 0);
+            this.normals.push(0, 1, 0);
+        }
+
+        if(this.minZ == this.maxZ &&((this.minY > this.maxY) || (this.minZ > this.maxZ))){
+            this.normals.push(0, 0, -1);
+            this.normals.push(0, 0, -1);
+            this.normals.push(0, 0, -1);
+            this.normals.push(0, 0, -1);
+        }else if (this.minZ == this.maxZ){
+            this.normals.push(0, 0, 1);
+            this.normals.push(0, 0, 1);
+            this.normals.push(0, 0, 1);
+            this.normals.push(0, 0, 1);
+        }
+    }
     
-
-    if(this.minX == this.maxX){
-        this.normals.push(-1, 0, 0);
-        this.normals.push(-1, 0, 0);
-        this.normals.push(-1, 0, 0);
-        this.normals.push(-1, 0, 0);
-    }
-    if(this.minY == this.maxY){
-        this.normals.push(0, -1, 0);
-        this.normals.push(0, -1, 0);
-        this.normals.push(0, -1, 0);
-        this.normals.push(0, -1, 0);
-    }
-    if(this.minZ == this.maxZ){
-        this.normals.push(0, 0, -1);
-        this.normals.push(0, 0, -1);
-        this.normals.push(0, 0, -1);
-        this.normals.push(0, 0, -1);
-    }
-
 
     this.indices = [0,2,1,
                     0,3,2];
