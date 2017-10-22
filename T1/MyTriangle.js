@@ -48,9 +48,9 @@ MyTriangle.prototype.initBuffers = function () {
 	var angY = Math.acos(((distA*distA) + (distB*distB) - (distC*distC))/(2*distA*distB));
 	var angB = Math.acos(((distA*distA) - (distB*distB) + (distC*distC))/(2*distA*distC));
 	
-	this.texCoords.push(distC - distA*Math.cos(angB), distA*Math.sin(angB));	
+	this.texCoords.push((distC - distA*Math.cos(angB)) / this.ampS, distA*Math.sin(angB) / this.ampT);	
 	this.texCoords.push(0,0);
-	this.texCoords.push(distC,0);
+	this.texCoords.push(distC / this.ampS,0);
 
 	this.primitiveType=this.scene.gl.TRIANGLES;
 	this.initGLBuffers();
