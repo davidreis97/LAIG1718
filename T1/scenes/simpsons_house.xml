@@ -148,9 +148,79 @@
             <NODEREF id="leftBlock" />
             <NODEREF id="middleBlock" />
             <NODEREF id="rightBlock" />
+            <NODEREF id="doorsAndWindows" />
         </DESCENDANTS>
     </NODE>
     <!-- Walls and Floors -->
+
+    <NODE id="doorsAndWindows" >
+        <MATERIAL id="diffuse" />     
+        <TEXTURE id="null" />                   
+
+        <DESCENDANTS>
+            <NODEREF id="door" />
+            <NODEREF id="windows" />
+            <NODEREF id="garageDoor" />
+        </DESCENDANTS>
+    </NODE>
+
+     <NODE id="windows" >
+        <MATERIAL id="testMaterial" />     
+        <TEXTURE id="null" />                   
+
+        <DESCENDANTS>
+            <NODEREF id="window1" />
+            <NODEREF id="window2" />
+        </DESCENDANTS>
+    </NODE>
+
+    <NODE id="garageDoor" >
+        <MATERIAL id="testMaterial" />     
+        <TEXTURE id="null" />                   
+
+        <TRANSLATION x="12.05" y="0.3" z="0.3" />
+        <ROTATION axis="y" angle="-90" />     
+
+        <DESCENDANTS>
+            <LEAF id="garageDoorDoor" type="rectangle" args="0 0 7.4 3.4" />
+        </DESCENDANTS>
+    </NODE>
+
+    <NODE id="window1" >
+        <MATERIAL id="testMaterial" />     
+        <TEXTURE id="null" />
+
+        <TRANSLATION x="10.05" y="5.5" z="19" />
+        <ROTATION axis="y" angle="-90" />                   
+
+        <DESCENDANTS>
+            <LEAF id="door" type="rectangle" args="0 0 4 2" />
+        </DESCENDANTS>
+    </NODE>
+
+    <NODE id="window2" >
+        <MATERIAL id="testMaterial" />     
+        <TEXTURE id="null" />
+
+        <TRANSLATION x="10.05" y="5.5" z="11" />
+        <ROTATION axis="y" angle="-90" />                   
+
+        <DESCENDANTS>
+            <LEAF id="door" type="rectangle" args="0 0 4 2" />
+        </DESCENDANTS>
+    </NODE>
+
+    <NODE id="door" >
+        <MATERIAL id="testMaterial" />     
+        <TEXTURE id="null" />                   
+
+        <TRANSLATION x="10.05" y="0" z="16" />
+        <ROTATION axis="y" angle="-90" />
+
+        <DESCENDANTS>
+            <LEAF id="door" type="rectangle" args="0 0 1.8 4" />
+        </DESCENDANTS>
+    </NODE>
 
     <NODE id="outside">
         <MATERIAL id="null" />
