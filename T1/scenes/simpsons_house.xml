@@ -65,11 +65,6 @@
      <amplif_factor s="2" t="2" />                           
  </TEXTURE>
 
- <TEXTURE id="vidral">
-    <file path="images/vidral.jpg" />               
-    <amplif_factor s="15" t="10" />                           
-</TEXTURE>
-
 <TEXTURE id="treeTrunk">
     <file path="images/treeTrunk.jpg" />               
     <amplif_factor s="1" t="1" />                           
@@ -85,12 +80,6 @@
     <amplif_factor s="2" t="2" />                           
 </TEXTURE>
 
-<TEXTURE id="ecraTV">
-    <file path="images/jornal-da-noite-sic.jpg" />               
-    <amplif_factor s="15" t="10" />                           
-</TEXTURE>
-
-<!-- Silver lamp -->
 <TEXTURE id="silver">
     <file path="images/silver.jpg" />                
     <amplif_factor s="1" t="1" />                           
