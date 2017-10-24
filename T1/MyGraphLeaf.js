@@ -9,38 +9,38 @@ function MyGraphLeaf(graph, xmlelem, scene, type, args) {
     this.scene = scene;
     this.type = type;
 	this.args = args;
-	
-}
 
+	var tex_scale_factor = [1,1];
 
-MyGraphLeaf.prototype.display = function(tex_scale_factor){
 	switch(this.type){
 		case "triangle":
-			var triangle = new MyTriangle(this.scene,this.args,tex_scale_factor);
-			triangle.display();
+			this.primitive = new MyTriangle(this.scene,this.args);
 			break;
 		case "rectangle":
-			var rectangle = new MyRectangle(this.scene,this.args,tex_scale_factor);
-			rectangle.display();
+			this.primitive =  new MyRectangle(this.scene,this.args);
 			break;
 		case "cylinder":
-			var cylinder = new MyCylinder(this.scene, this.args);
-			cylinder.display();
+			this.primitive = new MyCylinder(this.scene, this.args);
 			break;
 		case "sphere":
-			var sphere = new MySphere(this.scene,this.args);
-			sphere.display();
+			this.primitive =  new MySphere(this.scene,this.args);
 			break;
 		case "cube":
-			var cube = new MyCube(this.scene, this.args, tex_scale_factor);
-			cube.display();
+			this.primitive =  new MyCube(this.scene, this.args);
 			break;
 		case "patch":
-			var patch = new MyPatch(this.scene, this.args);
-			patch.display();
+			this.primitive = new MyPatch(this.scene, this.args);
 			break;
 		default:
 			break;
 	}
+}
+
+
+MyGraphLeaf.prototype.display = function(tex_scale_factor){
+	if(this.type == "triangle" || this.type == "rectangle" || this.type == "cube"){
+		this.primitive.setTexScale(tex_scale_factor);
+	}
+	this.primitive.display();
 }
 

@@ -2,7 +2,7 @@
  * MyRectangle
  * @constructor
  */
-function MyRectangle(scene, args, tex_scale_values) {
+function MyRectangle(scene, args) {
     CGFobject.call(this, scene);
 
     this.args = args;
@@ -23,9 +23,6 @@ function MyRectangle(scene, args, tex_scale_values) {
         this.maxZ = args[5];
     }
 
-    this.ampS = tex_scale_values[0];
-    this.ampT = tex_scale_values[1];
-
     this.initBuffers();
 };
 
@@ -44,7 +41,6 @@ MyRectangle.prototype.constructor = MyRectangle;
 MyRectangle.prototype.initBuffers = function () {
     this.vertices = [];                            
     this.normals = [];                      
-    this.texCoords = [];
     this.indices = [];
 
 
@@ -111,7 +107,7 @@ MyRectangle.prototype.initBuffers = function () {
             this.normals.push(0, 1, 0);
         }
 
-        if(this.minZ == this.maxZ &&((this.minY > this.maxY) || (this.minZ > this.maxZ))){
+        if(this.minZ == this.maxZ && ((this.minY > this.maxY) || (this.minZ > this.maxZ))){
             this.normals.push(0, 0, -1);
             this.normals.push(0, 0, -1);
             this.normals.push(0, 0, -1);
@@ -128,19 +124,27 @@ MyRectangle.prototype.initBuffers = function () {
     this.indices = [0,2,1,
                     0,3,2];
     
+
+    this.primitiveType = this.scene.gl.TRIANGLES;
+    this.initGLBuffers();
+}
+
+MyRectangle.prototype.setTexScale = function (tex_scale_factor){
+    this.texCoords = [];
+
     var difX = (this.maxX - this.minX);
     var difY = (this.maxY - this.minY);
     var difZ = (this.maxZ - this.minZ);
 
     if(difX == 0){
-        var s = difZ/this.ampS;
-        var t = difY/this.ampT;
+        var s = difZ/tex_scale_factor[0];
+        var t = difY/tex_scale_factor[1];
     }else if(difY == 0){
-        var s = difX/this.ampS;
-        var t = difZ/this.ampT;
+        var s = difX/tex_scale_factor[0];
+        var t = difZ/tex_scale_factor[1];
     }else{
-        var s = difX/this.ampS;
-        var t = difY/this.ampT;
+        var s = difX/tex_scale_factor[0];
+        var t = difY/tex_scale_factor[1];
     }
 
     this.texCoords.push(0,0);
@@ -148,6 +152,5 @@ MyRectangle.prototype.initBuffers = function () {
     this.texCoords.push(s,t);
     this.texCoords.push(s,0);
 
-    this.primitiveType = this.scene.gl.TRIANGLES;
-    this.initGLBuffers();
+    this.updateTexCoordsGLBuffers();
 }
