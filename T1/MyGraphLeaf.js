@@ -6,41 +6,49 @@
 function MyGraphLeaf(graph, xmlelem, scene, type, args) {
     this.graph = graph;
 
+    this.primitive;
+
     this.scene = scene;
     this.type = type;
 	this.args = args;
-	
+
+	switch(this.type){
+		case "triangle":
+			this.primitive = new MyTriangle(this.scene,this.args);
+			break;
+		case "rectangle":
+			this.primitive = new MyRectangle(this.scene,this.args,tex_scale_factor); //CHANGE
+			break;
+		case "cylinder":
+			this.primitive = new MyCylinder(this.scene, this.args);
+			break;
+		case "sphere":
+			this.primitive = new MySphere(this.scene,this.args);
+			break;
+		case "cube":
+			this.primitive = new MyCube(this.scene, this.args);
+			break;
+		case "patch":
+			this.primitive = new MyPatch(this.scene, this.args);
+			break;
+		default:
+			break;
+	}
 }
 
 
 MyGraphLeaf.prototype.display = function(tex_scale_factor){
-	switch(this.type){
-		case "triangle":
-			var triangle = new MyTriangle(this.scene,this.args,tex_scale_factor);
-			triangle.display();
-			break;
-		case "rectangle":
-			var rectangle = new MyRectangle(this.scene,this.args,tex_scale_factor);
-			rectangle.display();
-			break;
-		case "cylinder":
-			var cylinder = new MyCylinder(this.scene, this.args);
-			cylinder.display();
-			break;
-		case "sphere":
-			var sphere = new MySphere(this.scene,this.args);
-			sphere.display();
-			break;
-		case "cube":
-			var cube = new MyCube(this.scene, this.args, tex_scale_factor);
-			cube.display();
-			break;
-		case "patch":
-			var patch = new MyPatch(this.scene, this.args);
-			patch.display();
-			break;
-		default:
-			break;
+	try{
+		this.primitive.setTexScaleFactor(tex_scale_factor);
+	}catch (e){
+		//No problem, primitive has no texScaleFactor
+	}
+
+	try{
+		this.primitive.display();
+
+	}catch (e){
+		console.log(this.primitive);
 	}
 }
 
