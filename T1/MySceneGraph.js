@@ -1379,7 +1379,7 @@ MySceneGraph.prototype.parseNodes = function(nodesNode) {
                                     finalArgs[cplineCounter][cpointCounter] = [];
                                     var cpoint = cpline.children[cpointCounter];
 
-                                    if(cpline.nodeName != "CPOINT"){
+                                    if(cpoint.nodeName != "CPOINT"){
                                         console.error("All descendants of CPLINE must be CPOINT");
                                     }
 
