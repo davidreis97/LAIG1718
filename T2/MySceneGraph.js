@@ -116,6 +116,14 @@ MySceneGraph.prototype.parseLSXFile = function(rootElement) {
         if ((error = this.parseLights(nodes[index])) != null )
             return error;
     }
+
+    // <ANIMATIONS>
+    if ((index = nodeNames.indexOf("ANIMATIONS")) == -1)
+        console.log("tag <ANIMATIONS> missing");
+    else {
+        if ((error = this.parseAnimations(nodes[index])) != null )
+            return error;
+    }
     
     // <TEXTURES>
     if ((index = nodeNames.indexOf("TEXTURES")) == -1)
@@ -537,6 +545,156 @@ MySceneGraph.prototype.parseIllumination = function(illuminationNode) {
         this.onXMLMinorError("background clear colour undefined; assuming (R, G, B, A) = (0, 0, 0, 1)");
     
    console.log("Parsed illumination");
+    
+    return null ;
+}
+
+/**
+ * Parses the <ANIMATIONS> node.
+ */
+MySceneGraph.prototype.parseAnimations = function(animationsNode) {
+    
+    var children = animationsNode.children;
+    
+    this.animations= [];
+    var numAnimations = 0;
+    
+    var grandChildren = [];
+    var nodeNames = [];
+    
+    // Any number of animations.
+    for (var i = 0; i < children.length; i++) {
+        
+        if (children[i].nodeName != "ANIMATION") {
+            this.onXMLMinorError("unknown tag <" + children[i].nodeName + ">");
+            continue;
+        }
+        
+        // Get id of the current animation.
+        var animationId = this.reader.getString(children[i], 'id');
+        if (animationId == null )
+            return "no ID defined for animation";
+
+        // Get type of the current animation.
+        var animationType = this.reader.getItem(children[i], 'type', ['linear','circular','bezier','combo']);
+        if (animationType == null )
+            return "no type defined for animation";
+
+        // Get speed of the current animation.
+        var animationSpeed = this.reader.getFloat(children[i], 'speed');
+        if (animationType == null )
+            return "no type defined for animation";
+        
+        // Checks for repeated IDs.
+        if (this.animations[animationId] != null )
+            return "ID must be unique for each light (conflict: ID = " + animationId + ")";
+                
+        if(animationType == "linear") {
+            grandChildren = children[i].children;
+
+            var controlPoints = [];
+            for (var j = 0; j < grandChildren.length; j++) {
+                var controlPoint = [];
+                
+                if(grandChildren[j].nodeName != "controlpoint"){
+                    console.log("Unknown node found in linear animation: " + grandChildren[j].nodeName);
+                }
+
+                controlPoint.push(this.reader.getFloat(grandChildren[j], 'xx'));
+                controlPoint.push(this.reader.getFloat(grandChildren[j], 'yy'));
+                controlPoint.push(this.reader.getFloat(grandChildren[j], 'zz'));
+
+                if(controlPoint.indexOf(null) >= 0){
+                    console.log("Error parsing linear animation control point");
+                }
+
+                controlPoints.push(controlPoint);
+            }
+
+            if(controlPoints.indexOf(null) >= 0){
+                console.log("Error parsing linear animation control point");
+            }
+
+            this.animations[animationId] = new MyLinearAnimation(this.scene,controlPoints,animationSpeed);
+        }else if(animationType == "circular"){
+            var args = [];
+
+            args.push(this.reader.getFloat(children[i], 'centerx'));
+            args.push(this.reader.getFloat(children[i], 'centery'));
+            args.push(this.reader.getFloat(children[i], 'centerz'));
+            args.push(this.reader.getFloat(children[i], 'radius'));
+            args.push(this.reader.getFloat(children[i], 'startang'));
+            args.push(this.reader.getFloat(children[i], 'rotang'));
+
+            if(args.indexOf(null) >= 0){
+                console.log("Error parsing circular animation arguments");
+            }
+
+            this.animations[animationId] = new MyCircularAnimation(this.scene,args,animationSpeed);
+        }else if(animationType == "bezier") {
+            grandChildren = children[i].children;
+
+            if(grandChildren.length != 4){
+                console.log("Error: Bezier animation has the wrong number of control points (" + grandChildren.length + ")");
+            }
+
+            var controlPoints = [];
+            for (var j = 0; j < grandChildren.length; j++) {
+                var controlPoint = [];
+                
+                if(grandChildren[j].nodeName != "controlpoint"){
+                    console.log("Unknown node found in bezier animation: " + grandChildren[j].nodeName);
+                }
+
+                controlPoint.push(this.reader.getFloat(grandChildren[j], 'xx'));
+                controlPoint.push(this.reader.getFloat(grandChildren[j], 'yy'));
+                controlPoint.push(this.reader.getFloat(grandChildren[j], 'zz'));
+
+                if(controlPoint.indexOf(null) >= 0){
+                    console.log("Error parsing bezier animation control point");
+                }
+
+                controlPoints.push(controlPoint);
+            }
+
+            if(controlPoints.indexOf(null) >= 0){
+                console.log("Error parsing bezier animation control point");
+            }
+
+            this.animations[animationId] = new MyBezierAnimation(this.scene,controlPoints,animationSpeed);
+        }else if(animationType == "combo"){
+            grandChildren = children[i].children;
+
+            if(grandChildren.length != 4){
+                console.log("Error: Bezier animation has too many control points (" + grandChildren.length + ")");
+            }
+
+            var animationIds = [];
+            
+            for (var j = 0; j < grandChildren.length; j++) {
+                
+                if(grandChildren[j].nodeName != "SPANREF"){
+                    console.log("Unknown node found in combo animation: " + grandChildren[j].nodeName);
+                }
+
+                this.animationIds.push(this.reader.getString(grandChildren[i], 'id'));
+
+                if(this.animationIds[this.reader.getString(grandChildren[i], 'id')] == null){
+                    console.log("Error, referencing animation not yet processed");
+                }
+            }
+
+            if(animationIds.indexOf(null) >= 0){
+                console.log("Error parsing combo animation control point");
+            }
+
+            this.animations[animationId] = new MyComboAnimation(this.scene,animationIds);
+        }
+
+        numAnimations++;
+    }
+    
+    console.log("Parsed animations");
     
     return null ;
 }
@@ -1200,7 +1358,7 @@ MySceneGraph.prototype.parseNodes = function(nodesNode) {
             // Gathers child nodes.
             var nodeSpecs = children[i].children;
             var specsNames = [];
-            var possibleValues = ["MATERIAL", "TEXTURE", "TRANSLATION", "ROTATION", "SCALE", "DESCENDANTS"];
+            var possibleValues = ["MATERIAL", "TEXTURE", "TRANSLATION", "ROTATION", "SCALE", "DESCENDANTS", "ANIMATIONREFS"];
             for (var j = 0; j < nodeSpecs.length; j++) {
                 var name = nodeSpecs[j].nodeName;
                 specsNames.push(nodeSpecs[j].nodeName);
@@ -1315,6 +1473,25 @@ MySceneGraph.prototype.parseNodes = function(nodesNode) {
                 }
             }
 
+            var animationRefsIndex = specsNames.indexOf("ANIMATIONREFS");
+            if(animationRefsIndex >= 0){
+                var animRefs = nodeSpecs[animationRefsIndex].children;
+
+                if(animRefs.length <= 0){
+                    console.error("Could not get ANIMATIONREFS children");
+                }
+
+                for(var j = 0; j < animRefs.length; j++){
+                    if(animRefs[j].nodeName != "ANIMATIONREF"){
+                        console.error("All ANIMATIONREFS children must be ANIMATIONREF");
+                    }
+
+                    var animRefsID = this.reader.getString(animRefs[j], 'id');
+
+                    this.nodes[nodeID].animations.push(animRefsID);
+                }
+            }
+
             // Retrieves information about children.
             var descendantsIndex = specsNames.indexOf("DESCENDANTS");
             if (descendantsIndex == -1)
@@ -1406,9 +1583,6 @@ MySceneGraph.prototype.parseNodes = function(nodesNode) {
                         this.nodes[nodeID].addLeaf(mgf);
                         sizeChildren++;
 					}
-					else
-						this.onXMLMinorError("unknown tag <" + descendants[j].nodeName + ">");
-
             }
             if (sizeChildren == 0)
                 return "at least one descendant must be defined for each intermediate node";
@@ -1506,6 +1680,10 @@ MySceneGraph.prototype.displayScene = function(nodeID, matID, texID) {
 
         this.scene.multMatrix(node.transformMatrix);
         
+        for(var index = 0; index < node.animations.length; index++){
+            this.scene.multMatrix(this.animations[node.animations[index]].update());
+        }
+
         for (var index = 0; index < node.leaves.length; index++){
             this.materials[materialID].apply();
             node.leaves[index].display(tex_scale_values);
