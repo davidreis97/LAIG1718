@@ -40,6 +40,9 @@ MyComboAnimation.prototype.update = function(currentTime) {
 			anim.update(currentTime);
 			this.transformMatrix = anim.transformMatrix;
 		}
+	}else{
+		var anim = this.animations[this.animations.length - 1];
+		this.transformMatrix = anim.transformMatrix;
 	}
 	
 }
