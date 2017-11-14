@@ -179,18 +179,30 @@
 <NODES>
 	<ROOT id="main"/>
 
-    <NODE id="main">       
+    <NODE id="main" selectable="true">       
         <MATERIAL id="houseMaterial" />     
         <TEXTURE id="houseExterior" />  
 
         <ANIMATIONREFS>
-            <ANIMATIONREF id="testeCombo"/>
+            <ANIMATIONREF id="testeBezier"/>
         </ANIMATIONREFS>                
 
         <DESCENDANTS>
             <LEAF id="door" type="rectangle" args="0 0 4 2" />
+            <NODEREF id="outro"/>
         </DESCENDANTS>
     </NODE>
 
+
+    <NODE id="outro" selectable="true">       
+        <MATERIAL id="houseMaterial" />     
+        <TEXTURE id="houseExterior" />  
+
+        <TRANSLATION x="10" y="0" z="10"/>
+
+        <DESCENDANTS>
+            <LEAF id="door" type="rectangle" args="0 0 7 2" />
+        </DESCENDANTS>
+    </NODE>
 </NODES>
 </SCENE>

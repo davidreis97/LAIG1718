@@ -21,6 +21,7 @@ function MySceneGraph(filename, scene) {
     scene.graph = this;
     
     this.nodes = [];
+    this.selectableNodes = [];
     
     this.idRoot = null;                    // The id of the root element.
 
@@ -1362,6 +1363,15 @@ MySceneGraph.prototype.parseNodes = function(nodesNode) {
             // Creates node.
             this.nodes[nodeID] = new MyGraphNode(this,nodeID);
 
+            try{
+                var selectable = this.reader.getString(children[i], 'selectable');
+                if (selectable == "true"){
+                    this.selectableNodes.push(nodeID);
+                    this.nodes[nodeID].selectable = true;
+                }
+            }catch(e){}
+            
+
             // Gathers child nodes.
             var nodeSpecs = children[i].children;
             var specsNames = [];
@@ -1657,7 +1667,6 @@ MySceneGraph.generateRandomString = function(length) {
     return String.fromCharCode.apply(null, numbers);
 }
 
-//Combo - Tem de ter animacoes que nao sao usadas por mais ninguem / Tem de guardar copias dos objetos das animacoes
 MySceneGraph.prototype.updateAnimations = function(currTime, nodeID) {
     var node = this.nodes[nodeID];
 
@@ -1701,11 +1710,14 @@ MySceneGraph.prototype.displayScene = function(nodeID, matID, texID) {
             tex_scale_values[1] = this.textures[textureID][2];
         }
 
-        this.scene.multMatrix(node.transformMatrix);
+        if(this.scene.selectedNodeID == nodeID)
+            this.scene.setActiveShader(this.scene.defaultShader);
         
         for(var index = 0; index < node.animations.length; index++){
             this.scene.multMatrix(node.animations[index].transformMatrix);
         }
+
+        this.scene.multMatrix(node.transformMatrix); //TODO - CHECK ORDER
 
         for (var index = 0; index < node.leaves.length; index++){
             this.materials[materialID].apply();

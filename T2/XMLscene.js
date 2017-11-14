@@ -9,6 +9,8 @@ function XMLscene(interface) {
 
     this.interface = interface;
 
+    this.selectedNodeID = 0;
+
     this.lightValues = {};
 }
 
@@ -33,7 +35,7 @@ XMLscene.prototype.init = function(application) {
     this.updateRate = 16;
 
     this.setUpdatePeriod(this.updateRate);
-    
+
     this.axis = new CGFaxis(this);
 }
 
@@ -96,6 +98,7 @@ XMLscene.prototype.onGraphLoaded = function()
 
     // Adds lights group.
     this.interface.addLightsGroup(this.graph.lights);
+    this.interface.addSelectables();
 }
 
 XMLscene.prototype.update = function(currTime){

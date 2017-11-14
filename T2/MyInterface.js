@@ -29,6 +29,21 @@ MyInterface.prototype.init = function(application) {
     return true;
 };
 
+MyInterface.prototype.addSelectables = function() {
+    this.gui.add(this.scene, 'selectedNodeID', this.scene.graph.selectableNodes).name('Selectables');
+
+    /*
+    obj=this;
+    this.gui.add(this.scene, 'wireframe').onChange(function(v)
+        { obj.scene.updateWireframe(v)  });
+
+    this.gui.add(this.scene, 'scaleFactor',-50,50).onChange(function(v)
+    {
+        obj.scene.updateScaleFactor(v);
+    });
+    */
+};
+
 /**
  * Adds a folder containing the IDs of the lights passed as parameter.
  */
@@ -46,5 +61,7 @@ MyInterface.prototype.addLightsGroup = function(lights) {
             group.add(this.scene.lightValues, key);
         }
     }
-}
+};
+
+
 
