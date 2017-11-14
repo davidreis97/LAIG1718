@@ -24,7 +24,7 @@ MyCircularAnimation.prototype.constructor = MyAnimation;
 
 MyCircularAnimation.prototype.init = function() { //Initial Calculations
 	this.previousTime = 0;
-	this.totalTime = 0;
+	this.delta = 0;
 
 	this.transformMatrix = mat4.create();
 
@@ -40,11 +40,10 @@ MyCircularAnimation.prototype.update = function(currentTime) {
 	if(this.previousTime == 0){
 		this.previousTime = currentTime;
 	}else if(!this.finished){
-		var delta = currentTime - this.previousTime;
+		this.delta += currentTime - this.previousTime;
 		this.previousTime = currentTime;
-		this.totalTime += delta;
 
-		var angle = this.angSpeed * (this.totalTime/this.maximumTime);
+		var angle = this.startAng + this.angSpeed * (this.delta/1000);
 
 		if(angle > this.rotAng){
 			this.finished = true;
