@@ -8,6 +8,8 @@ function MyBezierAnimation(scene, ctrl_points, speed) {
 	
 	this.ctrl_points = ctrl_points;
 
+	this.previousPoint;
+
 	this.speed = speed;
 	
 	this.previousTime;
@@ -16,19 +18,13 @@ function MyBezierAnimation(scene, ctrl_points, speed) {
 
 	this.finished;
 
+	this.transformMatrix;
+
 	this.init();
 };
 
-/*
-	MISSING ROTATION ANGLE
-*/
-
 MyBezierAnimation.prototype = Object.create(MyAnimation.prototype);
 MyBezierAnimation.prototype.constructor = MyAnimation;
-
-MyBezierAnimation.prototype.interpolate = function(start,finish,t) {
-	angle = start + ((finish - start) * t);
-}
 
 MyBezierAnimation.prototype.bezier = function(t) {
 	var c1 = (1-t) * (1-t) * (1-t);
@@ -55,13 +51,16 @@ MyBezierAnimation.prototype.bezier = function(t) {
 }
 
 MyBezierAnimation.prototype.init = function() { //Initial Calculations
-	var d = new Date();
-	this.previousTime = d.getTime();
+	this.previousTime = 0;
 	this.totalTime = 0;
 
 	this.finished = false;
 
+	this.transformMatrix = mat4.create();
+
 	this.maximumTime = this.basicCasteljau() * 1000 / this.speed;
+
+	this.previousPoint = [0,0];
 }
 
 MyBezierAnimation.prototype.interpolate = function(start,finish,t) {
@@ -107,29 +106,37 @@ MyBezierAnimation.prototype.basicCasteljau = function(){
 	return totalDistance;
 }
 
-MyBezierAnimation.prototype.update = function() {
-	var transformMatrix = mat4.create();
+MyBezierAnimation.prototype.update = function(currentTime) {
+	this.transformMatrix = mat4.create();
 
-	if(!this.finished){
-		var d = new Date();
-		var currentTime = d.getTime();
+	if(this.previousTime == 0){
+		this.previousTime = currentTime;
+	}else if(!this.finished){
 		var delta = currentTime - this.previousTime;
 		this.previousTime = currentTime;
 		this.totalTime += delta;
 
 		if(this.totalTime > this.maximumTime){
 			this.finished = true;
-			mat4.translate(transformMatrix,transformMatrix, this.ctrl_points[3]);
-			return transformMatrix;
+			var angle = Math.atan2(this.previousPoint[0] - this.ctrl_points[3][0],this.previousPoint[2] - this.ctrl_points[3][2]);
+			mat4.translate(this.transformMatrix,this.transformMatrix, this.ctrl_points[3]);
+			mat4.rotateY(this.transformMatrix,this.transformMatrix, angle);
+			return;
 		}	
 
 		var t = this.totalTime/this.maximumTime;
 
 		var point = this.bezier(t);
 
-		mat4.translate(transformMatrix,transformMatrix, point);
+		var angle = Math.atan2(this.previousPoint[0] - point[0],this.previousPoint[2] - point[2]);
+
+		mat4.translate(this.transformMatrix,this.transformMatrix, point);
+		mat4.rotateY(this.transformMatrix,this.transformMatrix, angle);
+
+		this.previousPoint = point;
 	}else{
-		mat4.translate(transformMatrix,transformMatrix, this.ctrl_points[3]);
+		var angle = Math.atan2(this.previousPoint[0] - this.ctrl_points[3][0],this.previousPoint[2] - this.ctrl_points[3][2]);
+		mat4.translate(this.transformMatrix,this.transformMatrix, this.ctrl_points[3]);
+		mat4.rotateY(this.transformMatrix,this.transformMatrix, angle);
 	}
-	return transformMatrix;
 }

@@ -11,20 +11,27 @@
 
  <ANIMATIONS>
     <ANIMATION id="testeLinear" type="linear" speed="3">
-        <controlpoint xx="0" yy="0" zz="0"/>
+        <controlpoint xx="5" yy="0" zz="3"/>
         <controlpoint xx="10" yy="0" zz="10"/>
+        <controlpoint xx="7" yy="0" zz="20"/>
+        <controlpoint xx="0" yy="0" zz="0"/>
     </ANIMATION>
 
     <ANIMATION id="testeCircular" type="circular" speed="4"
-               centerx="3" centery="3" centerz="3" 
-               radius="3" startang="90" rotang="180"
+               centerx="3" centery="0" centerz="3" 
+               radius="3" startang="90" rotang="360"
     />
 
     <ANIMATION id="testeBezier" type="bezier" speed="7">
         <controlpoint xx="0" yy="0" zz="0"/>
-        <controlpoint xx="0" yy="10" zz="0"/>
         <controlpoint xx="10" yy="10" zz="10"/>
-        <controlpoint xx="10" yy="0" zz="10"/>
+        <controlpoint xx="15" yy="10" zz="-20"/>
+        <controlpoint xx="20" yy="0" zz="10"/>
+    </ANIMATION>
+
+    <ANIMATION id="testeCombo" type="combo">
+        <SPANREF id="testeCircular" />
+        <SPANREF id="testeBezier" />
     </ANIMATION>
 
  </ANIMATIONS>

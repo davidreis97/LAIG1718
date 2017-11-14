@@ -29,6 +29,10 @@ XMLscene.prototype.init = function(application) {
     this.gl.enable(this.gl.DEPTH_TEST);
     this.gl.enable(this.gl.CULL_FACE);
     this.gl.depthFunc(this.gl.LEQUAL);
+
+    this.updateRate = 16;
+
+    this.setUpdatePeriod(this.updateRate);
     
     this.axis = new CGFaxis(this);
 }
@@ -93,6 +97,10 @@ XMLscene.prototype.onGraphLoaded = function()
     // Adds lights group.
     this.interface.addLightsGroup(this.graph.lights);
 }
+
+XMLscene.prototype.update = function(currTime){
+    this.graph.updateAnimations(currTime);
+};
 
 /**
  * Displays the scene.

@@ -28,6 +28,9 @@ function MySceneGraph(filename, scene) {
     this.axisCoords['x'] = [1, 0, 0];
     this.axisCoords['y'] = [0, 1, 0];
     this.axisCoords['z'] = [0, 0, 1];
+
+    this.animations = [];
+    this.animationIds = [];
     
     // File reading 
     this.reader = new CGFXMLreader();
@@ -556,7 +559,8 @@ MySceneGraph.prototype.parseAnimations = function(animationsNode) {
     
     var children = animationsNode.children;
     
-    this.animations= [];
+    this.animations = [];
+    this.animationIds = [];
     var numAnimations = 0;
     
     var grandChildren = [];
@@ -580,15 +584,20 @@ MySceneGraph.prototype.parseAnimations = function(animationsNode) {
         if (animationType == null )
             return "no type defined for animation";
 
-        // Get speed of the current animation.
-        var animationSpeed = this.reader.getFloat(children[i], 'speed');
-        if (animationType == null )
-            return "no type defined for animation";
+
+        if((animationType == 'linear' || animationType == 'circular' || animationType == 'bezier')){
+            // Get speed of the current animation.
+            var animationSpeed = this.reader.getFloat(children[i], 'speed');
+            if (animationSpeed == null)
+                return "no speed defined for animation";
+        }
         
         // Checks for repeated IDs.
         if (this.animations[animationId] != null )
             return "ID must be unique for each light (conflict: ID = " + animationId + ")";
-                
+        
+        this.animationIds.push(animationId);
+
         if(animationType == "linear") {
             grandChildren = children[i].children;
 
@@ -665,10 +674,6 @@ MySceneGraph.prototype.parseAnimations = function(animationsNode) {
         }else if(animationType == "combo"){
             grandChildren = children[i].children;
 
-            if(grandChildren.length != 4){
-                console.log("Error: Bezier animation has too many control points (" + grandChildren.length + ")");
-            }
-
             var animationIds = [];
             
             for (var j = 0; j < grandChildren.length; j++) {
@@ -677,15 +682,15 @@ MySceneGraph.prototype.parseAnimations = function(animationsNode) {
                     console.log("Unknown node found in combo animation: " + grandChildren[j].nodeName);
                 }
 
-                this.animationIds.push(this.reader.getString(grandChildren[i], 'id'));
+                animationIds.push(this.reader.getString(grandChildren[j], 'id'));
 
-                if(this.animationIds[this.reader.getString(grandChildren[i], 'id')] == null){
+                if(this.animations[this.reader.getString(grandChildren[j], 'id')] == null){
                     console.log("Error, referencing animation not yet processed");
                 }
             }
 
-            if(animationIds.indexOf(null) >= 0){
-                console.log("Error parsing combo animation control point");
+            if(animationIds.indexOf(null) >= 0 || animationIds.indexOf(undefined) >= 0){
+                console.error("Error parsing combo animation ref");
             }
 
             this.animations[animationId] = new MyComboAnimation(this.scene,animationIds);
@@ -1648,6 +1653,13 @@ MySceneGraph.generateRandomString = function(length) {
     return String.fromCharCode.apply(null, numbers);
 }
 
+//Combo - Tem de ter animacoes que nao sao usadas por mais ninguem / Tem de guardar copias dos objetos das animacoes
+MySceneGraph.prototype.updateAnimations = function(currTime) {
+    for(var i = 0; i < this.animationIds.length; i++){
+        this.animations[this.animationIds[i]].update(currTime);
+    }
+}
+
 /**
  * Displays the scene, processing each node, starting in the root node.
  */
@@ -1667,7 +1679,6 @@ MySceneGraph.prototype.displayScene = function(nodeID, matID, texID) {
             textureID = node.textureID;
         }
 
-        
         if(textureID == "clear"){
             this.materials[materialID].setTexture(null);
             tex_scale_values[0] = 1;
@@ -1681,7 +1692,7 @@ MySceneGraph.prototype.displayScene = function(nodeID, matID, texID) {
         this.scene.multMatrix(node.transformMatrix);
         
         for(var index = 0; index < node.animations.length; index++){
-            this.scene.multMatrix(this.animations[node.animations[index]].update());
+            this.scene.multMatrix(this.animations[node.animations[index]].transformMatrix);
         }
 
         for (var index = 0; index < node.leaves.length; index++){
