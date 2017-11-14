@@ -2,11 +2,8 @@
 * MyComboAnimation
 * @constructor
 */
-function MyComboAnimation(scene, animationIds) {
-	MyAnimation.call(this,scene);
-	this.scene = scene;
-	
-	this.animationIds = animationIds;
+function MyComboAnimation(animations) {
+	this.animations = animations;
 
 	this.currentAnimation;
 
@@ -30,10 +27,10 @@ MyComboAnimation.prototype.update = function(currentTime) {
 	this.transformMatrix = mat4.create();
 	
 	if(!this.finished){
-		var anim = this.scene.graph.animations[this.animationIds[this.currentAnimation]];
+		var anim = this.animations[this.currentAnimation];
 		if (anim.finished){
 			this.currentAnimation++;
-			if(this.currentAnimation >= this.animationIds.length){
+			if(this.currentAnimation >= this.animations.length){
 				this.finished = true;
 				return;
 			}else{

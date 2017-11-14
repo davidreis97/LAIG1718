@@ -19,7 +19,7 @@
 
     <ANIMATION id="testeCircular" type="circular" speed="4"
                centerx="3" centery="0" centerz="3" 
-               radius="3" startang="90" rotang="360"
+               radius="3" startang="90" rotang="720"
     />
 
     <ANIMATION id="testeBezier" type="bezier" speed="7">
@@ -30,6 +30,10 @@
     </ANIMATION>
 
     <ANIMATION id="testeCombo" type="combo">
+        <SPANREF id="testeBezier" />
+        <SPANREF id="testeBezier" />
+        <SPANREF id="testeCircular" />
+        <SPANREF id="testeLinear" />
         <SPANREF id="testeCircular" />
         <SPANREF id="testeBezier" />
     </ANIMATION>
@@ -180,7 +184,7 @@
         <TEXTURE id="houseExterior" />  
 
         <ANIMATIONREFS>
-            <ANIMATIONREF id="testeLinear"/>
+            <ANIMATIONREF id="testeCombo"/>
         </ANIMATIONREFS>                
 
         <DESCENDANTS>

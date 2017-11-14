@@ -2,10 +2,7 @@
 * MyBezierAnimation
 * @constructor
 */
-function MyBezierAnimation(scene, ctrl_points, speed) {
-	MyAnimation.call(this,scene);
-	this.scene = scene;
-	
+function MyBezierAnimation(ctrl_points, speed) {	
 	this.ctrl_points = ctrl_points;
 
 	this.previousPoint;

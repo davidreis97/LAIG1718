@@ -99,7 +99,7 @@ XMLscene.prototype.onGraphLoaded = function()
 }
 
 XMLscene.prototype.update = function(currTime){
-    this.graph.updateAnimations(currTime);
+    this.graph.updateAnimations(currTime,this.graph.idRoot);
 };
 
 /**

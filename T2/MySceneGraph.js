@@ -624,7 +624,7 @@ MySceneGraph.prototype.parseAnimations = function(animationsNode) {
                 console.log("Error parsing linear animation control point");
             }
 
-            this.animations[animationId] = new MyLinearAnimation(this.scene,controlPoints,animationSpeed);
+            this.animations[animationId] = ["linear",controlPoints,animationSpeed];
         }else if(animationType == "circular"){
             var args = [];
 
@@ -639,7 +639,7 @@ MySceneGraph.prototype.parseAnimations = function(animationsNode) {
                 console.log("Error parsing circular animation arguments");
             }
 
-            this.animations[animationId] = new MyCircularAnimation(this.scene,args,animationSpeed);
+            this.animations[animationId] = ["circular",args,animationSpeed];
         }else if(animationType == "bezier") {
             grandChildren = children[i].children;
 
@@ -670,7 +670,7 @@ MySceneGraph.prototype.parseAnimations = function(animationsNode) {
                 console.log("Error parsing bezier animation control point");
             }
 
-            this.animations[animationId] = new MyBezierAnimation(this.scene,controlPoints,animationSpeed);
+            this.animations[animationId] = ["bezier",controlPoints,animationSpeed];
         }else if(animationType == "combo"){
             grandChildren = children[i].children;
 
@@ -693,7 +693,7 @@ MySceneGraph.prototype.parseAnimations = function(animationsNode) {
                 console.error("Error parsing combo animation ref");
             }
 
-            this.animations[animationId] = new MyComboAnimation(this.scene,animationIds);
+            this.animations[animationId] = ["combo",animationIds];
         }
 
         numAnimations++;
@@ -1332,7 +1332,9 @@ MySceneGraph.prototype.parseNodes = function(nodesNode) {
     
     // Traverses nodes.
     var children = nodesNode.children;
-    
+    var animFactory = new MyAnimationFactory(this);
+
+
     for (var i = 0; i < children.length; i++) {
         var nodeName;
         if ((nodeName = children[i].nodeName) == "ROOT") {
@@ -1493,7 +1495,9 @@ MySceneGraph.prototype.parseNodes = function(nodesNode) {
 
                     var animRefsID = this.reader.getString(animRefs[j], 'id');
 
-                    this.nodes[nodeID].animations.push(animRefsID);
+                    var anim = animFactory.generateAnim(this.animations[animRefsID]);
+
+                    this.nodes[nodeID].animations.push(anim);
                 }
             }
 
@@ -1654,9 +1658,17 @@ MySceneGraph.generateRandomString = function(length) {
 }
 
 //Combo - Tem de ter animacoes que nao sao usadas por mais ninguem / Tem de guardar copias dos objetos das animacoes
-MySceneGraph.prototype.updateAnimations = function(currTime) {
-    for(var i = 0; i < this.animationIds.length; i++){
-        this.animations[this.animationIds[i]].update(currTime);
+MySceneGraph.prototype.updateAnimations = function(currTime, nodeID) {
+    var node = this.nodes[nodeID];
+
+    if(this.loadedOk){
+        for(var index = 0; index < node.animations.length; index++){
+            node.animations[index].update(currTime);
+        }
+
+        for (var index = 0; index < node.children.length; index++){
+            this.updateAnimations(currTime, node.children[index]);
+        }
     }
 }
 
@@ -1692,7 +1704,7 @@ MySceneGraph.prototype.displayScene = function(nodeID, matID, texID) {
         this.scene.multMatrix(node.transformMatrix);
         
         for(var index = 0; index < node.animations.length; index++){
-            this.scene.multMatrix(this.animations[node.animations[index]].transformMatrix);
+            this.scene.multMatrix(node.animations[index].transformMatrix);
         }
 
         for (var index = 0; index < node.leaves.length; index++){

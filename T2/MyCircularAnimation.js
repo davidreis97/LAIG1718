@@ -2,10 +2,7 @@
 * MyCircularAnimation
 * @constructor
 */
-function MyCircularAnimation(scene, args, speed) {
-	MyAnimation.call(this,scene);
-	this.scene = scene;
-	
+function MyCircularAnimation(args, speed) {	
 	var ANG_TO_RAD = Math.PI/180;
 
 	this.centerX = args[0];
@@ -34,7 +31,7 @@ MyCircularAnimation.prototype.init = function() { //Initial Calculations
 	this.finished = false;
 
 	this.angSpeed = this.speed / this.radius;
-	this.maximumTime = this.rotAng*1000 / this.angSpeed;
+	this.maximumTime = this.rotAng * 1000 / this.angSpeed;
 }
 
 MyCircularAnimation.prototype.update = function(currentTime) {
@@ -43,8 +40,6 @@ MyCircularAnimation.prototype.update = function(currentTime) {
 	if(this.previousTime == 0){
 		this.previousTime = currentTime;
 	}else if(!this.finished){
-		var d = new Date();
-		var currentTime = d.getTime();
 		var delta = currentTime - this.previousTime;
 		this.previousTime = currentTime;
 		this.totalTime += delta;

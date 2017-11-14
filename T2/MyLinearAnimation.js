@@ -2,10 +2,7 @@
 * MyLinearAnimation
 * @constructor
 */
-function MyLinearAnimation(scene, ctrl_points, speed) {
-	MyAnimation.call(this,scene);
-	this.scene = scene;
-	
+function MyLinearAnimation(ctrl_points, speed) {
 	this.ctrl_points = ctrl_points;
 	this.speed = speed;
 

@@ -14,7 +14,7 @@ function MyGraphNode(graph, nodeID) {
     // Leaves (objects).
     this.leaves = [];
 
-    // IDs of animation nodes.
+    // Animations.
     this.animations = [];
 
     // The material ID.

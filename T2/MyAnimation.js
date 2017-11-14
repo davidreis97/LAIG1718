@@ -2,7 +2,7 @@
 * MyAnimation
 * @constructor
 */
-function MyAnimation(scene) {
+function MyAnimation(scene,args) {
 	this.scene = scene;
 };
 
