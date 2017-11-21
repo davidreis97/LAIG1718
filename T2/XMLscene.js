@@ -40,7 +40,7 @@ XMLscene.prototype.init = function(application) {
 
     this.axis = new CGFaxis(this);
 
-    this.selectableShader = new CGFshader(this.gl, "shaders/uScale.vert", "shaders/uScale.frag");
+    this.selectableShader = new CGFshader(this.gl, "shaders/selectable.vert", "shaders/selectable.frag");
     this.selectableShader.setUniformsValues({normScale: this.timeFactor});
 }
 
