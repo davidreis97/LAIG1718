@@ -101,7 +101,7 @@ MyLinearAnimation.prototype.update = function(currentTime) {
 
 		var point = this.interpolate(start,finish,t); 
 
-		var angle = Math.atan2(start[0] - finish[0], start[2] - finish[2]); //TODO - Double check if correct value. TODO - Move to init and create array to avoid calculations on every loop
+		var angle = Math.atan2(finish[0]- start[0], finish[2] - start[2]); //TODO - Double check if correct value. TODO - Move to init and create array to avoid calculations on every loop
 		this.finalAngle = angle; 
 		
 		mat4.translate(this.transformMatrix, this.transformMatrix, [point[0],point[1],point[2]]);

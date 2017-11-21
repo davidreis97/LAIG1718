@@ -9,7 +9,12 @@
      <reference length="5" />                        
  </INITIALS>
 
- <ANIMATIONS>
+ <ILLUMINATION>
+     <ambient r="0.2" g="0.2" b="0.2" a="1" />       
+     <background r="0.01" g="0.6" b="0.95   " a="1" />          
+ </ILLUMINATION>
+
+<ANIMATIONS>
     <ANIMATION id="testeLinear" type="linear" speed="3">
         <controlpoint xx="5" yy="0" zz="3"/>
         <controlpoint xx="10" yy="0" zz="10"/>
@@ -19,14 +24,14 @@
 
     <ANIMATION id="testeCircular" type="circular" speed="4"
                centerx="3" centery="0" centerz="3" 
-               radius="3" startang="90" rotang="720"
+               radius="3" startang="0" rotang="720"
     />
 
-    <ANIMATION id="testeBezier" type="bezier" speed="7">
+    <ANIMATION id="testeBezier" type="bezier" speed="3">
         <controlpoint xx="0" yy="0" zz="0"/>
-        <controlpoint xx="10" yy="10" zz="10"/>
-        <controlpoint xx="15" yy="10" zz="-20"/>
-        <controlpoint xx="20" yy="0" zz="10"/>
+        <controlpoint xx="20" yy="0" zz="20"/>
+        <controlpoint xx="20" yy="0" zz="0"/>
+        <controlpoint xx="0" yy="0" zz="0"/>
     </ANIMATION>
 
     <ANIMATION id="testeCombo" type="combo">
@@ -39,11 +44,6 @@
     </ANIMATION>
 
  </ANIMATIONS>
-
- <ILLUMINATION>
-     <ambient r="0.2" g="0.2" b="0.2" a="1" />       
-     <background r="0.01" g="0.6" b="0.95   " a="1" />          
- </ILLUMINATION>
 
  <LIGHTS>
   <LIGHT id="light0">
@@ -179,30 +179,865 @@
 <NODES>
 	<ROOT id="main"/>
 
-    <NODE id="main" selectable="true">       
+    <NODE id="main">       
         <MATERIAL id="houseMaterial" />     
-        <TEXTURE id="houseExterior" />  
+        <TEXTURE id="houseExterior" />                   
 
-        <ANIMATIONREFS>
-            <ANIMATIONREF id="testeBezier"/>
-        </ANIMATIONREFS>                
+        <DESCENDANTS>
+            <NODEREF id="outside" />
+            <NODEREF id="house"/>
+        </DESCENDANTS>
+    </NODE>
+
+    <NODE id="house" selectable="true">
+        <MATERIAL id="null" />     
+        <TEXTURE id="null" />                   
+
+        <DESCENDANTS>
+            <NODEREF id="leftBlock" />
+            <NODEREF id="middleBlock" />
+            <NODEREF id="rightBlock" />
+            <NODEREF id="doorsAndWindows" />
+        </DESCENDANTS>
+    </NODE>
+
+    <NODE id="doorsAndWindows" >
+        <MATERIAL id="diffuse" />     
+        <TEXTURE id="clear" />                   
+
+        <DESCENDANTS>
+            <NODEREF id="door" />
+            <NODEREF id="windows" />
+            <NODEREF id="garageDoor" />
+        </DESCENDANTS>
+    </NODE>
+
+     <NODE id="windows" >
+        <MATERIAL id="null" />     
+        <TEXTURE id="window" />                   
+
+        <DESCENDANTS>
+            <NODEREF id="window1" />
+            <NODEREF id="window2" />
+        </DESCENDANTS>
+    </NODE>
+
+    <NODE id="garageDoor" >
+        <MATERIAL id="null" />     
+        <TEXTURE id="garageDoor" />                   
+
+        <TRANSLATION x="12.05" y="0" z="0.3" />
+        <ROTATION axis="y" angle="-90" />     
+
+        <DESCENDANTS>
+            <LEAF id="garageDoorDoor" type="rectangle" args="0 0 7.4 3.7" />
+        </DESCENDANTS>
+    </NODE>
+
+    <NODE id="window1" >
+        <MATERIAL id="null" />     
+        <TEXTURE id="null" />
+
+        <TRANSLATION x="10.05" y="5.5" z="19" />
+        <ROTATION axis="y" angle="-90" />                   
 
         <DESCENDANTS>
             <LEAF id="door" type="rectangle" args="0 0 4 2" />
-            <NODEREF id="outro"/>
+        </DESCENDANTS>
+    </NODE>
+
+    <NODE id="window2" >
+        <MATERIAL id="null" />     
+        <TEXTURE id="null" />
+
+        <TRANSLATION x="10.05" y="5.5" z="11" />
+        <ROTATION axis="y" angle="-90" />                   
+
+        <DESCENDANTS>
+            <LEAF id="door" type="rectangle" args="0 0 4 2" />
+        </DESCENDANTS>
+    </NODE>
+
+    <NODE id="door" >
+        <MATERIAL id="null" />     
+        <TEXTURE id="wood" />                   
+
+        <TRANSLATION x="10.05" y="0" z="16" />
+        <ROTATION axis="y" angle="-90" />
+
+        <DESCENDANTS>
+            <LEAF id="door" type="rectangle" args="0 0 1.8 4" />
+            <NODEREF id="doorKnob"/>
+        </DESCENDANTS>
+    </NODE>
+
+    <NODE id="doorKnob" >
+        <MATERIAL id="null" />     
+        <TEXTURE id="silver" />           
+
+        <TRANSLATION x="1.6" y="2" z="0"/>         
+
+        <DESCENDANTS>
+            <LEAF id="doorKnobd" type="sphere" args="0.1 20 20" />
+        </DESCENDANTS>
+    </NODE>
+
+    <NODE id="outside">
+        <MATERIAL id="null" />
+        <TEXTURE id="null" />
+
+        <DESCENDANTS>
+            <NODEREF id="floor" />
+            <NODEREF id="fence" />
+            <NODEREF id="trees" />
+            <NODEREF id="bushes" />
+            <NODEREF id="driveway" />
+        </DESCENDANTS>
+    </NODE>
+
+    <NODE id="driveway" >
+        <MATERIAL id="null" />
+        <TEXTURE id="rocks" />
+
+        <TRANSLATION x="12" y="0.05" z="8" />
+        <ROTATION axis="y" angle="90" />
+        <ROTATION axis="x" angle="90" />
+
+        <DESCENDANTS>
+            <LEAF id="drivewaySpace" type="rectangle" args="0 0 8 17" />
+        </DESCENDANTS>
+    </NODE>
+
+    <NODE id="bushes">
+        <MATERIAL id="normal" />
+        <TEXTURE id="leaves" />
+
+        <DESCENDANTS>
+            <NODEREF id="bush1" />
+            <NODEREF id="bush2" />
+            <NODEREF id="bush3" />
+            <NODEREF id="bush4" />
+            <NODEREF id="bush5" />
+        </DESCENDANTS>
+    </NODE>
+
+    <NODE id="bush1" >
+        <MATERIAL id="null" />
+        <TEXTURE id="null" />
+
+        <TRANSLATION x="10" y="0.2" z="19" />
+
+        <DESCENDANTS>
+            <NODEREF id="bush" />
+        </DESCENDANTS>
+    </NODE>
+
+    <NODE id="bush2" >
+        <MATERIAL id="null" />
+        <TEXTURE id="null" />
+
+        <TRANSLATION x="10" y="0" z="19.7" />
+
+        <DESCENDANTS>
+            <NODEREF id="bush" />
+        </DESCENDANTS>
+    </NODE>
+
+    <NODE id="bush3" >
+        <MATERIAL id="null" />
+        <TEXTURE id="null" />
+
+        <TRANSLATION x="10" y="0.2" z="14" />
+
+        <DESCENDANTS>
+            <NODEREF id="bush" />
+        </DESCENDANTS>
+    </NODE>
+
+    <NODE id="bush4" >
+        <MATERIAL id="null" />
+        <TEXTURE id="null" />
+
+        <TRANSLATION x="10" y="0" z="14.7" />
+
+        <DESCENDANTS>
+            <NODEREF id="bush" />
+        </DESCENDANTS>
+    </NODE>
+
+    <NODE id="bush5" >
+        <MATERIAL id="null" />
+        <TEXTURE id="null" />
+
+        <TRANSLATION x="10" y="0.2" z="8" />
+
+        <DESCENDANTS>
+            <NODEREF id="bush" />
+        </DESCENDANTS>
+    </NODE>
+
+    <NODE id="bush" >
+        <MATERIAL id="null" />
+        <TEXTURE id="null" />
+
+        <DESCENDANTS>
+            <LEAF id="bushSphere" type="sphere" args="1 20 20" />
+        </DESCENDANTS>
+    </NODE>
+
+    <NODE id="trees">
+        <MATERIAL id="normal" />
+        <TEXTURE id="null" />
+
+        <DESCENDANTS>
+            <NODEREF id="tree1" />
+            <NODEREF id="tree2" />
+        </DESCENDANTS>
+    </NODE>
+
+    <NODE id="tree1" selectable="true">
+        <MATERIAL id="null" />
+        <TEXTURE id="null" />
+
+        <TRANSLATION x="-4" y="0" z="32"/>
+        <SCALE sx="1.3" sy="1.3" sz="1.3" />
+
+        <DESCENDANTS>
+            <NODEREF id="tree" />
+        </DESCENDANTS>
+    </NODE>
+
+    <NODE id="tree2" selectable="true">
+        <MATERIAL id="null" />
+        <TEXTURE id="null" />
+
+        <TRANSLATION x="22" y="0" z="28"/>
+        <SCALE sx="0.6" sy="0.6" sz="0.6" />
+
+        <DESCENDANTS>
+            <NODEREF id="tree" />
+        </DESCENDANTS>
+    </NODE>
+
+    <NODE id="tree">
+        <MATERIAL id="null" />
+        <TEXTURE id="null" />
+
+        <DESCENDANTS>
+            <NODEREF id="treeTrunk" />
+            <NODEREF id="treeLeaves" />
+        </DESCENDANTS>
+    </NODE>
+
+     <NODE id="treeTrunk">
+        <MATERIAL id="null" />
+        <TEXTURE id="treeTrunk" />
+
+        <ROTATION axis="x" angle="-90"/>
+
+        <DESCENDANTS>
+                <LEAF id="cylinder1" type="cylinder" args="8.5 1 1 20 20" /> 
+        </DESCENDANTS>
+    </NODE>
+
+    <NODE id="treeLeaves">
+        <MATERIAL id="null" />
+        <TEXTURE id="leaves" />
+
+        <TRANSLATION x="-2" y="7.3" z="-2" />
+
+        <DESCENDANTS>
+            <LEAF type="patch" args="3 3 10 10">
+                <CPLINE>
+                    <CPOINT xx="0" yy="-2" zz="0" ww="1"/>
+                    <CPOINT xx="2" yy="-1" zz="0" ww="1"/>
+                    <CPOINT xx="4" yy="-2" zz="0" ww="1"/>
+                </CPLINE> 
+               
+               <CPLINE>
+                    <CPOINT xx="0" yy="-1" zz="2" ww="1"/>
+                    <CPOINT xx="2" yy="8" zz="2" ww="2"/>
+                    <CPOINT xx="4" yy="-1" zz="2" ww="1"/>
+                </CPLINE> 
+
+                <CPLINE>
+                    <CPOINT xx="0" yy="-2" zz="4" ww="1"/>
+                    <CPOINT xx="2" yy="-1" zz="4" ww="1"/>
+                    <CPOINT xx="4" yy="-2" zz="4" ww="1"/>
+                </CPLINE> 
+            </LEAF>
+
         </DESCENDANTS>
     </NODE>
 
 
-    <NODE id="outro" selectable="true">       
-        <MATERIAL id="houseMaterial" />     
-        <TEXTURE id="houseExterior" />  
-
-        <TRANSLATION x="10" y="0" z="10"/>
+    <NODE id="fence">
+        <MATERIAL id="diffuse" />
+        <TEXTURE id="wood" />
 
         <DESCENDANTS>
-            <LEAF id="door" type="rectangle" args="0 0 7 2" />
+            <NODEREF id="fenceRow1" />
+            <NODEREF id="fenceRow2" />
+            <NODEREF id="fenceRow3" />
+        </DESCENDANTS>
+    </NODE>
+
+    <NODE id="fenceRow1">
+        <MATERIAL id="null" />
+        <TEXTURE id="null" />
+
+        <TRANSLATION x="-10" y="0" z="-2" />
+
+        <DESCENDANTS>
+            <NODEREF id="fenceRow" />
+        </DESCENDANTS>
+    </NODE>
+
+    <NODE id="fenceRow2">
+        <MATERIAL id="null" />
+        <TEXTURE id="null" />
+
+        <TRANSLATION x="-10" y="0" z="28.3" />
+        <ROTATION axis="y" angle="90" />
+        <TRANSLATION x="-9.2" y="0" z="0" />
+
+        <DESCENDANTS>
+            <NODEREF id="fenceRow" />
+        </DESCENDANTS>
+    </NODE>
+
+    <NODE id="fenceRow3">
+        <MATERIAL id="null" />
+        <TEXTURE id="null" />
+
+        <TRANSLATION x="20" y="0" z="37.5" />
+        <ROTATION axis="y" angle="180" />
+        <TRANSLATION x="-9.2" y="0" z="0" />
+
+        <DESCENDANTS>
+            <NODEREF id="fenceRow" />
+        </DESCENDANTS>
+    </NODE>
+
+    <NODE id="fenceRow">
+        <MATERIAL id="null" />
+        <TEXTURE id="null" />
+
+        <DESCENDANTS>
+            <NODEREF id="fenceCluster1" />
+            <NODEREF id="fenceCluster2" />
+            <NODEREF id="fenceCluster3" />
+            <NODEREF id="fenceCluster4" />
+            <NODEREF id="fenceCluster5" />
+            <NODEREF id="fenceCluster6" />
+            <NODEREF id="fenceCluster7" />
+            <NODEREF id="fenceCluster8" />
+        </DESCENDANTS>
+    </NODE>
+
+    <NODE id="fenceCluster1">
+        <MATERIAL id="null" />
+        <TEXTURE id="null" />
+
+        <TRANSLATION x="0" y="0" z="0"/>
+
+        <DESCENDANTS>
+            <NODEREF id="fenceCluster" />
+        </DESCENDANTS>
+    </NODE>
+
+    <NODE id="fenceCluster2">
+        <MATERIAL id="null" />
+        <TEXTURE id="null" />
+
+        <TRANSLATION x="4.8" y="0" z="0"/>
+
+        <DESCENDANTS>
+            <NODEREF id="fenceCluster" />
+        </DESCENDANTS>
+    </NODE>
+
+    <NODE id="fenceCluster3">
+        <MATERIAL id="null" />
+        <TEXTURE id="null" />
+
+        <TRANSLATION x="9.6" y="0" z="0"/>
+
+        <DESCENDANTS>
+            <NODEREF id="fenceCluster" />
+        </DESCENDANTS>
+    </NODE>
+
+    <NODE id="fenceCluster4">
+        <MATERIAL id="null" />
+        <TEXTURE id="null" />
+
+        <TRANSLATION x="14.4" y="0" z="0"/>
+
+        <DESCENDANTS>
+            <NODEREF id="fenceCluster" />
+        </DESCENDANTS>
+    </NODE>
+
+    <NODE id="fenceCluster5">
+        <MATERIAL id="null" />
+        <TEXTURE id="null" />
+
+        <TRANSLATION x="19.2" y="0" z="0"/>
+
+        <DESCENDANTS>
+            <NODEREF id="fenceCluster" />
+        </DESCENDANTS>
+    </NODE>
+
+    <NODE id="fenceCluster6">
+        <MATERIAL id="null" />
+        <TEXTURE id="null" />
+
+        <TRANSLATION x="24" y="0" z="0"/>
+
+        <DESCENDANTS>
+            <NODEREF id="fenceCluster" />
+        </DESCENDANTS>
+    </NODE>
+
+    <NODE id="fenceCluster7">
+        <MATERIAL id="null" />
+        <TEXTURE id="null" />
+
+        <TRANSLATION x="28.8" y="0" z="0"/>
+
+        <DESCENDANTS>
+            <NODEREF id="fenceCluster" />
+        </DESCENDANTS>
+    </NODE>
+
+    <NODE id="fenceCluster8">
+        <MATERIAL id="null" />
+        <TEXTURE id="null" />
+
+        <TRANSLATION x="33.6" y="0" z="0"/>
+
+        <DESCENDANTS>
+            <NODEREF id="fenceCluster" />
+        </DESCENDANTS>
+    </NODE>
+
+    <NODE id="fenceCluster">
+        <MATERIAL id="null" />
+        <TEXTURE id="null" />
+
+        <DESCENDANTS>
+            <NODEREF id="fenceItem1" />
+            <NODEREF id="fenceItem2" />
+            <NODEREF id="fenceItem3" />
+            <NODEREF id="fenceItem4" />
+            <NODEREF id="fenceItem5" />
+        </DESCENDANTS>
+    </NODE>
+
+    <NODE id="fenceItem1">
+        <MATERIAL id="null" />
+        <TEXTURE id="null" />
+
+        <DESCENDANTS>
+            <NODEREF id="fenceItem"/>
+        </DESCENDANTS>
+    </NODE>
+
+    <NODE id="fenceItem2">
+        <MATERIAL id="null" />
+        <TEXTURE id="null" />
+
+        <TRANSLATION x="1.2" y="0" z="0"/>
+
+        <DESCENDANTS>
+            <NODEREF id="fenceItem"/>
+        </DESCENDANTS>
+    </NODE>
+
+    <NODE id="fenceItem3">
+        <MATERIAL id="null" />
+        <TEXTURE id="null" />
+
+        <TRANSLATION x="2.4" y="0" z="0"/>
+
+        <DESCENDANTS>
+            <NODEREF id="fenceItem"/>
+        </DESCENDANTS>
+    </NODE>
+
+    <NODE id="fenceItem4">
+        <MATERIAL id="null" />
+        <TEXTURE id="null" />
+
+        <TRANSLATION x="3.6" y="0" z="0"/>
+
+        <DESCENDANTS>
+            <NODEREF id="fenceItem"/>
+        </DESCENDANTS>
+    </NODE>
+
+    <NODE id="fenceItem5">
+        <MATERIAL id="null" />
+        <TEXTURE id="null" />
+
+        <TRANSLATION x="4.8" y="0" z="0"/>
+
+        <DESCENDANTS>
+            <NODEREF id="fenceItem"/>
+        </DESCENDANTS>
+    </NODE>
+
+    <NODE id="fenceItem">
+        <MATERIAL id="null" />
+        <TEXTURE id="null" />
+
+        <DESCENDANTS>
+            <NODEREF id="fenceCover" />
+            <LEAF id="backTriangle" type="triangle" args="0 3 0 0.6 4 0 1.2 3 0"/>
+        </DESCENDANTS>
+    </NODE>
+
+    <NODE id="fenceCover">
+        <MATERIAL id="null" />
+        <TEXTURE id="null" />
+
+        <TRANSLATION x="0.6" y="0" z="0" />
+        <ROTATION axis="y" angle="180" />
+        <TRANSLATION x="-0.6" y="0" z="0" />
+
+        <DESCENDANTS>
+            <LEAF id="mainPole" type="rectangle" args="0 0 1.2 3" />
+        </DESCENDANTS>
+    </NODE>
+
+    <NODE id="floor" >
+        <MATERIAL id="diffuse" />
+        <TEXTURE id="grass" />
+
+        <ROTATION axis="x" angle="90"/>
+
+        <DESCENDANTS>
+            <LEAF id="floorLeaf" type="rectangle" args="-10 -2 29.1 37.5"/>
+        </DESCENDANTS>
+    </NODE>
+
+    <NODE id="leftBlock">
+        <MATERIAL id="null" />
+        <TEXTURE id="null" />
+
+        <DESCENDANTS>
+            <NODEREF id="chimney" />
+            <NODEREF id="blockLeft" />
+        </DESCENDANTS>
+    </NODE>
+
+    <NODE id="chimney">
+        <MATERIAL id="null" />
+        <TEXTURE id="null" />´
+
+        <TRANSLATION x="4" y="0" z="24"/>
+
+        <DESCENDANTS>
+            <NODEREF id="bottom" />
+            <NODEREF id="middle" />
+            <NODEREF id="diagonal" />
+            <NODEREF id="top" />
+        </DESCENDANTS>
+    </NODE>
+
+    <NODE id="bottom">
+        <MATERIAL id="null" />
+        <TEXTURE id="null" />´
+
+        <DESCENDANTS>
+            <LEAF  type="cube" args="0 0 0 3 5 1" />
+        </DESCENDANTS>
+    </NODE>
+
+    <NODE id="middle">
+        <MATERIAL id="null" />
+        <TEXTURE id="null" />´
+
+        <TRANSLATION x="0" y="5" z="0" />
+
+        <DESCENDANTS>
+            <LEAF  type="cube" args="0 0 0 2.2 7 1" />
+        </DESCENDANTS>
+    </NODE>
+
+    <NODE id="diagonal">
+        <MATERIAL id="null" />
+        <TEXTURE id="null" />´
+
+        <TRANSLATION x="2.4" y="4.2" z="0" />
+        <ROTATION axis="z" angle="45" />
+
+        <DESCENDANTS>
+            <LEAF  type="cube" args="0 0 0 1 1.5 1" />
+        </DESCENDANTS>
+    </NODE>
+
+    <NODE id="top">
+        <MATERIAL id="null" />
+        <TEXTURE id="null" />´
+
+        <TRANSLATION x="-0.3" y="12" z="-0.25" />
+
+        <DESCENDANTS>
+            <LEAF  type="cube" args="0 0 0 2.8 0.7 1.5" />
+        </DESCENDANTS>
+    </NODE>
+
+    <NODE id="blockLeft">
+        <MATERIAL id="null" />
+        <TEXTURE id="null" />´
+
+        <TRANSLATION x="2" y="0" z="17"/>
+
+        <DESCENDANTS>
+            <LEAF  type="cube" args="0 0 0 8 9 7" />
+        </DESCENDANTS>
+    </NODE>
+
+    <NODE id="middleBlock" selectable="true">
+        <MATERIAL id="null" />
+        <TEXTURE id="null" />
+
+        <TRANSLATION x="0" y="0" z="7"/>
+
+        <DESCENDANTS>
+            <NODEREF id="blockMiddle" />
+            <NODEREF id="middleBlockTriangles" />
+            <NODEREF id="middleBlockRoof" />
+        </DESCENDANTS>
+    </NODE>
+
+    <!-- right/middle block roof -->
+    <NODE id="middleBlockTriangles">
+        <MATERIAL id="null" />
+        <TEXTURE id="null" />
+
+        <DESCENDANTS>
+            <NODEREF id="middleBlockTriangle1" />
+            <NODEREF id="middleBlockTriangle2" />
+        </DESCENDANTS>
+    </NODE>
+
+    <NODE id="middleBlockTriangle1">
+        <MATERIAL id="null" />
+        <TEXTURE id="null" />
+
+        <TRANSLATION x="5" y="0" z="0"/>
+        <ROTATION axis="y" angle="180"/>
+        <TRANSLATION x="-5" y="0" z="0"/>
+
+        <DESCENDANTS>
+            <LEAF type="triangle" id="triangleMiddle1" args="0 9 0 5 11.8 0 10 9 0" />
+        </DESCENDANTS>
+    </NODE>
+
+    <NODE id="middleBlockTriangle2">
+        <MATERIAL id="null" />
+        <TEXTURE id="null" />
+
+        <DESCENDANTS>
+            <LEAF type="triangle" id="triangleMiddle1" args="0 9 17 5 11.8 17 10 9 17" />
+        </DESCENDANTS>
+    </NODE>
+
+    <!-- right/middle block roof -->
+    <NODE id="middleBlockRoof">
+        <MATERIAL id="null" />
+        <TEXTURE id="roof" />
+
+        <DESCENDANTS>
+            <NODEREF id="blockMiddleFrontRoof" />
+            <NODEREF id="blockMiddleBackRoof" />
+        </DESCENDANTS>
+    </NODE>
+
+    <NODE id="blockMiddleFrontRoof">
+        <MATERIAL id="null" />
+        <TEXTURE id="null" />
+
+        <TRANSLATION x="-1" y="8.4" z="-1"/>
+        <ROTATION axis="z" angle="28.3"/>
+
+        <DESCENDANTS>
+            <LEAF type="cube" args="0 0 0 7 0.2 19" />
+        </DESCENDANTS>
+    </NODE>
+
+    <NODE id="blockMiddleBackRoof">
+        <MATERIAL id="null" />
+        <TEXTURE id="null" />
+
+        <TRANSLATION x="4.9" y="11.7" z="-1"/>
+        <ROTATION axis="z" angle="-28.3"/>
+
+        <DESCENDANTS>
+            <LEAF type="cube" args="0 0 0 7 0.2 19" />
+        </DESCENDANTS>
+    </NODE>
+
+    <NODE id="blockMiddle">
+        <MATERIAL id="null" />
+        <TEXTURE id="null" />
+
+        <DESCENDANTS>
+            <LEAF  type="cube" args="0 0 0 10 9 10" />
+        </DESCENDANTS>
+    </NODE>
+
+    <NODE id="rightBlock">
+        <MATERIAL id="null" />
+        <TEXTURE id="null" />
+
+        <DESCENDANTS>
+            <NODEREF id="blockRightBack" />
+            <NODEREF id="garage" />
+        </DESCENDANTS>
+    </NODE>
+
+    <NODE id="blockRightBack">
+        <MATERIAL id="null" />
+        <TEXTURE id="null" />
+
+        <DESCENDANTS>
+            <NODEREF id="blockRightBackTriangle"/>
+            <NODEREF id="blockRightBackRoof"/>
+            <NODEREF id="blockRightBackBlock"/>
+        </DESCENDANTS>
+    </NODE>
+
+    <NODE id="blockRightBackTriangle">
+        <MATERIAL id="null" />
+        <TEXTURE id="null" />
+
+        <DESCENDANTS>
+            <LEAF type="triangle" args="4 9 0 0 7 0 8 7 0" /> <!-- Might have reversed textures. -->
+        </DESCENDANTS>
+    </NODE>
+
+    <NODE id="blockRightBackRoof">
+        <MATERIAL id="null" />
+        <TEXTURE id="roof" />
+
+        <DESCENDANTS>
+            <NODEREF id="blockRightBackFrontRoof" />
+            <NODEREF id="blockRightBackBackRoof" />
+        </DESCENDANTS>
+    </NODE>
+
+    <NODE id="blockRightBackFrontRoof">
+        <MATERIAL id="null" />
+        <TEXTURE id="null" />
+
+        <TRANSLATION x="-0.8" y="6.4" z="-1"/>
+        <ROTATION axis="z" angle="27"/>
+
+        <DESCENDANTS>
+            <LEAF type="cube" args="0 0 0 5.5 0.2 8" />
+        </DESCENDANTS>
+    </NODE>
+
+    <NODE id="blockRightBackBackRoof">
+        <MATERIAL id="null" />
+        <TEXTURE id="null" />
+
+        <TRANSLATION x="8" y="0" z="6"/>
+        <ROTATION axis="y" angle="180"/>
+
+        <DESCENDANTS>
+            <NODEREF id="blockRightBackFrontRoof" />
+        </DESCENDANTS>
+    </NODE>
+
+    <NODE id="blockRightBackBlock">
+        <MATERIAL id="null" />
+        <TEXTURE id="null" />
+
+        <DESCENDANTS>
+            <LEAF  type="cube" args="0 0 0 8 7 7" />
+        </DESCENDANTS>
+    </NODE>
+
+    <NODE id="garage">
+        <MATERIAL id="null" />
+        <TEXTURE id="null" />
+
+        <TRANSLATION x="8" y="0" z="0"/>
+
+        <DESCENDANTS>
+            <NODEREF id="garageRoofTriangle"/>
+            <NODEREF id="garageRoof"/>
+            <NODEREF id="garageBlock"/>
+        </DESCENDANTS>
+    </NODE>
+
+    <NODE id="garageRoofTriangle">
+        <MATERIAL id="null" />
+        <TEXTURE id="null" />
+        
+        <DESCENDANTS>
+            <LEAF  type="triangle" args="4 4 8 4 6 4 4 4 0" />
+        </DESCENDANTS>
+    </NODE>
+
+    <NODE id="garageRoof">
+        <MATERIAL id="null" />
+        <TEXTURE id="roof" />
+        
+        <DESCENDANTS>
+            <NODEREF id="garageRoofLeft"/>
+            <NODEREF id="garageRoofRight"/>
+        </DESCENDANTS>
+    </NODE>
+
+    <NODE id="garageRoofLeft">
+        <MATERIAL id="null" />
+        <TEXTURE id="null" />
+        
+        <TRANSLATION x="0" y="4" z="-0.1"/>
+        <ROTATION axis="x" angle="-24"/>
+        <TRANSLATION x="0" y="0" z="-1"/>
+
+        <DESCENDANTS>
+            <NODEREF id="garageRoofCube"/>
+        </DESCENDANTS>
+    </NODE>
+
+    <NODE id="garageRoofRight">
+        <MATERIAL id="null" />
+        <TEXTURE id="null" />
+
+        <TRANSLATION x="4.5" y="0" z="7.9"/>
+        <ROTATION axis="y" angle="180"/>
+        
+        <DESCENDANTS>
+            <NODEREF id="garageRoofLeft"/>
+        </DESCENDANTS>
+    </NODE>
+
+    <NODE id="garageRoofCube">
+        <MATERIAL id="null" />
+        <TEXTURE id="null" />
+
+        <DESCENDANTS>
+            <LEAF  type="cube" args="0 0 0 4.5 0.2 5.5" />
+        </DESCENDANTS>
+    </NODE>
+
+    <NODE id="garageBlock">
+        <MATERIAL id="null" />
+        <TEXTURE id="null" />
+
+        <DESCENDANTS>
+            <LEAF  type="cube" args="0 0 0 4 4 8" />
         </DESCENDANTS>
     </NODE>
 </NODES>
+
 </SCENE>

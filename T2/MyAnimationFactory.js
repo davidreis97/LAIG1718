@@ -9,9 +9,7 @@ function MyAnimationFactory(graph) {
 
 MyAnimationFactory.prototype.generateAnim = function(args){
 	var anim = null;
-
-	console.log(args);
-
+	
 	switch(args[0]){
 		case "linear":
 			anim = new MyLinearAnimation(args[1],args[2]);

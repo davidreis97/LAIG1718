@@ -1,0 +1,208 @@
+<SCENE>
+	<INITIALS>
+     <frustum near="0.1" far="500"/>                 
+     <translation x="-1" y="1" z="0" />               
+     <rotation axis="x" angle="0" />                
+     <rotation axis="y" angle="0" />                
+     <rotation axis="z" angle="0" />                
+     <scale sx="0.25" sy="0.25" sz="0.25" />         
+     <reference length="5" />                        
+ </INITIALS>
+
+ <ANIMATIONS>
+    <ANIMATION id="testeLinear" type="linear" speed="3">
+        <controlpoint xx="5" yy="0" zz="3"/>
+        <controlpoint xx="10" yy="0" zz="10"/>
+        <controlpoint xx="7" yy="0" zz="20"/>
+        <controlpoint xx="0" yy="0" zz="0"/>
+    </ANIMATION>
+
+    <ANIMATION id="testeCircular" type="circular" speed="4"
+               centerx="3" centery="0" centerz="3" 
+               radius="3" startang="0" rotang="720"
+    />
+
+    <ANIMATION id="testeBezier" type="bezier" speed="7">
+        <controlpoint xx="0" yy="0" zz="0"/>
+        <controlpoint xx="10" yy="10" zz="10"/>
+        <controlpoint xx="15" yy="10" zz="-20"/>
+        <controlpoint xx="20" yy="0" zz="10"/>
+    </ANIMATION>
+
+    <ANIMATION id="testeCombo" type="combo">
+        <SPANREF id="testeBezier" />
+        <SPANREF id="testeBezier" />
+        <SPANREF id="testeCircular" />
+        <SPANREF id="testeLinear" />
+        <SPANREF id="testeCircular" />
+        <SPANREF id="testeBezier" />
+    </ANIMATION>
+
+ </ANIMATIONS>
+
+ <ILLUMINATION>
+     <ambient r="0.2" g="0.2" b="0.2" a="1" />       
+     <background r="0.01" g="0.6" b="0.95   " a="1" />          
+ </ILLUMINATION>
+
+ <LIGHTS>
+  <LIGHT id="light0">
+   <enable value="1" />
+   <position x="5" y="20" z="5" w="1" />
+   <ambient r="1" g="1" b="1" a="1.0" />        	 
+   <diffuse r="1.0" g="1.0" b="1.0" a="1.0" />        
+   <specular r="1.0" g="1.0" b="1.0" a="1.0" /> 
+</LIGHT>
+
+<LIGHT id="light1">                                    
+    <enable value ="1" />                             
+    <position x="20" y="20" z="20" w="1" />             
+    <ambient r="0.2" g="0.2" b="0.2" a="1.0" />       
+    <diffuse r="1.0" g="1.0" b="1.0" a="1.0" />        
+    <specular r="1.0" g="1.0" b="1.0" a="1.0" />       
+</LIGHT>
+
+</LIGHTS>
+
+<TEXTURES>
+ 
+ <TEXTURE id="rocks">
+     <file path="images/rocks.jpg" />                
+     <amplif_factor s="1" t="1" />                           
+ </TEXTURE>
+
+  <TEXTURE id="houseExterior">
+     <file path="images/houseExterior.jpg" />                
+     <amplif_factor s="3" t="3" />                           
+ </TEXTURE>
+
+ <TEXTURE id="garageDoor">
+     <file path="images/garageDoor.jpg" />                
+     <amplif_factor s="2" t="2" />                           
+ </TEXTURE>
+
+ <TEXTURE id="roof">
+     <file path="images/roof.jpg" />                
+     <amplif_factor s="4" t="4" />                           
+ </TEXTURE>
+
+ <TEXTURE id="wood">
+     <file path="images/wood.jpg" />                
+     <amplif_factor s="1.2" t="1.2" />                           
+ </TEXTURE>
+
+ <TEXTURE id="window">
+     <file path="images/window.jpg" />                
+     <amplif_factor s="2" t="2" />                           
+ </TEXTURE>
+
+<TEXTURE id="treeTrunk">
+    <file path="images/treeTrunk.jpg" />               
+    <amplif_factor s="1" t="1" />                           
+</TEXTURE>
+
+<TEXTURE id="grass">
+    <file path="images/grass.jpg" />               
+    <amplif_factor s="5" t="5" />                           
+</TEXTURE>
+
+<TEXTURE id="leaves">
+    <file path="images/leaves.jpg" />               
+    <amplif_factor s="2" t="2" />                           
+</TEXTURE>
+
+<TEXTURE id="silver">
+    <file path="images/silver.jpg" />                
+    <amplif_factor s="1" t="1" />                           
+</TEXTURE>
+
+</TEXTURES>
+
+<MATERIALS>
+<MATERIAL id="normal">
+    <shininess value="1" />
+    <specular r="0.4" g="0.4" b="0.4" a="1" />        
+    <diffuse r="0.8" g="0.8" b="0.8" a="1" />        
+    <ambient r="0.08" g="0.08" b="0.08" a="1" />         
+    <emission r="0.0" g="0.0" b="0.0" a="1" /> 
+</MATERIAL>
+ 
+ <MATERIAL id="diffuse">
+    <shininess value="1" />
+    <specular r="0" g="0" b="0" a="1" />        
+    <diffuse r="0.8" g="0.8" b="0.8" a="1" />        
+    <ambient r="0.08" g="0.08" b="0.08" a="1" />         
+    <emission r="0.0" g="0.0" b="0.0" a="1" /> 
+</MATERIAL>
+
+ <MATERIAL id="houseMaterial">                                  
+     <shininess value="1" />
+     <specular r="0.08" g="0.05" b="0.03" a="1" />        
+     <diffuse r="0.83" g="0.59" b="0.38" a="1" />        
+     <ambient r="0.08" g="0.05" b="0.03" a="1" />         
+     <emission r="0.0" g="0.0" b="0.0" a="1" />        
+ </MATERIAL>
+
+ <MATERIAL id="extraMaterial">                                  
+     <shininess value="1" />
+     <specular r="0.8" g="0.8" b="0.8" a="1" />        
+     <diffuse r="0.8" g="0.8" b="0.8" a="1" />        
+     <ambient r="0.1" g="0.1" b="0.1" a="1" />         
+     <emission r="0.0" g="0.0" b="0.0" a="1" />      
+ </MATERIAL>
+
+ <MATERIAL id="testMaterial">                                  
+     <shininess value="1" />
+     <specular r="0.5" g="0" b="0" a="1" />        
+     <diffuse r="0.4" g="0" b="0" a="1" />        
+     <ambient r="0.5" g="0" b="0" a="1" />         
+     <emission r="0.5" g="0.0" b="0.0" a="1" />        
+ </MATERIAL>
+
+ <MATERIAL id="blackReflectiveMaterial">                                  
+     <shininess value="1" />
+     <specular r="0.2" g="0.2" b="0.2" a="1" />        
+     <diffuse r="0" g="0" b="0" a="1" />        
+     <ambient r="0" g="0" b="0" a="1" />         
+     <emission r="0.0" g="0.0" b="0.0" a="1" />        
+ </MATERIAL>
+
+ <MATERIAL id="tvScreenMaterial">                                  
+     <shininess value="1" />
+     <specular r="0.3" g="0.3" b="0.3" a="1" />        
+     <diffuse r="0.8" g="0.8" b="0.8" a="1" />        
+     <ambient r="0.2" g="0.2" b="0.2" a="1" />         
+     <emission r="0.7" g="0.7" b="0.7" a="1" />        
+ </MATERIAL>
+</MATERIALS>
+
+<NODES>
+	<ROOT id="main"/>
+
+    <NODE id="main" selectable="true">       
+        <MATERIAL id="houseMaterial" />     
+        <TEXTURE id="houseExterior" />   
+
+        <ANIMATIONREFS>
+            <ANIMATIONREF id="testeLinear"/>            
+        </ANIMATIONREFS>  
+
+        <DESCENDANTS>
+            <LEAF id="door" type="rectangle" args="0 0 4 2" />
+            <NODEREF id="outro"/>
+        </DESCENDANTS>
+    </NODE>
+
+
+    <NODE id="outro" selectable="true">       
+        <MATERIAL id="houseMaterial" />     
+        <TEXTURE id="houseExterior" />  
+
+        <TRANSLATION x="10" y="0" z="10"/>  
+
+        <DESCENDANTS>
+            <LEAF id="door" type="rectangle" args="0 0 7 2" />
+        </DESCENDANTS>
+    </NODE>
+</NODES>
+</SCENE>

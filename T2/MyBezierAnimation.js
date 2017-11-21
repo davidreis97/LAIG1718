@@ -115,7 +115,7 @@ MyBezierAnimation.prototype.update = function(currentTime) {
 
 		if(this.totalTime > this.maximumTime){
 			this.finished = true;
-			var angle = Math.atan2(this.previousPoint[0] - this.ctrl_points[3][0],this.previousPoint[2] - this.ctrl_points[3][2]);
+			var angle = Math.atan2(this.ctrl_points[3][0] - this.previousPoint[0],this.ctrl_points[3][2] - this.previousPoint[2]);
 			mat4.translate(this.transformMatrix,this.transformMatrix, this.ctrl_points[3]);
 			mat4.rotateY(this.transformMatrix,this.transformMatrix, angle);
 			return;
@@ -125,14 +125,14 @@ MyBezierAnimation.prototype.update = function(currentTime) {
 
 		var point = this.bezier(t);
 
-		var angle = Math.atan2(this.previousPoint[0] - point[0],this.previousPoint[2] - point[2]);
+		var angle = Math.atan2(point[0] - this.previousPoint[0],point[2] - this.previousPoint[2]);
 
 		mat4.translate(this.transformMatrix,this.transformMatrix, point);
 		mat4.rotateY(this.transformMatrix,this.transformMatrix, angle);
 
 		this.previousPoint = point;
 	}else{
-		var angle = Math.atan2(this.previousPoint[0] - this.ctrl_points[3][0],this.previousPoint[2] - this.ctrl_points[3][2]);
+		var angle = Math.atan2(this.ctrl_points[3][0] - this.previousPoint[0],this.ctrl_points[3][2] - this.previousPoint[2]);
 		mat4.translate(this.transformMatrix,this.transformMatrix, this.ctrl_points[3]);
 		mat4.rotateY(this.transformMatrix,this.transformMatrix, angle);
 	}

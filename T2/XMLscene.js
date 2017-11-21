@@ -9,6 +9,8 @@ function XMLscene(interface) {
 
     this.interface = interface;
 
+    this.timeFactor = 10;
+
     this.selectedNodeID = 0;
 
     this.lightValues = {};
@@ -26,7 +28,7 @@ XMLscene.prototype.init = function(application) {
     this.initCameras();
 
     this.enableTextures(true);
-    
+
     this.gl.clearDepth(100.0);
     this.gl.enable(this.gl.DEPTH_TEST);
     this.gl.enable(this.gl.CULL_FACE);
@@ -37,6 +39,9 @@ XMLscene.prototype.init = function(application) {
     this.setUpdatePeriod(this.updateRate);
 
     this.axis = new CGFaxis(this);
+
+    this.selectableShader = new CGFshader(this.gl, "shaders/uScale.vert", "shaders/uScale.frag");
+    this.selectableShader.setUniformsValues({normScale: this.timeFactor});
 }
 
 /**
@@ -102,6 +107,9 @@ XMLscene.prototype.onGraphLoaded = function()
 }
 
 XMLscene.prototype.update = function(currTime){
+    this.timeFactor = (Math.cos(currTime/150) + 1)/2;
+    this.selectableShader.setUniformsValues({normScale: this.timeFactor});
+    this.selectableShader.setUniformsValues({colorScale: this.timeFactor});        
     this.graph.updateAnimations(currTime,this.graph.idRoot);
 };
 
