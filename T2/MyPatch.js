@@ -5,11 +5,11 @@
 function MyPatch(scene, args) {
     CGFobject.call(this, scene);
 
-    this.degreeU = args[0] - 1;
-    this.degreeV = args[1] - 1;
-    this.divisionsU = args[2];
-    this.divisionsV = args[3];
-    this.controlPoints = args[4];
+   	this.controlPoints = args[2];
+    this.degreeU = this.controlPoints.length - 1;
+    this.degreeV = this.controlPoints[0].length - 1;
+    this.divisionsU = args[0];
+    this.divisionsV = args[1];
 
     this.surface;
 

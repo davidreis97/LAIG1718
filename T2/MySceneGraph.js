@@ -1539,7 +1539,7 @@ MySceneGraph.prototype.parseNodes = function(nodesNode) {
                 else
 					if (descendants[j].nodeName == "LEAF")
 					{
-                        var type = this.reader.getItem(descendants[j], 'type', ['rectangle', 'cylinder', 'sphere', 'triangle', 'cube', 'patch']);
+                        var type = this.reader.getItem(descendants[j], 'type', ['rectangle', 'cylinder', 'sphere', 'triangle', 'patch']);
                         var args = this.reader.getString(descendants[j], 'args').split(" ").map(Number);
                         
                         var checkArgNumbers = [];
@@ -1547,8 +1547,7 @@ MySceneGraph.prototype.parseNodes = function(nodesNode) {
                         checkArgNumbers['cylinder'] = [5,6,7];
                         checkArgNumbers['sphere'] = [3];
                         checkArgNumbers['triangle'] = [9];
-                        checkArgNumbers['cube'] = [6];
-                        checkArgNumbers['patch'] = [4];
+                        checkArgNumbers['patch'] = [2];
 
                         if(checkArgNumbers[type].indexOf(args.length) < 0){
                             console.error("Wrong number of arguments in " + type + " leaf: Got " + args.length + " expected " + checkArgNumbers[type]);
@@ -1556,10 +1555,6 @@ MySceneGraph.prototype.parseNodes = function(nodesNode) {
                         
                         if(type == 'patch'){
                             var finalArgs = [];
-
-                            if (descendants[j].children.length != args[0]){
-                                console.error("Number of CPLINE doesn't match the patch's args");
-                            }
                             
                             for(var cplineCounter = 0; cplineCounter < descendants[j].children.length; cplineCounter++){
                                 finalArgs[cplineCounter] = [];
@@ -1567,8 +1562,6 @@ MySceneGraph.prototype.parseNodes = function(nodesNode) {
                                 
                                 if(cpline.nodeName != "CPLINE"){
                                     console.error("All descendants of patch must be CPLINE");
-                                }else if(cpline.children.length != args[1]){
-                                    console.error("Number of CPOINT doesn't match the patch's args");
                                 }
 
                                 for(var cpointCounter = 0; cpointCounter < cpline.children.length; cpointCounter++){

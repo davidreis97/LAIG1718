@@ -25,9 +25,6 @@ function MyGraphLeaf(graph, xmlelem, scene, type, args) {
 		case "sphere":
 			this.primitive =  new MySphere(this.scene,this.args);
 			break;
-		case "cube":
-			this.primitive =  new MyCube(this.scene, this.args);
-			break;
 		case "patch":
 			this.primitive = new MyPatch(this.scene, this.args);
 			break;
@@ -38,7 +35,7 @@ function MyGraphLeaf(graph, xmlelem, scene, type, args) {
 
 
 MyGraphLeaf.prototype.display = function(tex_scale_factor){
-	if(this.type == "triangle" || this.type == "rectangle" || this.type == "cube"){
+	if(this.type == "triangle" || this.type == "rectangle"){
 		this.primitive.setTexScale(tex_scale_factor);
 	}
 	this.primitive.display();

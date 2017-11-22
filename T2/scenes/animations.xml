@@ -183,16 +183,39 @@
         <MATERIAL id="houseMaterial" />     
         <TEXTURE id="houseExterior" />   
 
-        <ANIMATIONREFS>
-            <ANIMATIONREF id="testeLinear"/>            
-        </ANIMATIONREFS>  
-
         <DESCENDANTS>
             <LEAF id="door" type="rectangle" args="0 0 4 2" />
             <NODEREF id="outro"/>
+            <NODEREF id="testPatch"/>
         </DESCENDANTS>
     </NODE>
 
+    <NODE id="testPatch">
+        <MATERIAL id="null"/>
+        <TEXTURE id="null"/>
+
+        <DESCENDANTS>
+            <LEAF type="patch" args="10 10">
+                <CPLINE>
+                    <CPOINT xx="0" yy="-2" zz="0" ww="1"/>
+                    <CPOINT xx="2" yy="-1" zz="0" ww="1"/>
+                    <CPOINT xx="4" yy="-2" zz="0" ww="1"/>
+                </CPLINE> 
+                
+                <CPLINE>
+                    <CPOINT xx="0" yy="-1" zz="2" ww="1"/>
+                    <CPOINT xx="2" yy="8" zz="2" ww="2"/>
+                    <CPOINT xx="4" yy="-1" zz="2" ww="1"/>
+                </CPLINE> 
+
+                <CPLINE>
+                    <CPOINT xx="0" yy="-2" zz="4" ww="1"/>
+                    <CPOINT xx="2" yy="-1" zz="4" ww="1"/>
+                    <CPOINT xx="4" yy="-2" zz="4" ww="1"/>
+                </CPLINE> 
+            </LEAF>
+        </DESCENDANTS>
+    </NODE>
 
     <NODE id="outro" selectable="true">       
         <MATERIAL id="houseMaterial" />     
