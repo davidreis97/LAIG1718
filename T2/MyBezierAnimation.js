@@ -104,11 +104,11 @@ MyBezierAnimation.prototype.basicCasteljau = function(){
 }
 
 MyBezierAnimation.prototype.update = function(currentTime) {
-	this.transformMatrix = mat4.create();
-
 	if(this.previousTime == 0){
 		this.previousTime = currentTime;
 	}else if(!this.finished){
+		this.transformMatrix = mat4.create();
+
 		var delta = currentTime - this.previousTime;
 		this.previousTime = currentTime;
 		this.totalTime += delta;
@@ -131,9 +131,5 @@ MyBezierAnimation.prototype.update = function(currentTime) {
 		mat4.rotateY(this.transformMatrix,this.transformMatrix, angle);
 
 		this.previousPoint = point;
-	}else{
-		var angle = Math.atan2(this.ctrl_points[3][0] - this.previousPoint[0],this.ctrl_points[3][2] - this.previousPoint[2]);
-		mat4.translate(this.transformMatrix,this.transformMatrix, this.ctrl_points[3]);
-		mat4.rotateY(this.transformMatrix,this.transformMatrix, angle);
 	}
 }

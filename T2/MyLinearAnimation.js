@@ -62,11 +62,11 @@ MyLinearAnimation.prototype.init = function() { //Initial Calculations
 }
 
 MyLinearAnimation.prototype.update = function(currentTime) {
-	this.transformMatrix = mat4.create();
-
 	if(this.previousTime == 0){
 		this.previousTime = currentTime;
 	}else if(!this.finished){
+		this.transformMatrix = mat4.create();
+		
 		var delta = currentTime - this.previousTime;
 		this.previousTime = currentTime;
 		this.totalTime += delta;
@@ -95,23 +95,15 @@ MyLinearAnimation.prototype.update = function(currentTime) {
 			var point = this.ctrl_points[this.ctrl_points.length - 1]
 			mat4.translate(this.transformMatrix, this.transformMatrix, [point[0],point[1],point[2]]);
 			mat4.rotateY(this.transformMatrix, this.transformMatrix, this.finalAngle);
+		}else{
+			var point = this.interpolate(start,finish,t); 
 
-			return;
-		}
-
-		var point = this.interpolate(start,finish,t); 
-
-		var angle = Math.atan2(finish[0]- start[0], finish[2] - start[2]); //TODO - Double check if correct value. TODO - Move to init and create array to avoid calculations on every loop
-		this.finalAngle = angle; 
+			var angle = Math.atan2(finish[0]- start[0], finish[2] - start[2]); //TODO - Double check if correct value. TODO - Move to init and create array to avoid calculations on every loop
+			this.finalAngle = angle; 
 		
-		mat4.translate(this.transformMatrix, this.transformMatrix, [point[0],point[1],point[2]]);
-		mat4.rotateY(this.transformMatrix, this.transformMatrix, angle);
-
-	}else{
-		var point = this.ctrl_points[this.ctrl_points.length - 1]
-		mat4.translate(this.transformMatrix, this.transformMatrix, [point[0],point[1],point[2]]);
-		mat4.rotateY(this.transformMatrix, this.transformMatrix, this.finalAngle);
+			mat4.translate(this.transformMatrix, this.transformMatrix, [point[0],point[1],point[2]]);
+			mat4.rotateY(this.transformMatrix, this.transformMatrix, angle);
+		}
+		
 	}
-
-	return;
 }

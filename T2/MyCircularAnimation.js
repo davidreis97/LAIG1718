@@ -35,11 +35,11 @@ MyCircularAnimation.prototype.init = function() { //Initial Calculations
 }
 
 MyCircularAnimation.prototype.update = function(currentTime) {
-	this.transformMatrix = mat4.create();
-
 	if(this.previousTime == 0){
 		this.previousTime = currentTime;
 	}else if(!this.finished){
+		this.transformMatrix = mat4.create();
+
 		this.delta += currentTime - this.previousTime;
 		this.previousTime = currentTime;
 
@@ -52,10 +52,6 @@ MyCircularAnimation.prototype.update = function(currentTime) {
 
 		mat4.translate(this.transformMatrix,this.transformMatrix,[this.centerX,this.centerY,this.centerZ]);
 		mat4.rotateY(this.transformMatrix, this.transformMatrix, this.startAng + angle);
-		mat4.translate(this.transformMatrix,this.transformMatrix,[this.radius,0,0]);
-	}else{
-		mat4.translate(this.transformMatrix,this.transformMatrix,[this.centerX,this.centerY,this.centerZ]);
-		mat4.rotateY(this.transformMatrix, this.transformMatrix, this.startAng + this.rotAng);
 		mat4.translate(this.transformMatrix,this.transformMatrix,[this.radius,0,0]);
 	}
 
