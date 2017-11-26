@@ -13,7 +13,6 @@
     <ANIMATION id="testeLinear" type="linear" speed="4">
         <controlpoint xx="11" yy="0" zz="10"/>
         <controlpoint xx="11" yy="0" zz="-5"/>
-        <!-- <controlpoint xx="7" yy="0" zz="20"/> -->
     </ANIMATION>
 
     <ANIMATION id="testeLinear2" type="linear" speed="4">
@@ -29,29 +28,39 @@
 
     <ANIMATION id="testeBezier1" type="bezier" speed="7">
         <controlpoint xx="0" yy="0" zz="0"/>
-        <controlpoint xx="10" yy="10" zz="10"/>
-        <controlpoint xx="15" yy="10" zz="-20"/>
+        <controlpoint xx="10" yy="0" zz="10"/>
+        <controlpoint xx="15" yy="0" zz="-20"/>
         <controlpoint xx="20" yy="0" zz="10"/>
     </ANIMATION>
 
     <ANIMATION id="testeBezier2" type="bezier" speed="7">
-        <controlpoint xx="25" yy="0" zz="15"/>
-        <controlpoint xx="12" yy="0" zz="10"/>
-        <controlpoint xx="15" yy="10" zz="-20"/>
         <controlpoint xx="20" yy="0" zz="10"/>
+        <controlpoint xx="25" yy="0" zz="40"/>
+        <controlpoint xx="15" yy="0" zz="25"/>
+        <controlpoint xx="15" yy="0" zz="10"/>
     </ANIMATION>
+
+    <ANIMATION id="testeLinear3" type="linear" speed="7">
+        <controlpoint xx="15" yy="0" zz="10"/>
+        <controlpoint xx="15" yy="0" zz="0"/>
+    </ANIMATION>
+
+    <ANIMATION id="testeCircular2" type="circular" speed="7"
+               centerx="5" centery="0" centerz="0" 
+               radius="5" startang="0" rotang="180"
+    />
 
     <ANIMATION id="testeCombo1" type="combo">
         <SPANREF id="testeLinear" />
         <SPANREF id="testeCircular" />
         <SPANREF id="testeLinear2" />
-        <!-- <SPANREF id="testeBezier" /> -->
     </ANIMATION>
 
     <ANIMATION id="testeCombo2" type="combo">
         <SPANREF id="testeBezier1" />
         <SPANREF id="testeBezier2" />
-        <!-- <SPANREF id="testeBezier" /> -->
+        <SPANREF id="testeLinear3" />
+        <SPANREF id="testeCircular2" />
     </ANIMATION>
 
  </ANIMATIONS>
@@ -201,7 +210,7 @@
 
         <DESCENDANTS>
             <NODEREF id="cube1" />
-            <!-- <NODEREF id="cube2" /> -->
+            <NODEREF id="cube2" />
         </DESCENDANTS>
     </NODE>
 
