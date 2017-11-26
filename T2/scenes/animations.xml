@@ -101,56 +101,11 @@
 </LIGHTS>
 
 <TEXTURES>
- 
- <TEXTURE id="rocks">
-     <file path="images/rocks.jpg" />                
-     <amplif_factor s="1" t="1" />                           
- </TEXTURE>
 
   <TEXTURE id="houseExterior">
      <file path="images/houseExterior.jpg" />                
      <amplif_factor s="3" t="3" />                           
  </TEXTURE>
-
- <TEXTURE id="garageDoor">
-     <file path="images/garageDoor.jpg" />                
-     <amplif_factor s="2" t="2" />                           
- </TEXTURE>
-
- <TEXTURE id="roof">
-     <file path="images/roof.jpg" />                
-     <amplif_factor s="4" t="4" />                           
- </TEXTURE>
-
- <TEXTURE id="wood">
-     <file path="images/wood.jpg" />                
-     <amplif_factor s="1.2" t="1.2" />                           
- </TEXTURE>
-
- <TEXTURE id="window">
-     <file path="images/window.jpg" />                
-     <amplif_factor s="2" t="2" />                           
- </TEXTURE>
-
-<TEXTURE id="treeTrunk">
-    <file path="images/treeTrunk.jpg" />               
-    <amplif_factor s="1" t="1" />                           
-</TEXTURE>
-
-<TEXTURE id="grass">
-    <file path="images/grass.jpg" />               
-    <amplif_factor s="5" t="5" />                           
-</TEXTURE>
-
-<TEXTURE id="leaves">
-    <file path="images/leaves.jpg" />               
-    <amplif_factor s="2" t="2" />                           
-</TEXTURE>
-
-<TEXTURE id="silver">
-    <file path="images/silver.jpg" />                
-    <amplif_factor s="1" t="1" />                           
-</TEXTURE>
 
 </TEXTURES>
 
