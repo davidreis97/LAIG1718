@@ -1,5 +1,5 @@
 <SCENE>
-	<INITIALS>
+    <INITIALS>
      <frustum near="0.1" far="500"/>                 
      <translation x="-1" y="1" z="0" />               
      <rotation axis="x" angle="0" />                
@@ -42,12 +42,17 @@
 
     <ANIMATION id="testeLinear3" type="linear" speed="7">
         <controlpoint xx="15" yy="0" zz="10"/>
-        <controlpoint xx="15" yy="0" zz="0"/>
+        <controlpoint xx="15" yy="0" zz="-10"/>
     </ANIMATION>
 
-    <ANIMATION id="testeCircular2" type="circular" speed="7"
+    <ANIMATION id="testeCircular2" type="circular" speed="5"
                centerx="5" centery="0" centerz="0" 
                radius="5" startang="0" rotang="180"
+    />
+
+    <ANIMATION id="testeCircularPneu" type="circular" speed="4"
+               centerx="0" centery="0" centerz="0" 
+               radius="0" startang="0" rotang="1800"
     />
 
     <ANIMATION id="testeCombo1" type="combo">
@@ -74,7 +79,7 @@
   <LIGHT id="light0">
    <enable value="1" />
    <position x="5" y="20" z="5" w="1" />
-   <ambient r="1" g="1" b="1" a="1.0" />        	 
+   <ambient r="1" g="1" b="1" a="1.0" />             
    <diffuse r="1.0" g="1.0" b="1.0" a="1.0" />        
    <specular r="1.0" g="1.0" b="1.0" a="1.0" /> 
 </LIGHT>
@@ -202,15 +207,108 @@
 </MATERIALS>
 
 <NODES>
-	<ROOT id="main"/>
+    <ROOT id="main"/>
 
     <NODE id="main" selectable="true">       
         <MATERIAL id="houseMaterial" />     
         <TEXTURE id="houseExterior" />   
 
         <DESCENDANTS>
-            <NODEREF id="cube1" />
-            <NODEREF id="cube2" />
+            <!-- <NODEREF id="cube1" />
+            <NODEREF id="cube2" /> -->
+            <NODEREF id="car1" />
+        </DESCENDANTS>
+    </NODE>
+
+    <NODE id="car1">
+        <MATERIAL id="null" />     
+        <TEXTURE id="null" /> 
+
+        <ANIMATIONREFS>
+            <ANIMATIONREF id="testeCombo2"/>
+        </ANIMATIONREFS>
+
+        <DESCENDANTS>
+            <NODEREF id="carBottom" />
+            <NODEREF id="carTop" />
+            <NODEREF id="wheel1" />
+            <NODEREF id="wheel2" />
+            <NODEREF id="wheel3" />
+            <NODEREF id="wheel4" />
+        </DESCENDANTS>
+    </NODE>
+
+    <NODE id="carBottom">
+        <MATERIAL id="null" />     
+        <TEXTURE id="null" />
+        <SCALE sx="1" sy="0.5" sz="2" />
+
+        <DESCENDANTS>
+            <NODEREF id="cube" />
+        </DESCENDANTS>
+    </NODE>
+
+    <NODE id="carTop">
+        <MATERIAL id="null" />     
+        <TEXTURE id="null" />
+        <TRANSLATION x="0" y="2.5" z="-2.5" />
+        <SCALE sx="1" sy="0.4" sz="1" />
+
+        <DESCENDANTS>
+            <NODEREF id="cube" />
+        </DESCENDANTS>
+    </NODE>
+
+    <NODE id="wheel1">
+        <MATERIAL id="null" />     
+        <TEXTURE id="null" />
+        <TRANSLATION x="-1" y="0" z="-2.5" />
+        <!-- <SCALE sx="1" sy="0.4" sz="1" /> -->
+        <ROTATION axis="y" angle="90" />
+
+        <ANIMATIONREFS>
+            <ANIMATIONREF id="testeCircularPneu"/>
+            <!-- <ANIMATIONREF id="testeCircular"/> -->
+        </ANIMATIONREFS>
+
+        <DESCENDANTS>
+            <LEAF id="tyre" type="cylinder" args="1 1.5 1.5 10 20 1 1"/>
+        </DESCENDANTS>
+    </NODE>
+
+    <NODE id="wheel2">
+        <MATERIAL id="null" />     
+        <TEXTURE id="null" />
+        <TRANSLATION x="-1" y="0" z="-7.5" />
+        <!-- <SCALE sx="1" sy="0.4" sz="1" /> -->
+        <ROTATION axis="y" angle="90" />
+
+        <DESCENDANTS>
+            <LEAF id="tyre" type="cylinder" args="1 1.5 1.5 10 20 1 1"/>
+        </DESCENDANTS>
+    </NODE>
+
+    <NODE id="wheel3">
+        <MATERIAL id="null" />     
+        <TEXTURE id="null" />
+        <TRANSLATION x="6" y="0" z="-2.5" />
+        <!-- <SCALE sx="1" sy="0.4" sz="1" /> -->
+        <ROTATION axis="y" angle="-90" />
+
+        <DESCENDANTS>
+            <LEAF id="tyre" type="cylinder" args="1 1.5 1.5 10 20 1 1"/>
+        </DESCENDANTS>
+    </NODE>
+
+    <NODE id="wheel4">
+        <MATERIAL id="null" />     
+        <TEXTURE id="null" />
+        <TRANSLATION x="6" y="0" z="-7.5" />
+        <!-- <SCALE sx="1" sy="0.4" sz="1" /> -->
+        <ROTATION axis="y" angle="-90" />
+
+        <DESCENDANTS>
+            <LEAF id="tyre" type="cylinder" args="1 1.5 1.5 10 20 1 1"/>
         </DESCENDANTS>
     </NODE>
 
