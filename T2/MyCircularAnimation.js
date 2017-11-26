@@ -45,13 +45,15 @@ MyCircularAnimation.prototype.update = function(currentTime) {
 
 		var angle = this.startAng + this.angSpeed * (this.delta/1000);
 
-		if(angle > this.rotAng){
+		if(angle - this.startAng > this.rotAng){
 			this.finished = true;
-			angle = this.rotAng;
+			angle = this.startAng + this.rotAng;
 		}
 
+		console.log(angle / (Math.PI/180));
+
 		mat4.translate(this.transformMatrix,this.transformMatrix,[this.centerX,this.centerY,this.centerZ]);
-		mat4.rotateY(this.transformMatrix, this.transformMatrix, this.startAng + angle);
+		mat4.rotateY(this.transformMatrix, this.transformMatrix, angle);
 		mat4.translate(this.transformMatrix,this.transformMatrix,[this.radius,0,0]);
 	}
 
