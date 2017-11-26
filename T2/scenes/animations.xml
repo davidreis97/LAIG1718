@@ -12,28 +12,28 @@
  <ANIMATIONS>
     <ANIMATION id="testeLinear" type="linear" speed="4">
         <controlpoint xx="11" yy="0" zz="10"/>
-        <controlpoint xx="11" yy="0" zz="-5"/>
+        <controlpoint xx="11" yy="0" zz="-10"/>
     </ANIMATION>
 
     <ANIMATION id="testeLinear2" type="linear" speed="4">
-        <controlpoint xx="-5" yy="0" zz="5"/>
         <controlpoint xx="-5" yy="0" zz="10"/>
+        <controlpoint xx="-5" yy="0" zz="25"/>
     </ANIMATION>
 
 
-    <ANIMATION id="testeCircular" type="circular" speed="4"
+    <ANIMATION id="testeCircular" type="circular" speed="3"
                centerx="3" centery="0" centerz="0" 
                radius="3" startang="0" rotang="180"
     />
 
-    <ANIMATION id="testeBezier1" type="bezier" speed="7">
+    <ANIMATION id="testeBezier1" type="bezier" speed="10">
         <controlpoint xx="0" yy="0" zz="0"/>
         <controlpoint xx="10" yy="0" zz="10"/>
         <controlpoint xx="15" yy="0" zz="-20"/>
         <controlpoint xx="20" yy="0" zz="10"/>
     </ANIMATION>
 
-    <ANIMATION id="testeBezier2" type="bezier" speed="7">
+    <ANIMATION id="testeBezier2" type="bezier" speed="10">
         <controlpoint xx="20" yy="0" zz="10"/>
         <controlpoint xx="25" yy="0" zz="40"/>
         <controlpoint xx="15" yy="0" zz="25"/>
@@ -217,6 +217,7 @@
             <!-- <NODEREF id="cube1" />
             <NODEREF id="cube2" /> -->
             <NODEREF id="car1" />
+            <NODEREF id="car2" />
         </DESCENDANTS>
     </NODE>
 
@@ -225,8 +226,30 @@
         <TEXTURE id="null" /> 
 
         <ANIMATIONREFS>
+            <ANIMATIONREF id="testeCombo1"/>
+        </ANIMATIONREFS>
+
+        <DESCENDANTS>
+            <NODEREF id="car"/>
+        </DESCENDANTS>
+    </NODE>
+
+    <NODE id="car2">
+        <MATERIAL id="null" />     
+        <TEXTURE id="null" /> 
+
+        <ANIMATIONREFS>
             <ANIMATIONREF id="testeCombo2"/>
         </ANIMATIONREFS>
+
+        <DESCENDANTS>
+            <NODEREF id="car"/>
+        </DESCENDANTS>
+    </NODE>
+
+    <NODE id="car">
+        <MATERIAL id="null" />     
+        <TEXTURE id="null" /> 
 
         <DESCENDANTS>
             <NODEREF id="carBottom" />
@@ -272,7 +295,7 @@
         </ANIMATIONREFS>
 
         <DESCENDANTS>
-            <LEAF id="tyre" type="cylinder" args="1 1.5 1.5 10 20 1 1"/>
+            <LEAF id="tyre" type="cylinder" args="1 1.5 1.5 20 20 1 1"/>
         </DESCENDANTS>
     </NODE>
 
@@ -284,7 +307,7 @@
         <ROTATION axis="y" angle="90" />
 
         <DESCENDANTS>
-            <LEAF id="tyre" type="cylinder" args="1 1.5 1.5 10 20 1 1"/>
+            <LEAF id="tyre" type="cylinder" args="1 1.5 1.5 20 20 1 1"/>
         </DESCENDANTS>
     </NODE>
 
@@ -296,7 +319,7 @@
         <ROTATION axis="y" angle="-90" />
 
         <DESCENDANTS>
-            <LEAF id="tyre" type="cylinder" args="1 1.5 1.5 10 20 1 1"/>
+            <LEAF id="tyre" type="cylinder" args="1 1.5 1.5 20 20 1 1"/>
         </DESCENDANTS>
     </NODE>
 
@@ -308,7 +331,7 @@
         <ROTATION axis="y" angle="-90" />
 
         <DESCENDANTS>
-            <LEAF id="tyre" type="cylinder" args="1 1.5 1.5 10 20 1 1"/>
+            <LEAF id="tyre" type="cylinder" args="1 1.5 1.5 20 20 1 1"/>
         </DESCENDANTS>
     </NODE>
 
@@ -380,7 +403,7 @@
     </NODE>
 
     <NODE id="face4">
-        <MATERIAL id="testMaterial" />     
+        <MATERIAL id="null" />     
         <TEXTURE id="null" />
         <TRANSLATION x="0" y="5" z="-5"/>
         <ROTATION axis="x" angle="180"/>
