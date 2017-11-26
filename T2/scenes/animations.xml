@@ -10,32 +10,48 @@
  </INITIALS>
 
  <ANIMATIONS>
-    <ANIMATION id="testeLinear" type="linear" speed="3">
-        <controlpoint xx="5" yy="0" zz="3"/>
-        <controlpoint xx="10" yy="0" zz="10"/>
-        <controlpoint xx="7" yy="0" zz="20"/>
-        <controlpoint xx="0" yy="0" zz="0"/>
+    <ANIMATION id="testeLinear" type="linear" speed="4">
+        <controlpoint xx="11" yy="0" zz="10"/>
+        <controlpoint xx="11" yy="0" zz="-5"/>
+        <!-- <controlpoint xx="7" yy="0" zz="20"/> -->
     </ANIMATION>
 
+    <ANIMATION id="testeLinear2" type="linear" speed="4">
+        <controlpoint xx="-5" yy="0" zz="5"/>
+        <controlpoint xx="-5" yy="0" zz="10"/>
+    </ANIMATION>
+
+
     <ANIMATION id="testeCircular" type="circular" speed="4"
-               centerx="3" centery="0" centerz="3" 
-               radius="3" startang="0" rotang="720"
+               centerx="3" centery="0" centerz="0" 
+               radius="3" startang="0" rotang="180"
     />
 
-    <ANIMATION id="testeBezier" type="bezier" speed="7">
+    <ANIMATION id="testeBezier1" type="bezier" speed="7">
         <controlpoint xx="0" yy="0" zz="0"/>
         <controlpoint xx="10" yy="10" zz="10"/>
         <controlpoint xx="15" yy="10" zz="-20"/>
         <controlpoint xx="20" yy="0" zz="10"/>
     </ANIMATION>
 
-    <ANIMATION id="testeCombo" type="combo">
-        <SPANREF id="testeBezier" />
-        <SPANREF id="testeBezier" />
-        <SPANREF id="testeCircular" />
+    <ANIMATION id="testeBezier2" type="bezier" speed="7">
+        <controlpoint xx="25" yy="0" zz="15"/>
+        <controlpoint xx="12" yy="0" zz="10"/>
+        <controlpoint xx="15" yy="10" zz="-20"/>
+        <controlpoint xx="20" yy="0" zz="10"/>
+    </ANIMATION>
+
+    <ANIMATION id="testeCombo1" type="combo">
         <SPANREF id="testeLinear" />
         <SPANREF id="testeCircular" />
-        <SPANREF id="testeBezier" />
+        <SPANREF id="testeLinear2" />
+        <!-- <SPANREF id="testeBezier" /> -->
+    </ANIMATION>
+
+    <ANIMATION id="testeCombo2" type="combo">
+        <SPANREF id="testeBezier1" />
+        <SPANREF id="testeBezier2" />
+        <!-- <SPANREF id="testeBezier" /> -->
     </ANIMATION>
 
  </ANIMATIONS>
@@ -184,13 +200,116 @@
         <TEXTURE id="houseExterior" />   
 
         <DESCENDANTS>
-            <LEAF id="door" type="rectangle" args="0 0 4 2" />
-            <NODEREF id="outro"/>
-            <NODEREF id="testPatch"/>
+            <NODEREF id="cube1" />
+            <!-- <NODEREF id="cube2" /> -->
         </DESCENDANTS>
     </NODE>
 
-    <NODE id="testPatch">
+    <NODE id="cube1">
+        <MATERIAL id="null" />     
+        <TEXTURE id="null" /> 
+
+        <ANIMATIONREFS>
+            <ANIMATIONREF id="testeCombo1"/>
+            <!-- <ANIMATIONREF id="testeCircular"/> -->
+        </ANIMATIONREFS>
+
+        <DESCENDANTS>
+            <NODEREF id="cube"/>
+        </DESCENDANTS>
+    </NODE>
+
+    <NODE id="cube2">
+        <MATERIAL id="null" />     
+        <TEXTURE id="null" /> 
+
+        <ANIMATIONREFS>
+            <ANIMATIONREF id="testeCombo2"/>
+            <!-- <ANIMATIONREF id="testeCircular"/> -->
+        </ANIMATIONREFS>
+
+        <DESCENDANTS>
+            <NODEREF id="cube" />
+        </DESCENDANTS>
+    </NODE>
+
+    <NODE id="cube">
+        <MATERIAL id="null" />     
+        <TEXTURE id="null" /> 
+ 
+
+        <DESCENDANTS>
+            <LEAF id="face1" type="rectangle" args="5 5 0 0"/>
+            <NODEREF id="face2"/>
+            <NODEREF id="face3"/>
+            <NODEREF id="face4"/>
+            <NODEREF id="face5"/>
+            <NODEREF id="face6"/>
+        </DESCENDANTS>
+    </NODE>
+
+    <NODE id="face2">
+        <MATERIAL id="null" />     
+        <TEXTURE id="null" />
+        <TRANSLATION x="0" y="0" z="-5"/>
+        <ROTATION axis="x" angle="90"/>
+
+
+        <DESCENDANTS>
+            <LEAF id="face" type="rectangle" args="0 0 5 5"/>
+        </DESCENDANTS>
+    </NODE>
+
+    <NODE id="face3">
+        <MATERIAL id="null" />     
+        <TEXTURE id="null" />
+        <TRANSLATION x="0" y="5" z="0"/>
+        <ROTATION axis="x" angle="-90"/>
+
+
+        <DESCENDANTS>
+            <LEAF id="face" type="rectangle" args="0 0 5 5"/>
+        </DESCENDANTS>
+    </NODE>
+
+    <NODE id="face4">
+        <MATERIAL id="null" />     
+        <TEXTURE id="null" />
+        <TRANSLATION x="0" y="5" z="-5"/>
+        <ROTATION axis="x" angle="180"/>
+
+
+        <DESCENDANTS>
+            <LEAF id="face" type="rectangle" args="0 0 5 5"/>
+        </DESCENDANTS>
+    </NODE>
+
+    <NODE id="face5">
+        <MATERIAL id="null" />     
+        <TEXTURE id="null" />
+        <TRANSLATION x="0" y="0" z="-5"/>
+        <ROTATION axis="y" angle="-90"/>
+
+
+        <DESCENDANTS>
+            <LEAF id="face" type="rectangle" args="0 0 5 5"/>
+        </DESCENDANTS>
+    </NODE>
+
+    <NODE id="face6">
+        <MATERIAL id="null" />     
+        <TEXTURE id="null" />
+        <TRANSLATION x="5" y="0" z="0"/>
+        <ROTATION axis="y" angle="90"/>
+
+
+        <DESCENDANTS>
+            <LEAF id="face" type="rectangle" args="0 0 5 5"/>
+        </DESCENDANTS>
+    </NODE>
+
+
+    <!-- <NODE id="testPatch">
         <MATERIAL id="null"/>
         <TEXTURE id="null"/>
 
@@ -215,13 +334,17 @@
                 </CPLINE> 
             </LEAF>
         </DESCENDANTS>
-    </NODE>
+    </NODE> -->
 
     <NODE id="outro" selectable="true">       
         <MATERIAL id="houseMaterial" />     
-        <TEXTURE id="houseExterior" />  
+        <TEXTURE id="houseExterior" /> 
+        <TRANSLATION x="10" y="0" z="10"/> 
 
-        <TRANSLATION x="10" y="0" z="10"/>  
+        <ANIMATIONREFS>
+            <ANIMATIONREF id="testeLinear"/>
+        </ANIMATIONREFS> 
+ 
 
         <DESCENDANTS>
             <LEAF id="door" type="rectangle" args="0 0 7 2" />
