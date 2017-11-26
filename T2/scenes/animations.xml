@@ -380,7 +380,7 @@
     </NODE>
 
     <NODE id="face4">
-        <MATERIAL id="null" />     
+        <MATERIAL id="testMaterial" />     
         <TEXTURE id="null" />
         <TRANSLATION x="0" y="5" z="-5"/>
         <ROTATION axis="x" angle="180"/>
