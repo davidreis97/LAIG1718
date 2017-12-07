@@ -14,7 +14,7 @@ function MyTabuleiro(scene, args) {
 
     this.boundingBoxes = [];
 
-    this.pieces = [];
+    this.pieces = []; // 0-Whites, 1-WhiteHenge, 2-Blacks, 3-BlackHenge
 
     this.selectedPieceType = HENGE_PIECE; //Game must start with henge piece -- give visual feedback (shader)
 
@@ -31,6 +31,8 @@ MyTabuleiro.prototype.initBuffers = function () {
             this.boundingBoxes.push(rect);
         }
     }
+
+    this.piecePool = new MyPiecePool(this.scene,this.game);
 }
 
 MyTabuleiro.prototype.logPicking = function ()
@@ -41,7 +43,6 @@ MyTabuleiro.prototype.logPicking = function ()
                 var obj = this.scene.pickResults[i][0];
                 if (obj)
                 {
-                    console.log("Here");
                     this.customId = this.scene.pickResults[i][1];              
                 }
             }
@@ -60,25 +61,12 @@ MyTabuleiro.prototype.display = function (){
     }
 }
 
-MyTabuleiro.prototype.generatePieces = function(){
-    var currentBoard = this.game.gameStates[this.game.gameStates.length -1][0];
-
-    for(var i = 0; i < currentBoard.length; i++){
-        for(var j = 0; j < currentBoard[0].length; j++){
-            if(currentBoard[i][j] != 0){
-                var piece = new MyPiece(this.scene,currentBoard[i][j],[i,j]); //TODOTODOTODOTODO MOVE OBJECT INITIALIZING TO INIT
-                this.pieces.push(piece);
-            }
-        }
-    }
-}
-
 MyTabuleiro.prototype.fullDisplay = function (){
     this.logPicking();
     
     this.scene.clearPickRegistration();
 
-    this.generatePieces();
+    //this.generatePieces();
 
     for(var i = 0; i < this.pieces.length; i++) {
         //this.pieces[i].display();
@@ -118,6 +106,23 @@ MyTabuleiro.prototype.miniDisplay = function (playerNo){
 
         if(this.customId && this.customId == i + 1){
             this.scene.setActiveShader(this.scene.defaultShader);
+        }
+    }
+}
+
+MyTabuleiro.prototype.generatePieces = function(){
+    var currentBoard = this.game.gameStates[this.game.gameStates.length -1][0];
+
+    this.piecePool.reset();
+    this.pieces = [];
+
+    for(var i = 0; i < currentBoard.length; i++){
+        for(var j = 0; j < currentBoard[0].length; j++){
+            if (currentBoard[i][j] != 0){
+                var piece = this.piecePool.getPiece(currentBoard[i][j]);
+                piece.pos = [j,4-i];
+                this.pieces.push(piece);
+            }
         }
     }
 }

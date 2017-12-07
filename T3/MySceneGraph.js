@@ -12,9 +12,9 @@ var NODES_INDEX = 6;
 const WHITES = 0;
 const BLACKS = 1;
 
-const WHITE_PIECE = 0;
-const BLACK_PIECE = 1;
-const HENGE_PIECE = 2;
+const WHITE_PIECE = 1;
+const BLACK_PIECE = 2;
+const HENGE_PIECE = 3;
 
 /**
  * MySceneGraph class, representing the scene graph.
