@@ -28,6 +28,9 @@ function MyGraphLeaf(graph, xmlelem, scene, type, args) {
 		case "patch":
 			this.primitive = new MyPatch(this.scene, this.args);
 			break;
+		case "tabuleiro":
+			this.primitive = new MyTabuleiro(this.scene, this.args);
+			break;
 		default:
 			break;
 	}

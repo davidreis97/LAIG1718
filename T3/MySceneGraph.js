@@ -9,6 +9,13 @@ var MATERIALS_INDEX = 4;
 var LEAVES_INDEX = 5;
 var NODES_INDEX = 6;
 
+const WHITES = 0;
+const BLACKS = 1;
+
+const WHITE_PIECE = 0;
+const BLACK_PIECE = 1;
+const HENGE_PIECE = 2;
+
 /**
  * MySceneGraph class, representing the scene graph.
  * @constructor
@@ -1539,7 +1546,7 @@ MySceneGraph.prototype.parseNodes = function(nodesNode) {
                 else
 					if (descendants[j].nodeName == "LEAF")
 					{
-                        var type = this.reader.getItem(descendants[j], 'type', ['rectangle', 'cylinder', 'sphere', 'triangle', 'patch']);
+                        var type = this.reader.getItem(descendants[j], 'type', ['rectangle', 'cylinder', 'sphere', 'triangle', 'patch', 'tabuleiro']);
                         var args = this.reader.getString(descendants[j], 'args').split(" ").map(Number);
                         
                         var checkArgNumbers = [];
@@ -1548,6 +1555,7 @@ MySceneGraph.prototype.parseNodes = function(nodesNode) {
                         checkArgNumbers['sphere'] = [3];
                         checkArgNumbers['triangle'] = [9];
                         checkArgNumbers['patch'] = [2];
+                        checkArgNumbers['tabuleiro'] = [1];
 
                         if(checkArgNumbers[type].indexOf(args.length) < 0){
                             console.error("Wrong number of arguments in " + type + " leaf: Got " + args.length + " expected " + checkArgNumbers[type]);
@@ -1582,6 +1590,9 @@ MySceneGraph.prototype.parseNodes = function(nodesNode) {
                             }
 
                             args.push(finalArgs);
+                        }else if(type == 'tabuleiro') {
+                            var game = new MyGame(this.scene,[]);
+                            args = [game];
                         }
 
                         if (type != null && args != null)

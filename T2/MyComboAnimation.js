@@ -25,15 +25,22 @@ MyComboAnimation.prototype.init = function() { //Initial Calculations
 
 MyComboAnimation.prototype.update = function(currentTime) {
 	if (!this.finished){
+		this.transformMatrix = mat4.create();
+
+		this.ended = [];
+
 		for (var index = 0; index < this.animations.length; index++) {
 			if(!this.animations[index].finished) {
 				this.animations[index].update(currentTime);
-				if (!isIdentity(this.animations[index].transformMatrix)){
-					this.transformMatrix = this.animations[index].transformMatrix;
-				}	
+				mat4.multiply(this.transformMatrix,this.transformMatrix,this.animations[index].transformMatrix);
 				break;
 			}
-			this.transformMatrix = this.animations[index].transformMatrix;
+
+			this.ended.push(this.animations[index].lastPoint);
+		}
+
+		for (var index = 0; index < this.ended.length; index++){
+			mat4.translate(this.transformMatrix,this.transformMatrix,this.ended[index]);
 		}
 
 		if (index == this.animations.length) {

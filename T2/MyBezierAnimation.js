@@ -55,6 +55,8 @@ MyBezierAnimation.prototype.init = function() { //Initial Calculations
 
 	this.transformMatrix = mat4.create();
 
+	this.lastPoint = this.ctrl_points[3];
+
 	this.maximumTime = this.basicCasteljau() * 1000 / this.speed;
 
 	this.previousPoint = [0,0];

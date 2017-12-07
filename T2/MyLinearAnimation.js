@@ -47,6 +47,8 @@ MyLinearAnimation.prototype.init = function() { //Initial Calculations
 	this.distances = [];
 	this.durations = [];
 
+	this.lastPoint = this.ctrl_points[this.ctrl_points.length - 1];
+
 	this.finished = false;
 
 	var totalTime = 0;
@@ -92,7 +94,7 @@ MyLinearAnimation.prototype.update = function(currentTime) {
 
 		if(start == null){
 			this.finished = true;
-			var point = this.ctrl_points[this.ctrl_points.length - 1]
+			var point = this.ctrl_points[this.ctrl_points.length - 1];
 			mat4.translate(this.transformMatrix, this.transformMatrix, [point[0],point[1],point[2]]);
 			mat4.rotateY(this.transformMatrix, this.transformMatrix, this.finalAngle);
 		}else{
