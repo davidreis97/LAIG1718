@@ -1,11 +1,5 @@
 /* -*- Mode:Prolog; coding:iso-8859-1; indent-tabs-mode:nil; prolog-indent-width:8; prolog-paren-indent:3; tab-width:8; -*- */
 
-initBoard([[0,0,0,0,0],
-           [0,0,0,0,0],
-           [0,0,0,0,0],
-           [0,0,0,0,0],
-           [0,0,0,0,0]]).
-
 /*Checks if there are still enough pieces for a certain combination of Player/Piece*/
 pieceAllowed(1,1,WPieces,_,_,_,Est) :-
         \+ initBoard(Est), /*White needs to start with henge*/
@@ -24,25 +18,16 @@ insideTable(Value):-
         Value < 5.
 
 /* Player controlled move decision */
-playerInput(0,PlayerNo,Est,Linha,Coluna,Tipo,WPieces,WMixed,BPieces,BMixed) :- 
-        repeat, 
-                print('Type of piece: '),
-                read(Tipo), 
-                number(Tipo),
-                pieceAllowed(PlayerNo,Tipo,WPieces,WMixed,BPieces,BMixed,Est), !,
-        repeat,
-                print('Line: '),
-                read(Linha),
-                number(Linha),
-                Linha > -1,
-                Linha < 5,
-                print('Column: '),
-                read(Coluna),
-                number(Coluna),
-                Coluna > -1,
-                Coluna < 5,
-                getPos(Linha,Coluna,Est,0),
-                \+ surrounded(Linha,Coluna,Est,PlayerNo,Tipo), !.
+playerInput(0,PlayerNo,Est,Linha,Coluna,Tipo,WPieces,WMixed,BPieces,BMixed) :- %CHANGE - MUST CHECK IF VALID MOVE; NOT ASK FOR A MOVE
+        pieceAllowed(PlayerNo,Tipo,WPieces,WMixed,BPieces,BMixed,Est),
+        Linha > -1,
+        Linha < 5,
+        number(Linha),
+        number(Coluna),
+        Coluna > -1,
+        Coluna < 5,
+        getPos(Linha,Coluna,Est,0),
+        \+ surrounded(Linha,Coluna,Est,PlayerNo,Tipo).
                 
 /* CPU controlled move decision, used if good move available */
 playerInput(3,PlayerNo,Est,Linha,Coluna,Tipo,WPieces,WMixed,BPieces,BMixed) :- 
@@ -131,6 +116,14 @@ play(Player1,Player2,Board,EatenPieces,WPieces,WMixed,BPieces,BMixed,2) :- /*0 i
         removeEaten(0,0,Board1,Board2,EatenPieces,EatenPieces1,2),
         printBoard(Board2),
         (endGame(Board2,WPieces1,WMixed1,BPieces1,BMixed1, 0) ; play(Player1,Player2,Board2,EatenPieces1,WPieces1,WMixed1,BPieces1,BMixed1,1)).
+
+moveRequest(Board,WPieces,WMixed,BPieces,BMixed
+            ,PlayerNo, PlayerType, PieceSelected,LinhaSelected,ColunaSelected
+            ,NewBoard,NewWPieces,NewWMixed,NewBPieces,NewBMixed) :-
+        playerInput(PlayerType,PlayerNo,Board,LinhaSelected,ColunaSelected,PieceSelected,WPieces,WMixed,BPieces,BMixed),
+        movePlayer(LinhaSelected,ColunaSelected, Board, InterBoard, PieceSelected),
+        countPieces(PlayerNo,PieceSelected,WPieces,WMixed,BPieces,BMixed,NewWPieces,NewWMixed,NewBPieces,NewBMixed),
+        removeEaten(0,0,InterBoard,NewBoard,0,_,PlayerNo).
 
 /* Checks if/Gets a move that eats a piece */
 goodMove(L, C, _, _, _, _) :-
