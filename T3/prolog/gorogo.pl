@@ -1,12 +1,17 @@
 /* -*- Mode:Prolog; coding:iso-8859-1; indent-tabs-mode:nil; prolog-indent-width:8; prolog-paren-indent:3; tab-width:8; -*- */
 
+initBoard([[0,0,0,0,0],
+           [0,0,0,0,0],
+           [0,0,0,0,0],
+           [0,0,0,0,0],
+           [0,0,0,0,0]]).
+
 /*Checks if there are still enough pieces for a certain combination of Player/Piece*/
 pieceAllowed(1,1,WPieces,_,_,_,Est) :-
         \+ initBoard(Est), /*White needs to start with henge*/
         WPieces > 0.
 pieceAllowed(1,3,_,WMixed,_,_,_) :-
         WMixed > 0.
-
 pieceAllowed(2,2,_,_,BPieces,_,_) :-
         BPieces > 0.
 pieceAllowed(2,3,_,_,_,BMixed,_) :-
@@ -18,15 +23,20 @@ insideTable(Value):-
         Value < 5.
 
 /* Player controlled move decision */
-playerInput(0,PlayerNo,Est,Linha,Coluna,Tipo,WPieces,WMixed,BPieces,BMixed) :- %CHANGE - MUST CHECK IF VALID MOVE; NOT ASK FOR A MOVE
+playerInput(0,PlayerNo,Est,Linha,Coluna,Tipo,WPieces,WMixed,BPieces,BMixed) :-
+        print([0,playerNo-PlayerNo,est-Est,linha-Linha,coluna-Coluna,tipo-Tipo,wpieces-WPieces,wmixed-WMixed,bpieces-BPieces,bmixed-BMixed]), nl,
         pieceAllowed(PlayerNo,Tipo,WPieces,WMixed,BPieces,BMixed,Est),
+        print(Linha), nl,
+        print(Coluna), nl,
         Linha > -1,
         Linha < 5,
         number(Linha),
         number(Coluna),
         Coluna > -1,
         Coluna < 5,
+        print('before getPos'), nl,
         getPos(Linha,Coluna,Est,0),
+        print('before surrounded'), nl,
         \+ surrounded(Linha,Coluna,Est,PlayerNo,Tipo).
                 
 /* CPU controlled move decision, used if good move available */
@@ -120,9 +130,13 @@ play(Player1,Player2,Board,EatenPieces,WPieces,WMixed,BPieces,BMixed,2) :- /*0 i
 moveRequest(Board,WPieces,WMixed,BPieces,BMixed
             ,PlayerNo, PlayerType, PieceSelected,LinhaSelected,ColunaSelected
             ,NewBoard,NewWPieces,NewWMixed,NewBPieces,NewBMixed) :-
+        print('Before playerInput'), nl,
         playerInput(PlayerType,PlayerNo,Board,LinhaSelected,ColunaSelected,PieceSelected,WPieces,WMixed,BPieces,BMixed),
+        print('Before movePlayer'), nl,
         movePlayer(LinhaSelected,ColunaSelected, Board, InterBoard, PieceSelected),
+        print('Before countPieces'), nl,
         countPieces(PlayerNo,PieceSelected,WPieces,WMixed,BPieces,BMixed,NewWPieces,NewWMixed,NewBPieces,NewBMixed),
+        print('Before removeEaten'), nl,
         removeEaten(0,0,InterBoard,NewBoard,0,_,PlayerNo).
 
 /* Checks if/Gets a move that eats a piece */
