@@ -32,7 +32,14 @@ MyPiece.prototype.display = function (){
                 this.scene.graph.materials["PIECE_MATERIAL"].apply();
                 break;
             case HENGE_PIECE:
-                this.scene.graph.materials["PIECE_MATERIAL"].setTexture(this.scene.graph.textures["HENGE_PIECE"][0]);
+                this.scene.pushMatrix();
+                    this.innerPart = new MyCylinder(this.scene, [1.01, 0.42, 0.42, 10, 10, 1, 1]);
+                    this.scene.translate(this.pos[0]+0.5,this.pos[1]+0.5,0);
+                    this.scene.graph.materials["PIECE_MATERIAL"].setTexture(this.scene.graph.textures["BLACK_PIECE"][0]);
+                    this.scene.graph.materials["PIECE_MATERIAL"].apply();
+                    this.innerPart.display();
+                this.scene.popMatrix();
+                this.scene.graph.materials["PIECE_MATERIAL"].setTexture(this.scene.graph.textures["WHITE_PIECE"][0]);
                 this.scene.graph.materials["PIECE_MATERIAL"].apply();
                 break;
             default:
