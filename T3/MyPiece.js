@@ -3,12 +3,12 @@
  * @constructor
  */
 
-function MyPiece(scene, type, pos) {
+function MyPiece(scene, type) {
     CGFobject.call(this, scene);
 
     this.type = type;
 
-    this.pos = pos;
+    this.pos = (-1,-1);
 
     this.initBuffers();
 };

@@ -17,17 +17,17 @@ MyGame.prototype = Object.create(CGFobject.prototype);
 MyGame.prototype.constructor = MyGame;
 
 MyGame.prototype.initBuffers = function () {
-    var initialState = [[1,0,0,0,2],
+    var initialState = [[1,2,3,0,0],
                         [0,0,0,0,0],
-                        [0,0,0,0,0],
-                        [0,0,0,0,0],
+                        [0,0,1,0,0],
+                        [0,2,0,0,0],
                         [3,0,0,0,0]];
+
+    this.pieceCount = [10,3,10,2]; //Whites, WhiteHenges, Blacks, BlackHenges
 
     this.playerNo = WHITES;
 
-    this._getPrologRequest('');
-
-    this.gameStates.push([initialState,this.playerNo,null]);
+    this.gameStates.push([initialState,this.playerNo,this.pieceCount/*,ANIMATION*/]);
 }
 
 MyGame.prototype.doMove = function (){
