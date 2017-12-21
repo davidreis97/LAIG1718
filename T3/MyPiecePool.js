@@ -18,48 +18,36 @@ MyPiecePool.prototype.initBuffers = function() {
   this.whites = [];
   this.currentWhite = 0;
 
-  for (var i = 0; i < this.game.pieceCount[0]; i++) {
-    var piece = new MyPiece(this.scene, WHITE_PIECE);
-    this.whites.push(piece);
-  } 
-
   this.blacks = [];
   this.currentBlack = 0;
 
-  for (var i = 0; i < this.game.pieceCount[2]; i++) {
-    var piece = new MyPiece(this.scene, BLACK_PIECE);
-    this.blacks.push(piece);
-  }
-
   this.henges = [];
   this.currentHenge = 0;
-
-  for (var i = 0; i < this.game.pieceCount[1] + this.game.pieceCount[3]; i++) {
-    var piece = new MyPiece(this.scene, HENGE_PIECE);
-    this.henges.push(piece);
-  }
 };
 
 MyPiecePool.prototype.getPiece = function(pieceType) {
   switch (pieceType) {
     case WHITE_PIECE:
-      if (this.currentWhite >= this.whites.size) {
-        console.error("NOT ENOUGH WHITE PIECES IN PIECE POOL");
-        return null;
+      if (this.currentWhite >= this.whites.length) {
+        var piece = new MyPiece(this.scene, WHITE_PIECE);
+        this.whites.push(piece);
       }
-      return this.whites[this.currentWhite++];
+      this.currentWhite++;
+      return this.whites[this.currentWhite - 1];
     case BLACK_PIECE:
-      if (this.currentBlack >= this.blacks.size) {
-        console.error("NOT ENOUGH WHITE PIECES IN PIECE POOL");
-        return null;
+      if (this.currentBlack >= this.blacks.length) {
+        var piece = new MyPiece(this.scene, BLACK_PIECE);
+        this.blacks.push(piece);
       }
-      return this.blacks[this.currentBlack++];
+      this.currentBlack++;
+      return this.blacks[this.currentBlack - 1];
     case HENGE_PIECE:
-      if (this.currentHenge >= this.henges.size) {
-        console.error("NOT ENOUGH HENGE PIECES IN PIECE POOL");
-        return null;
+      if (this.currentHenge >= this.henges.length) {
+        var piece = new MyPiece(this.scene, HENGE_PIECE);
+        this.henges.push(piece);
       }
-      return this.henges[this.currentHenge++];
+      this.currentHenge++;
+      return this.henges[this.currentHenge - 1];
     default:
       console.error("Unknown piece type: " + pieceType);
   }

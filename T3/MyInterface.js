@@ -44,6 +44,10 @@ MyInterface.prototype.addSelectables = function() {
     */
 };
 
+MyInterface.prototype.addSceneries = function() {
+    this.gui.add(this.scene, 'selectedScenery', this.scene.graph.sceneries).name('Sceneries');
+};
+
 /**
  * Adds a folder containing the IDs of the lights passed as parameter.
  */

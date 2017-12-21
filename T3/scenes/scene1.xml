@@ -6,7 +6,8 @@
      <rotation axis="y" angle="0" />                
      <rotation axis="z" angle="0" />                
      <scale sx="0.25" sy="0.25" sz="0.25" />         
-     <reference length="5" />                        
+     <reference length="5" />
+     <scenery id="este" />                        
  </INITIALS>
 
  <ANIMATIONS>
@@ -121,7 +122,7 @@
 
 
     
-    <NODE id="table">
+    <NODE id="table" sceneries="este">
         <MATERIAL id="null"/>
         <TEXTURE id="wood"/>
 
@@ -162,7 +163,7 @@
         </DESCENDANTS>
     </NODE>
 
-    <NODE id="tableLeg1">
+    <NODE id="tableLeg1" sceneries="aquele,outro,null">
         <MATERIAL id="null"/>
         <TEXTURE id="null"/>
 

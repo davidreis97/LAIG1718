@@ -29,6 +29,8 @@ function MySceneGraph(filename, scene) {
     
     this.nodes = [];
     this.selectableNodes = [];
+
+    this.sceneries = ["all"];
     
     this.idRoot = null;                    // The id of the root element.
 
@@ -418,6 +420,25 @@ MySceneGraph.prototype.parseInitials = function(initialsNode) {
         }
         else
             this.onXMLMinorError("unable to parse reference length; assuming 'length = 1'");
+    
+    }
+
+     // ----------
+    // Scenery id.
+    this.scene.selectedScenery = "all";
+    
+    var indexScenery = nodeNames.indexOf("scenery");
+    if (indexScenery == -1)
+        this.onXMLMinorError("scenery undefined; assuming 'scenery = all'");
+    else {
+        // Reads the scenery length.
+        var scenery = this.reader.getString(children[indexScenery], 'id');
+        
+        if (scenery != null ) {
+            this.scene.selectedScenery = scenery;
+        }
+        else
+            this.onXMLMinorError("unable to parse scenery; assuming 'scenery = all'");
     
     }
     
@@ -1364,7 +1385,7 @@ MySceneGraph.prototype.parseNodes = function(nodesNode) {
             // Checks if ID is valid.
             if (this.nodes[nodeID] != null )
                 return "node ID must be unique (conflict: ID = " + nodeID + ")";
-            
+
             this.log("Processing node "+nodeID);
 
             // Creates node.
@@ -1377,7 +1398,20 @@ MySceneGraph.prototype.parseNodes = function(nodesNode) {
                     this.nodes[nodeID].selectable = true;
                 }
             }
-            
+
+            if(this.reader.hasAttribute(children[i],'sceneries')){
+                var sceneriesString = this.reader.getString(children[i], 'sceneries');
+                
+                var sceneries = sceneriesString.split(",");
+                
+                for (var j = 0; j < sceneries.length; j++) {
+                    if(this.sceneries.indexOf(sceneries[j]) < 0 && sceneries[j] != "null"){
+                        this.sceneries.push(sceneries[j]);
+                    }
+
+                    this.nodes[nodeID].sceneries.push(sceneries[j]);
+                }
+            }
 
             // Gathers child nodes.
             var nodeSpecs = children[i].children;
@@ -1688,13 +1722,21 @@ MySceneGraph.prototype.updateAnimations = function(currTime, nodeID) {
 /**
  * Displays the scene, processing each node, starting in the root node.
  */
-MySceneGraph.prototype.displayScene = function(nodeID, matID, texID) {
+MySceneGraph.prototype.displayScene = function(nodeID, matID, texID, sceneryVisible) {
     var materialID = matID;
     var textureID = texID;
     var tex_scale_values = [];
 
     if(nodeID != null){
         var node = this.nodes[nodeID];
+
+        if(node.sceneries.indexOf("null") >= 0){
+            sceneryVisible = false;
+        }
+
+        if(node.sceneries.indexOf(this.scene.selectedScenery) >= 0){
+            sceneryVisible = true;
+        }
 
         if(node.materialID != "null"){
             materialID = node.materialID;
@@ -1719,6 +1761,16 @@ MySceneGraph.prototype.displayScene = function(nodeID, matID, texID) {
         
         this.scene.multMatrix(node.transformMatrix);
 
+        if(!sceneryVisible){
+            for (var index = 0; index < node.children.length; index++){
+                this.scene.pushMatrix();
+                this.materials[materialID].apply();
+                this.displayScene(node.children[index],materialID, textureID, sceneryVisible);
+                this.scene.popMatrix();
+            }
+            return;
+        }
+
         for(var index = 0; index < node.animations.length; index++){
             this.scene.multMatrix(node.animations[index].transformMatrix);
         }
@@ -1731,7 +1783,7 @@ MySceneGraph.prototype.displayScene = function(nodeID, matID, texID) {
         for (var index = 0; index < node.children.length; index++){
             this.scene.pushMatrix();
             this.materials[materialID].apply();
-            this.displayScene(node.children[index],materialID, textureID);
+            this.displayScene(node.children[index],materialID, textureID, sceneryVisible);
             this.scene.popMatrix();
         }
 

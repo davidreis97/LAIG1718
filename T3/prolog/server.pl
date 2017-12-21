@@ -107,7 +107,7 @@ print_header_line(_).
 
 parse_input(handshake, handshake).
 parse_input(quit, goodbye).
-parse_input(moveRequest(Board,WPieces,WMixed,BPieces,BMixed,PlayerNo,PlayerType,PieceSelected,LinhaSelected,ColunaSelected),[NewBoard,NewWPieces,NewWMixed,NewBPieces,NewBMixed]) :- moveRequest(Board,WPieces,WMixed,BPieces,BMixed,PlayerNo,PlayerType,PieceSelected,LinhaSelected,ColunaSelected,NewBoard,NewWPieces,NewWMixed,NewBPieces,NewBMixed).
+parse_input(moveRequest(Board,WPieces,WMixed,BPieces,BMixed,PlayerNo,PlayerType,PieceSelected,LinhaSelected,ColunaSelected),[NewBoard,[NewWPieces,NewWMixed,NewBPieces,NewBMixed]]) :- moveRequest(Board,WPieces,WMixed,BPieces,BMixed,PlayerNo,PlayerType,PieceSelected,LinhaSelected,ColunaSelected,NewBoard,NewWPieces,NewWMixed,NewBPieces,NewBMixed).
 parse_input(moveRequest(_,_,_,_,_,_,_,_,_,_), illegalMove).
 parse_input(endGame(Board,WPieces,WMixed,BPieces,BMixed), gameEnded) :- endGame(Board,WPieces,WMixed,BPieces,BMixed,0).
 parse_input(endGame(_,_,_,_,_), gameNotEnded).

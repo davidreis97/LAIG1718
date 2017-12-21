@@ -8,7 +8,7 @@ function MyPiece(scene, type) {
 
     this.type = type;
 
-    this.pos = (-1,-1);
+    this.pos = [-1,-1];
 
     this.initBuffers();
 };

@@ -25,6 +25,8 @@ function MyGraphNode(graph, nodeID) {
 
     this.selectable = false;
 
+    this.sceneries = ["all"];
+
     this.transformMatrix = mat4.create();
     mat4.identity(this.transformMatrix);
 }

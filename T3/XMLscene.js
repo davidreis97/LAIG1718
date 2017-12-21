@@ -13,6 +13,8 @@ function XMLscene(interface) {
 
     this.selectedNodeID = 0;
 
+    this.selectedScenery = "all";
+
     this.lightValues = {};
 }
 
@@ -104,6 +106,7 @@ XMLscene.prototype.onGraphLoaded = function()
     // Adds lights group.
     this.interface.addLightsGroup(this.graph.lights);
     this.interface.addSelectables();
+    this.interface.addSceneries();
 }
 
 XMLscene.prototype.update = function(currTime){
@@ -157,7 +160,7 @@ XMLscene.prototype.display = function() {
         }
 
         // Displays the scene.
-        this.graph.displayScene(this.graph.idRoot,this.graph.defaultMaterialID, "clear");
+        this.graph.displayScene(this.graph.idRoot,this.graph.defaultMaterialID, "clear", false);
 
     }
 	else
