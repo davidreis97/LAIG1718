@@ -7,7 +7,7 @@
      <rotation axis="z" angle="0" />                
      <scale sx="0.25" sy="0.25" sz="0.25" />         
      <reference length="5" />
-     <scenery id="all" />                        
+     <scenery id="este" />                        
  </INITIALS>
 
  <ANIMATIONS>
@@ -34,6 +34,22 @@
 <LIGHT id="light1">                                    
     <enable value ="1" />                             
     <position x="20" y="20" z="20" w="1" />             
+    <ambient r="0.2" g="0.2" b="0.2" a="1.0" />       
+    <diffuse r="1.0" g="1.0" b="1.0" a="1.0" />        
+    <specular r="1.0" g="1.0" b="1.0" a="1.0" />       
+</LIGHT>
+
+<LIGHT id="light2">                                    
+    <enable value ="1" />                             
+    <position x="0" y="-10" z="0" w="1" />             
+    <ambient r="0.2" g="0.2" b="0.2" a="1.0" />       
+    <diffuse r="1.0" g="1.0" b="1.0" a="1.0" />        
+    <specular r="1.0" g="1.0" b="1.0" a="1.0" />       
+</LIGHT>
+
+<LIGHT id="light3">                                    
+    <enable value ="1" />                             
+    <position x="40" y="10" z="40" w="1" />             
     <ambient r="0.2" g="0.2" b="0.2" a="1.0" />       
     <diffuse r="1.0" g="1.0" b="1.0" a="1.0" />        
     <specular r="1.0" g="1.0" b="1.0" a="1.0" />       
@@ -73,6 +89,11 @@
      <amplif_factor s="1" t="1" />                           
  </TEXTURE>
 
+ <TEXTURE id="carpet">
+     <file path="images/carpet_texture.jpg" />                
+     <amplif_factor s="1" t="1" />                           
+ </TEXTURE>
+
 </TEXTURES>
 
 <MATERIALS>
@@ -102,8 +123,21 @@
         <TEXTURE id="null" />   
 
         <DESCENDANTS>
-            <NODEREF id="table"/>
             <NODEREF id="board"/>
+            <NODEREF id="table"/>
+            <NODEREF id="chair1"/>
+            <NODEREF id="chair2"/>
+            <NODEREF id="floor"/>
+        </DESCENDANTS>
+    </NODE>
+
+    <NODE id="floor">
+        <MATERIAL id="null"/>
+        <TEXTURE id="carpet"/>
+        <ROTATION axis="x" angle="90"/>
+
+        <DESCENDANTS>
+            <LEAF type="rectangle" args="0 0 30 30"/>
         </DESCENDANTS>
     </NODE>
 
@@ -302,6 +336,115 @@
 
         <DESCENDANTS>
             <LEAF  type="rectangle" args="0 5 5 0" />        
+        </DESCENDANTS>
+    </NODE>
+
+    <NODE id="chair1">
+        <MATERIAL id="null"/>
+        <TEXTURE id="wood"/>
+        <TRANSLATION x="10" y="0" z="2"/>
+
+        <DESCENDANTS>
+            <NODEREF id="chair"/>
+        </DESCENDANTS>
+    </NODE>
+
+    <NODE id="chair2">
+        <MATERIAL id="null"/>
+        <TEXTURE id="wood"/>
+        <TRANSLATION x="16.5" y="0" z="22"/>
+        <ROTATION axis="y" angle="180"/>
+
+        <DESCENDANTS>
+            <NODEREF id="chair"/>
+        </DESCENDANTS>
+    </NODE>
+
+    <NODE id="chair" sceneries="test">
+        <MATERIAL id="null"/>
+        <TEXTURE id="null"/>
+        <SCALE sx="1.3" sy="1.3" sz="1.3"/>
+
+        <DESCENDANTS>
+            <NODEREF id="chairLeg1"/>
+            <NODEREF id="chairLeg2"/>
+            <NODEREF id="chairLeg3"/>
+            <NODEREF id="chairLeg4"/>
+            <NODEREF id="chairSeat" />
+            <NODEREF id="chairBack"/>
+        </DESCENDANTS>
+
+    </NODE>
+
+    <NODE id="chairBack">
+        <MATERIAL id="null"/>
+        <TEXTURE id="null"/>
+        <TRANSLATION x="0" y="5" z="0"/>
+        <SCALE sx="1" sy="1.3" sz="0.2"/>
+
+        <DESCENDANTS>
+            <NODEREF id="cube"/>
+        </DESCENDANTS>
+    </NODE>
+
+    <NODE id="chairSeat">
+        <MATERIAL id="null"/>
+        <TEXTURE id="null"/>
+        <TRANSLATION x="0" y="5" z="0"/>
+        <SCALE sx="1" sy="0.2" sz="1"/>
+
+        <DESCENDANTS>
+            <NODEREF id="cube"/>
+        </DESCENDANTS>
+    </NODE>
+
+    <NODE id="chairLeg1">
+        <MATERIAL id="null"/>
+        <TEXTURE id="null"/>
+
+        <DESCENDANTS>
+            <NODEREF id="chairLeg"/>
+        </DESCENDANTS>
+    </NODE>
+
+    <NODE id="chairLeg2">
+        <MATERIAL id="null"/>
+        <TEXTURE id="null"/>
+        <TRANSLATION x="4.2" y="0" z="0"/>
+
+        <DESCENDANTS>
+            <NODEREF id="chairLeg"/>
+        </DESCENDANTS>
+    </NODE>
+
+    <NODE id="chairLeg3">
+        <MATERIAL id="null"/>
+        <TEXTURE id="null"/>
+        <TRANSLATION x="0" y="0" z="4.2"/>
+
+        <DESCENDANTS>
+            <NODEREF id="chairLeg"/>
+        </DESCENDANTS>
+    </NODE>
+
+    <NODE id="chairLeg4">
+        <MATERIAL id="null"/>
+        <TEXTURE id="null"/>
+        <TRANSLATION x="4.2" y="0" z="4.2"/>
+
+        <DESCENDANTS>
+            <NODEREF id="chairLeg"/>
+        </DESCENDANTS>
+    </NODE>
+
+    <NODE id="chairLeg">
+        <MATERIAL id="null"/>
+        <TEXTURE id="null"/>
+
+        <SCALE sx="0.15" sy="1.2" sz="0.15"/>
+
+        <DESCENDANTS>
+            <NODEREF id="cube"/>
         </DESCENDANTS>
     </NODE>
     
