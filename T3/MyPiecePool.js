@@ -3,10 +3,8 @@
  * @constructor
  */
 
-function MyPiecePool(scene, game) {
+function MyPiecePool(scene) {
   CGFobject.call(this, scene);
-
-  this.game = game;
 
   this.initBuffers();
 }
@@ -25,7 +23,16 @@ MyPiecePool.prototype.initBuffers = function() {
   this.currentHenge = 0;
 };
 
+MyPiecePool.prototype.getBoundingBox = function (){
+  return this.getPiece(BLACK_PIECE);
+} //TODO - Create bounding box pool for pieces
+
 MyPiecePool.prototype.getPiece = function(pieceType) {
+  if(this.whites.length > 100 || this.blacks.length > 100 || this.henges.length > 100){
+    console.warn("Warning: Abnormally high number of pieces allocated in MyPiecePool");
+    console.warn("Whites: " + this.whites.length + " Blacks: " + this.blacks.length + " Henges: " + this.henges.length);
+  }
+
   switch (pieceType) {
     case WHITE_PIECE:
       if (this.currentWhite >= this.whites.length) {

@@ -75,7 +75,7 @@ playerInput(1,PlayerNo,Est,Linha,Coluna,Tipo,WPieces,WMixed,BPieces,BMixed) :-
                 random(0,5,Linha),
                 random(0,5,Coluna),
                 getPos(Linha,Coluna,Est,0),
-                \+ surrounded(Linha,Coluna,Est,PlayerNo,Tipo), !.
+                \+ surrounded(Linha,Coluna,Est,PlayerNo,Tipo),!.
 
 /* Updates piece counts */
 countPieces(1,1,WPieces,WMixed,BPieces,BMixed,WPieces1,WMixed1,BPieces1,BMixed1) :- 
@@ -130,6 +130,7 @@ play(Player1,Player2,Board,EatenPieces,WPieces,WMixed,BPieces,BMixed,2) :- /*0 i
 moveRequest(Board,WPieces,WMixed,BPieces,BMixed
             ,PlayerNo, PlayerType, PieceSelected,LinhaSelected,ColunaSelected
             ,NewBoard,NewWPieces,NewWMixed,NewBPieces,NewBMixed) :-
+        print([playerType-PlayerType,playerNo-PlayerNo,est-Board,linha-LinhaSelected,coluna-ColunaSelected,tipo-PieceSelected,wpieces-WPieces,wmixed-WMixed,bpieces-BPieces,bmixed-BMixed]), nl,
         print('Before playerInput'), nl,
         playerInput(PlayerType,PlayerNo,Board,LinhaSelected,ColunaSelected,PieceSelected,WPieces,WMixed,BPieces,BMixed),
         print('Before movePlayer'), nl,
@@ -175,40 +176,41 @@ validMove(Linha, Coluna, Linha1, Coluna1, Board, PlayerNo,Type) :-
         validMove(LinhaNova,Coluna,Linha1,Coluna1, Board, PlayerNo, Type).
 
 /* Checks if game ended and declares winner*/
-endGame([],0,1,_,_,Count) :-
+endGame([],0,1,_,_,Count,1) :-
         Count > 0,
         print('Black wins! (Last piece must not be henge)').
-endGame([],_,_,0,1,Count) :-
+endGame([],_,_,0,1,Count,0) :-
         Count > 0,
         print('White wins! (Last piece must not be henge)').
-endGame([],0,0,0,0,Count) :-
+endGame([],0,0,0,0,Count,0) :-
         Count > 0,
         print('Whites win!').
-endGame([],0,0,0,0,Count) :-
+endGame([],0,0,0,0,Count,1) :-
         Count < 0,
         print('Blacks win!').
-endGame([],0,0,0,0,0) :-
+endGame([],0,0,0,0,0,2) :-
         print('Tie! (Which means white wins!)').
-endGame([[]|Xs],0,0,0,0,Count) :-
-        endGame(Xs,0,0,0,0, Count).
-endGame([[1|Xs]|Xss],0,0,0,0, Count) :- 
+endGame([[]|Xs],0,0,0,0,Count, Winner) :-
+        endGame(Xs,0,0,0,0, Count, Winner).
+endGame([[1|Xs]|Xss],0,0,0,0, Count, Winner) :- 
         !,
         NewCount is Count+1,
-        endGame([Xs|Xss],0,0,0,0, NewCount).
-endGame([[2|Xs]|Xss],0,0,0,0, Count) :- 
+        endGame([Xs|Xss],0,0,0,0, NewCount, Winner).
+endGame([[2|Xs]|Xss],0,0,0,0, Count, Winner) :- 
         !,
         NewCount is Count-1,
-        endGame([Xs|Xss],0,0,0,0, NewCount).
-endGame([[_|Xs]|Xss],0,0,0,0, Count) :-
-        endGame([Xs|Xss],0,0,0,0, Count).
-endGame(Board,W,H,_,_,_):-
+        endGame([Xs|Xss],0,0,0,0, NewCount, Winner).
+endGame([[_|Xs]|Xss],0,0,0,0, Count, Winner) :-
+        endGame([Xs|Xss],0,0,0,0, Count, Winner).
+endGame(Board,W,H,_,_,_,1):-
         (W > 0 ; H > 0),
         (\+ validMove(0,0,L,C,Board,1,1) ; W =< 0), (\+ validMove(0,0,L,C,Board,1,3) ; H =< 0),nl,
         print('Black wins! (White has no possible moves!)').
-endGame(Board,_,_,B,H,_):-
+endGame(Board,_,_,B,H,_,0):-
         (B > 0 ; H > 0),
         (\+ validMove(0,0,L,C,Board,2,2) ; B =< 0), (\+ validMove(0,0,L,C,Board,2,3) ; H =< 0),nl,
         print('White wins! (Black has no possible moves!)').
+endGame(_,_,_,_,_,_,3).
 
 /*Prints a line of the board*/
 printBoardLine([]) :- 

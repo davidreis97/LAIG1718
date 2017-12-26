@@ -54,8 +54,7 @@ MyInterface.prototype.addSceneries = function() {
 MyInterface.prototype.addLightsGroup = function(lights) {
 
     var group = this.gui.addFolder("Lights");
-    group.open();
-
+    
     // add two check boxes to the group. The identifiers must be members variables of the scene initialized in scene.init as boolean
     // e.g. this.option1=true; this.option2=false;
 
@@ -65,6 +64,18 @@ MyInterface.prototype.addLightsGroup = function(lights) {
             group.add(this.scene.lightValues, key);
         }
     }
+};
+
+MyInterface.prototype.addGameGroup = function(lights) {
+
+    var group = this.gui.addFolder("Game Settings");
+    group.open();
+
+    // add two check boxes to the group. The identifiers must be members variables of the scene initialized in scene.init as boolean
+    // e.g. this.option1=true; this.option2=false;
+
+    group.add(this.scene, 'whitePlayer', this.scene.playerModes).name('White Player');
+    group.add(this.scene, 'blackPlayer', this.scene.playerModes).name('Black Player');
 };
 
 

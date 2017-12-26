@@ -1,6 +1,7 @@
 :-use_module(library(sockets)).
 :-use_module(library(lists)).
 :-use_module(library(codesio)).
+:-use_module(library(random)).
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%                                        Server                                                   %%%%
@@ -107,12 +108,12 @@ print_header_line(_).
 
 parse_input(handshake, handshake).
 parse_input(quit, goodbye).
-parse_input(moveRequest(Board,WPieces,WMixed,BPieces,BMixed,PlayerNo,PlayerType,PieceSelected,LinhaSelected,ColunaSelected),[NewBoard,[NewWPieces,NewWMixed,NewBPieces,NewBMixed]]) :- moveRequest(Board,WPieces,WMixed,BPieces,BMixed,PlayerNo,PlayerType,PieceSelected,LinhaSelected,ColunaSelected,NewBoard,NewWPieces,NewWMixed,NewBPieces,NewBMixed).
+parse_input(moveRequest(Board,WPieces,WMixed,BPieces,BMixed,PlayerNo,PlayerType,PieceSelected,LinhaSelected,ColunaSelected),[NewBoard,[NewWPieces,NewWMixed,NewBPieces,NewBMixed],Winner]) :- moveRequest(Board,WPieces,WMixed,BPieces,BMixed,PlayerNo,PlayerType,PieceSelected,LinhaSelected,ColunaSelected,NewBoard,NewWPieces,NewWMixed,NewBPieces,NewBMixed)
+																																															, endGame(NewBoard,NewWPieces,NewWMixed,NewBPieces,NewBMixed,0,Winner).
 parse_input(moveRequest(_,_,_,_,_,_,_,_,_,_), illegalMove).
-parse_input(endGame(Board,WPieces,WMixed,BPieces,BMixed), gameEnded) :- endGame(Board,WPieces,WMixed,BPieces,BMixed,0).
-parse_input(endGame(_,_,_,_,_), gameNotEnded).
 parse_input(test(C,N), Res) :- test(C,Res,N).
 
 
 test(_,[],N) :- N =< 0.
 test(A,[A|Bs],N) :- N1 is N-1, test(A,Bs,N1).
+

@@ -7,7 +7,7 @@
      <rotation axis="z" angle="0" />                
      <scale sx="0.25" sy="0.25" sz="0.25" />         
      <reference length="5" />
-     <scenery id="este" />                        
+     <scenery id="all" />                        
  </INITIALS>
 
  <ANIMATIONS>
@@ -102,8 +102,8 @@
         <TEXTURE id="null" />   
 
         <DESCENDANTS>
-            <NODEREF id="board"/>
             <NODEREF id="table"/>
+            <NODEREF id="board"/>
         </DESCENDANTS>
     </NODE>
 

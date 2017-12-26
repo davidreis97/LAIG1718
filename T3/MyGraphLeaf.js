@@ -41,6 +41,15 @@ MyGraphLeaf.prototype.display = function(tex_scale_factor){
 	if(this.type == "triangle" || this.type == "rectangle"){
 		this.primitive.setTexScale(tex_scale_factor);
 	}
-	this.primitive.display();
+	
+	if(!this.scene.pickMode || this.type == "tabuleiro"){
+		this.primitive.display();
+	}
+}
+
+MyGraphLeaf.prototype.updateAnim = function (currTime){
+	if (this.type == "tabuleiro"){
+		this.primitive.updateAnim(currTime)
+	}
 }
 

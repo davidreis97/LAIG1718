@@ -11,6 +11,11 @@ function XMLscene(interface) {
 
     this.timeFactor = 10;
 
+    this.playerModes = ["Human","Easy CPU","Medium CPU","Hard CPU"];
+    
+    this.whitePlayer = "Human";
+    this.blackPlayer = "Medium CPU";
+
     this.selectedNodeID = 0;
 
     this.selectedScenery = "all";
@@ -105,15 +110,17 @@ XMLscene.prototype.onGraphLoaded = function()
 
     // Adds lights group.
     this.interface.addLightsGroup(this.graph.lights);
-    this.interface.addSelectables();
+    //this.interface.addSelectables();
     this.interface.addSceneries();
+    this.interface.addGameGroup();
 }
 
 XMLscene.prototype.update = function(currTime){
+    var scale = 0.2;
     this.timeFactor = (Math.cos(currTime/150) + 1)/2;
-    this.selectableShader.setUniformsValues({normScale: this.timeFactor});
-    this.selectableShader.setUniformsValues({colorScale: this.timeFactor});        
-    this.graph.updateAnimations(currTime,this.graph.idRoot);
+    this.selectableShader.setUniformsValues({normScale: this.timeFactor * scale});
+    this.selectableShader.setUniformsValues({colorScale: this.timeFactor});   
+    this.graph.updateAnimations(currTime);
 };
 
 /**

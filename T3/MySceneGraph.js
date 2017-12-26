@@ -16,6 +16,11 @@ const WHITE_PIECE = 1;
 const BLACK_PIECE = 2;
 const HENGE_PIECE = 3;
 
+const HUMAN_PLAYER = 0;
+const EASY_CPU_PLAYER = 1;
+const MEDIUM_CPU_PLAYER = 2;
+const HARD_CPU_PLAYER = 3;
+
 /**
  * MySceneGraph class, representing the scene graph.
  * @constructor
@@ -1625,6 +1630,7 @@ MySceneGraph.prototype.parseNodes = function(nodesNode) {
 
                             args.push(finalArgs);
                         }else if(type == 'tabuleiro') {
+                            this.tabuleiroNodeID = nodeID;
                             var game = new MyGame(this.scene,[]);
                             args = [game];
                         }
@@ -1705,7 +1711,15 @@ MySceneGraph.generateRandomString = function(length) {
     return String.fromCharCode.apply(null, numbers);
 }
 
-MySceneGraph.prototype.updateAnimations = function(currTime, nodeID) {
+MySceneGraph.prototype.updateTabuleiroAnimations = function(currTime) {
+    if(this.loadedOk){
+        for (var index = 0; index < this.nodes[this.tabuleiroNodeID].leaves.length; index++){
+            this.nodes[this.tabuleiroNodeID].leaves[index].updateAnim(currTime);
+        }
+    }   
+}
+
+MySceneGraph.prototype.updateNodeAnimations = function(currTime, nodeID) {
     var node = this.nodes[nodeID];
 
     if(this.loadedOk){
@@ -1714,9 +1728,14 @@ MySceneGraph.prototype.updateAnimations = function(currTime, nodeID) {
         }
 
         for (var index = 0; index < node.children.length; index++){
-            this.updateAnimations(currTime, node.children[index]);
+            this.updateNodeAnimations(currTime, node.children[index]);
         }
     }
+}
+
+MySceneGraph.prototype.updateAnimations = function(currTime) {
+    this.updateTabuleiroAnimations(currTime);
+    this.updateNodeAnimations(currTime,this.idRoot);
 }
 
 /**
