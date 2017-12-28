@@ -125,6 +125,11 @@
      <amplif_factor s="1" t="1" />                           
  </TEXTURE>
 
+ <TEXTURE id="painting">
+     <file path="images/painting_texture.jpg" />                
+     <amplif_factor s="12" t="12" />                           
+ </TEXTURE>
+
 </TEXTURES>
 
 <MATERIALS>
@@ -152,7 +157,7 @@
     <NODE id="main">       
         <MATERIAL id="normal" />     
         <TEXTURE id="null" />   
-        <!-- <TRANSLATION x="-14.5" y="0" z="-11.4"/> -->
+        <TRANSLATION x="-14.5" y="0" z="-11.4"/>
 
         <DESCENDANTS>
             <NODEREF id="board"/>
@@ -162,8 +167,52 @@
             <NODEREF id="floor"/>
             <NODEREF id="lamp"/>
             <NODEREF id="walls"/>
+            <NODEREF id="door"/>
+            <NODEREF id="painting"/>
         </DESCENDANTS>
     </NODE>
+
+    <NODE id="painting">
+        <MATERIAL id="null" />     
+        <TEXTURE id="painting" />
+        <TRANSLATION x="17" y="10" z="31.99"/>
+        <ROTATION axis="y" angle="180"/>
+
+        <DESCENDANTS>
+            <LEAF type="rectangle" args="0 12 12 0"/>
+        </DESCENDANTS>
+    </NODE>
+
+    <NODE id="door">
+        <MATERIAL id="normal" />     
+        <TEXTURE id="null" />
+        <TRANSLATION x="14" y="0" z="-7.9"/> 
+
+        <DESCENDANTS>
+            <NODEREF id="doorBoard"/>
+            <NODEREF id="doorKnob"/>
+        </DESCENDANTS>
+    </NODE>
+
+    <NODE id="doorBoard">
+        <MATERIAL id="null" />     
+        <TEXTURE id="wood" /> 
+
+        <DESCENDANTS>
+            <LEAF type="rectangle" args="0 20 10 0"/>
+        </DESCENDANTS>
+    </NODE>
+
+    <NODE id="doorKnob">
+        <MATERIAL id="null" />     
+        <TEXTURE id="metal" />
+        <TRANSLATION x="9" y="10" z="0.5"/>  
+
+        <DESCENDANTS>
+            <LEAF type="sphere" args="0.6 20 20"/>
+        </DESCENDANTS>
+    </NODE>
+
 
     <NODE id="floor">
         <MATERIAL id="null"/>
@@ -180,11 +229,11 @@
     <NODE id="walls">
         <MATERIAL id="null"/>
         <TEXTURE id="wall"/>
-        <TRANSLATION x="12" y="19.9" z="12"/> -->
+        <TRANSLATION x="12" y="14.9" z="12"/> -->
         <SCALE sx="-1" sy="-1" sz="-1"/>
 
         <DESCENDANTS>
-            <LEAF type="cube" args="40 40 40"/>
+            <LEAF type="cube" args="40 30 40"/>
         </DESCENDANTS>
     </NODE>
 
@@ -209,6 +258,7 @@
             <NODEREF id="lampFoot"/>
             <NODEREF id="lampPole"/>
             <NODEREF id="lampShade"/>
+            <NODEREF id="lampShadeReverse"/>
         </DESCENDANTS>
     </NODE>
 
@@ -237,6 +287,18 @@
         <TEXTURE id="fabric"/>
         <TRANSLATION x="0" y="18" z="0"/>
         <ROTATION axis="x" angle="-90"/>
+
+        <DESCENDANTS>
+            <LEAF type="cylinder" args="5 4 2.5 20 20 0 0"/>
+        </DESCENDANTS>
+    </NODE>
+
+    <NODE id="lampShadeReverse">
+        <MATERIAL id="null"/>
+        <TEXTURE id="fabric"/>
+        <TRANSLATION x="0" y="18" z="0"/>
+        <ROTATION axis="x" angle="90"/>
+        <SCALE sx="-1" sy="-1" sz="-1"/>
 
         <DESCENDANTS>
             <LEAF type="cylinder" args="5 4 2.5 20 20 0 0"/>
