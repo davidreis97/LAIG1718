@@ -26,6 +26,14 @@ MyGame.prototype.initBuffers = function () {
     this.gameStates.push([initialState,BLACKS,[10,3,10,2]]);
 }
 
+MyGame.prototype.reset = function (){
+    this.gameStates = [];
+
+    this.processedMove = false;
+
+    this.initBuffers();
+}
+
 MyGame.prototype.requestMove = function (column, line, selectedPiece, playerType){
 
     var latestGameState = this.gameStates[this.gameStates.length - 1];

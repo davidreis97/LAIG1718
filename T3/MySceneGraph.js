@@ -1585,7 +1585,7 @@ MySceneGraph.prototype.parseNodes = function(nodesNode) {
                 else
 					if (descendants[j].nodeName == "LEAF")
 					{
-                        var type = this.reader.getItem(descendants[j], 'type', ['rectangle', 'cylinder', 'sphere', 'triangle', 'patch', 'tabuleiro']);
+                        var type = this.reader.getItem(descendants[j], 'type', ['rectangle', 'cylinder', 'sphere', 'triangle', 'patch', 'tabuleiro','cube']);
                         var args = this.reader.getString(descendants[j], 'args').split(" ").map(Number);
                         
                         var checkArgNumbers = [];
@@ -1595,6 +1595,7 @@ MySceneGraph.prototype.parseNodes = function(nodesNode) {
                         checkArgNumbers['triangle'] = [9];
                         checkArgNumbers['patch'] = [2];
                         checkArgNumbers['tabuleiro'] = [1];
+                        checkArgNumbers['cube'] = [3];
 
                         if(checkArgNumbers[type].indexOf(args.length) < 0){
                             console.error("Wrong number of arguments in " + type + " leaf: Got " + args.length + " expected " + checkArgNumbers[type]);

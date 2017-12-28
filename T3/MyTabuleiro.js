@@ -18,7 +18,11 @@ function MyTabuleiro(scene, args) {
 
     this.boundingBoxes = [];
 
+    this.showIllegalMove = true;
+
     this.ongoingAnimations = [];
+
+    this.cameraAnimations = [];
 
     this.pieces = [];
 
@@ -36,10 +40,24 @@ MyTabuleiro.prototype.initBuffers = function () {
         }
     }
 
+    this.scene.camera.setPosition(vec3.fromValues(10,10,5));
+    this.scene.camera.direction = vec3.fromValues(0, 0, 0);
+
+    this.resetButton = new MyCube(this.scene,[2,1,2]);
+    this.undoButton = new MyCube(this.scene,[2,1,2]);
+
+    this.illegalMove = new MyCube(this.scene,[2,1,2]);
+
     this.piecePool = new MyPiecePool(this.scene,this.game);
 }
 
-MyTabuleiro.prototype.processPicks = function ()
+
+/* 
+   0 - 3 = 
+   0 - 25 = Coordenadas do tabuleiro
+   30/31 = Reset/Undo
+ */
+MyTabuleiro.prototype.processPicks = function () 
 {
     if (this.scene.pickMode == false) {
         if (this.scene.pickResults != null && this.scene.pickResults.length > 0) {
@@ -48,7 +66,20 @@ MyTabuleiro.prototype.processPicks = function ()
                 if (obj)
                 {
                     var index = this.scene.pickResults[i][1];
-                    if(this.state == "WAITING_FOR_PIECE") {
+                    if(index == 30){ //Reset
+                        this.pieces = [];
+                        this.ongoingAnimations = [];
+                        this.nextMove = [-1,-1,-1];
+                        this.game.reset();
+                        this.state = "WAITING_FOR_PIECE";
+                    }else if(index == 31){ //Undo
+                        this.pieces = [];
+                        this.ongoingAnimations = [];
+                        this.nextMove = [-1,-1,-1];
+                        this.game.gameStates.pop();
+                        this.game.gameStates.pop();
+                        this.state = "WAITING_FOR_PIECE";
+                    }else if(this.state == "WAITING_FOR_PIECE") {
                         this.nextMove[2] = index;
                         this.state = "WAITING_FOR_POS";
                     }else if(this.state == "WAITING_FOR_POS") {
@@ -69,6 +100,9 @@ MyTabuleiro.prototype.processPicks = function ()
 MyTabuleiro.prototype.display = function (){
     this.pieces = [];
     this.piecePool.reset();
+
+    //this.scene.camera.orbit(vec3.fromValues(0,1,0), Math.PI/1000);
+     // WHITES- 8.6, 14.6, 2.95 TARGET = 0, 1.2, 3.52;
 
     if (!this.scene.pickMode){
         this.processPicks();
@@ -145,11 +179,65 @@ MyTabuleiro.prototype.updateAnim = function (currTime){
     }
 }
 
+MyTabuleiro.prototype.buttonDisplay = function (pickMode){
+    var currentPlayer = this.game.getCurrentPlayerNo();
+
+    this.scene.pushMatrix();
+        this.scene.rotate(Math.PI/2,1,0,0);
+
+        if (currentPlayer == WHITES && this.getPlayerType(currentPlayer) == HUMAN_PLAYER) {
+            this.scene.translate(7,0,1.3);
+        }else if(currentPlayer == BLACKS && this.getPlayerType(currentPlayer) == HUMAN_PLAYER){
+            this.scene.translate(-2,0,-6.2);
+            this.scene.rotate(Math.PI,0,1,0);
+        }
+
+        if(pickMode) this.scene.registerForPick(30, this.resetButton);
+
+        this.resetButton.display();
+    this.scene.popMatrix();
+    
+    if(this.game.gameStates.length > 2){
+        this.scene.pushMatrix();
+            this.scene.rotate(Math.PI/2,1,0,0);
+
+            if (currentPlayer == WHITES && this.getPlayerType(currentPlayer) == HUMAN_PLAYER) {
+                this.scene.translate(7,0,-6.2);
+            }else if(currentPlayer == BLACKS && this.getPlayerType(currentPlayer) == HUMAN_PLAYER){
+                this.scene.translate(-2,0,1.3);
+                this.scene.rotate(Math.PI,0,1,0);
+            }
+
+            if(pickMode) this.scene.registerForPick(31, this.undoButton);
+        
+            this.undoButton.display();
+        this.scene.popMatrix();
+    }
+
+    if(this.showIllegalMove){
+        this.scene.pushMatrix();
+            this.scene.rotate(Math.PI/2,1,0,0);
+
+            if (currentPlayer == WHITES && this.getPlayerType(currentPlayer) == HUMAN_PLAYER) {
+                this.scene.translate(2.5,0,-6.2);
+            }else if(currentPlayer == BLACKS && this.getPlayerType(currentPlayer) == HUMAN_PLAYER){
+                this.scene.translate(2.5,0,1.3);
+                this.scene.rotate(Math.PI,0,1,0);
+            }
+        
+            this.illegalMove.display();
+        this.scene.popMatrix();
+    }
+    
+}
+
 MyTabuleiro.prototype.miniDisplay = function (){
     if(this.state == "WAITING_FOR_PIECE") {
         this.pieceChoosingDisplay(this.game.getCurrentPlayerNo(), true);
+        this.buttonDisplay(true);
     }else if(this.state == "WAITING_FOR_POS") {
         this.miniBoardDisplay();
+        this.buttonDisplay(true);
     }else if(this.state == "WAITING_FOR_GAME") {
         
     }else if(this.state == "DO_MOVE"){
@@ -184,14 +272,25 @@ MyTabuleiro.prototype.getAnimation = function(piecePos){ //Careful - this functi
 }
 
 MyTabuleiro.prototype.fullDisplay = function (){
+    if((this.state == "WAITING_FOR_PIECE" || this.state == "WAITING_FOR_POS") && this.getPlayerType(this.game.getCurrentPlayerNo()) != HUMAN_PLAYER){
+        this.game.requestMove("_", "_", "_", this.getPlayerType(this.game.getCurrentPlayerNo()));
+        this.state = "WAITING_FOR_GAME";
+    }
+
+    /*
+    var button = new MyCube(this.scene,[1,5,10]); //TEST CODE; REMOVE
+    button.display();*/
+    
     this.generatePieces();
 
     if(this.state == "WAITING_FOR_PIECE") {
         this.fullBoardDisplay();
         this.pieceChoosingDisplay(this.game.getCurrentPlayerNo(), false);
+        this.buttonDisplay(false);
     }else if(this.state == "WAITING_FOR_POS") {
         this.fullBoardDisplay();
         this.pieceChoosingDisplay(this.game.getCurrentPlayerNo(), false);
+        this.buttonDisplay(false);
     }else if(this.state == "WAITING_FOR_GAME") {
         this.fullBoardDisplay();
         this.pieceChoosingDisplay(this.game.getCurrentPlayerNo(), false);
@@ -204,14 +303,8 @@ MyTabuleiro.prototype.fullDisplay = function (){
     }else if(this.state == "MOVING_CAMERA"){
         this.fullBoardDisplay();
         this.pieceChoosingDisplay(this.game.getCurrentPlayerNo(), false);
-        
-        if(this.getPlayerType(this.game.getCurrentPlayerNo()) == HUMAN_PLAYER){
-            this.state = "WAITING_FOR_PIECE";
-        }else{
-            this.game.requestMove("_", "_", "_", this.getPlayerType(this.game.getCurrentPlayerNo()));
-            this.state = "WAITING_FOR_GAME";
-        }
 
+        this.state = "WAITING_FOR_PIECE";
     }else{
         console.log("UNKNOWN STATE: " + this.state);
     }

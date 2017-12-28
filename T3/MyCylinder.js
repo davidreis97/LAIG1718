@@ -54,7 +54,7 @@ function MyCylinder(scene, args) {
             var z = currHeight;
             
             this.vertices.push(x,y,z);
-            this.normals.push(x,y,z);
+            this.normals.push(1,1,1);
             this.texCoords.push(currSlice/this.slices, currStack/this.stacks);
             
             currAngle += angleInc;
