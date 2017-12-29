@@ -7,7 +7,7 @@
      <rotation axis="z" angle="0" />                
      <scale sx="0.25" sy="0.25" sz="0.25" />         
      <reference length="5" />
-     <scenery id="all" />                        
+     <scenery id="scene1" />                        
  </INITIALS>
 
  <ANIMATIONS>
@@ -135,6 +135,11 @@
  <TEXTURE id="undo">
      <file path="images/undo.jpg" />                
      <amplif_factor s="2" t="2" />                           
+ </TEXTURE>
+ 
+<TEXTURE id="replay">
+    <file path="images/replay.jpg" />                
+    <amplif_factor s="2" t="2" />                           
  </TEXTURE>
 
  <TEXTURE id="fabric">

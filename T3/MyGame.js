@@ -6,10 +6,6 @@
 function MyGame(scene, args) {
     CGFobject.call(this, scene);
 
-    this.gameStates = [];
-
-    this.processedMove = false;
-
     this.initBuffers();
 };
 
@@ -17,24 +13,58 @@ MyGame.prototype = Object.create(CGFobject.prototype);
 MyGame.prototype.constructor = MyGame;
 
 MyGame.prototype.initBuffers = function () {
+    this.gameStates = [];
+
     var initialState = [[0,0,0,0,0],
                         [0,0,0,0,0],
-                        [0,1,2,1,0],
-                        [0,0,1,0,0],
+                        [0,0,0,0,0],
+                        [0,0,0,0,0],
                         [0,0,0,0,0]];
 
-    this.gameStates.push([initialState,BLACKS,[10,3,10,2]]);
+    this.winner = null;
+
+    this.replay = false;
+    this.replayIndex = 0;
+
+    this.replayStates = [];
+
+    this.gameStates.push([initialState,BLACKS,[1,1,1,1]]);
+}
+
+MyGame.prototype.startReplay = function(){
+    this.replay = true;
+    this.replayIndex = 1;
+
+    this.replayStates = [];
+
+    for(var i = 0; i < this.gameStates.length; i++){
+        this.replayStates.push(this.gameStates[i]);
+    }
+
+    this.gameStates = [this.replayStates[0]];
 }
 
 MyGame.prototype.reset = function (){
-    this.gameStates = [];
-
-    this.processedMove = false;
-
     this.initBuffers();
 }
 
 MyGame.prototype.requestMove = function (column, line, selectedPiece, playerType){
+
+    if(this.replay){
+        this.parseChanges([this.getCurrentBoard()],this.replayStates[this.replayIndex]);
+
+        this.gameStates.push(this.replayStates[this.replayIndex]);
+
+        this.replayIndex++;
+
+        if(this.replayIndex >= this.replayStates.length){
+            this.tabuleiro.state = "GAME_ENDED";
+            this.replay = false;
+            this.replayIndex = 1;
+        }
+
+        return;
+    }
 
     var latestGameState = this.gameStates[this.gameStates.length - 1];
 
@@ -47,13 +77,25 @@ MyGame.prototype.requestMove = function (column, line, selectedPiece, playerType
     var BPieces = latestGameState[2][2];
     var BMixed = latestGameState[2][3];
 
-    this.processedMove = false;
-
     this._getPrologRequest("moveRequest(" + board + "," + WPieces + "," + WMixed + "," + BPieces + "," + BMixed + "," + (playerNo+1) + "," + playerType + "," + selectedPiece + "," + line + "," + column + ")", this.processMoveResponse);
 }
 
 MyGame.prototype.getCurrentPlayerType = function (){
-    return this.getPlayerType(this.getCurrentPlayerNo());
+    if(this.replay){
+        return EASY_CPU_PLAYER;
+    }else{
+        return this.getPlayerType(this.getCurrentPlayerNo());
+    }
+}
+
+MyGame.prototype.undo = function(){
+    this.gameStates.pop();
+
+    if(!this.winner){
+        this.gameStates.pop();
+    }
+
+    this.winner = null;
 }
 
 MyGame.prototype.getPlayerType = function (playerNo) {
@@ -69,7 +111,13 @@ MyGame.prototype.getPlayerType = function (playerNo) {
 MyGame.prototype.getCurrentPlayerNo = function (){
     var latestGameState = this.gameStates[this.gameStates.length - 1];
 
-    return 1 - latestGameState[1];
+    console.log(1 - latestGameState[1]);
+
+    if (this.winner){
+        return 1 - latestGameState[1];
+    }else{
+        return 1 - latestGameState[1];
+    }
 }
 
 MyGame.prototype.getCurrentBoard = function (state){
@@ -130,13 +178,10 @@ MyGame.prototype.processMoveResponse = function (data){
 
     this.game.gameStates.push(gameState);
 
-    if(response[2] == 0){ //TODO - Graphical display
-        console.log("WHITE WON");
-    }else if(response[2] == 1){
-        console.log("BLACK WON");
-    }else if(response[2] == 2){
-        console.log("TIE!");
-    }else if(response[2] != 3){
+    if(response[2] != 3){ //TODO - Graphical display
+        this.game.tabuleiro.state = "GAME_ENDED";
+        this.game.winner = response[2];
+    }else if(response[2] > 3 || response[2] < 0){
         console.error("Unknown answer to game over request: " + response[2]);
     }
 }
