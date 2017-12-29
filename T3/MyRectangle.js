@@ -57,7 +57,6 @@ MyRectangle.prototype.setTexScale = function (tex_scale_factor){
     var difX = (this.maxX - this.minX);
     var difY = (this.maxY - this.minY);
 
-
     var s = difX/tex_scale_factor[0];
     var t = difY/tex_scale_factor[1];
 
