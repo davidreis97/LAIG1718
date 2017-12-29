@@ -17,7 +17,11 @@ MyPiece.prototype = Object.create(CGFobject.prototype);
 MyPiece.prototype.constructor = MyPiece;
 
 MyPiece.prototype.initBuffers = function () {
-    this.primitive = new MyCylinder(this.scene,[1,0.5,0.5,10,10,1,1]);
+    if (this.type == BOUNDING_BOX_PIECE){
+        this.primitive = new MyCube(this.scene,[1,1,2]);
+    }else{
+        this.primitive = new MyCylinder(this.scene,[1,0.5,0.5,10,10,1,1]);
+    }
 }
 
 MyPiece.prototype.display = function (){
@@ -48,8 +52,4 @@ MyPiece.prototype.display = function (){
         this.scene.translate(this.pos[0]+0.5,this.pos[1]+0.5,0);
         this.primitive.display();
     this.scene.popMatrix();
-}
-
-MyPiece.prototype.miniDisplay = function (playerNo){
-    console.log("Displaying optimized towards player " + playerNo);
 }

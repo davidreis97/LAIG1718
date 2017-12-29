@@ -6,7 +6,7 @@
 function MyTabuleiro(scene, args) {
     CGFobject.call(this, scene);
 
-    this.debug = false;
+    this.scene.debug = false;
 
     this.game = args[0];
 
@@ -40,6 +40,13 @@ MyTabuleiro.prototype.initBuffers = function () {
         }
     }
 
+    this.previousTime = 0;
+
+    this.scene.timeLeft = MAX_TIME_LEFT;
+
+    this.scene.whiteScore = 0;
+    this.scene.blackScore = 0;
+
     this.resetButton = new MyCube(this.scene,[2,1,2]);
     this.resetButton.setTexScale([this.scene.graph.textures["reset"][1],this.scene.graph.textures["reset"][2]]);
 
@@ -64,6 +71,12 @@ MyTabuleiro.prototype.resetGraphics = function() {
     this.nextMove = [-1,-1,-1];
     this.showIllegalMove = false;
     this.state = "WAITING_FOR_PIECE";
+    this.scene.timeLeft = MAX_TIME_LEFT;
+}
+
+MyTabuleiro.prototype.resetScores = function() {
+    this.scene.whiteScore = 0;
+    this.scene.blackScore = 0;
 }
 
 /* 
@@ -83,12 +96,14 @@ MyTabuleiro.prototype.processPicks = function ()
                     var index = this.scene.pickResults[i][1];
                     if(index == 30){ //Reset
                         this.resetGraphics();
+                        this.resetScores();
                         this.game.reset();
-                    }else if(index == 31){ //Undo
+                    }else if(index == 31){ //Undo - TODO - Breaks scores
                         this.resetGraphics();
                         this.game.undo();
                     }else if(index == 40){ //Replay
                         this.resetGraphics();
+                        this.resetScores();
                         this.game.startReplay();
                     }else if(this.state == "WAITING_FOR_PIECE") {
                         this.nextMove[2] = index;
@@ -111,7 +126,7 @@ MyTabuleiro.prototype.display = function (){
     this.pieces = [];
     this.piecePool.reset();
 
-    if (!this.scene.pickMode){
+    if (!this.scene.pickMode && !this.scene.debug){
         this.processPicks();
     
         this.scene.clearPickRegistration();
@@ -119,7 +134,7 @@ MyTabuleiro.prototype.display = function (){
         this.fullDisplay();
     }
 
-    if (this.scene.pickMode || this.debug){
+    if (this.scene.pickMode || this.scene.debug){
         this.miniDisplay();
     }
 }
@@ -173,6 +188,12 @@ MyTabuleiro.prototype.applyChanges = function(newPiece,removedPieces){
         var ctrl_point_3 = [10 - removedPieces[i][0],10 - removedPieces[i][1],3];
         var ctrl_point_4 = [10 - removedPieces[i][0],10 - removedPieces[i][1],0.5];
 
+        if(removedPieces[i][2] == WHITE_PIECE){
+            this.scene.blackScore++;
+        }else{
+            this.scene.whiteScore++;
+        }
+
         var anim = new MyBezierAnimation([ctrl_point_1,ctrl_point_2,ctrl_point_3,ctrl_point_4],3);
         var ref = [removedPieces[i][0],removedPieces[i][1],removedPieces[i][2]];
 
@@ -181,6 +202,12 @@ MyTabuleiro.prototype.applyChanges = function(newPiece,removedPieces){
 }
 
 MyTabuleiro.prototype.updateAnim = function (currTime){
+    if(this.previousTime != 0){
+        this.scene.timeLeft -= (currTime - this.previousTime)/1000;
+    }
+    this.previousTime = currTime;
+
+
     for(var i = 0; i < this.ongoingAnimations.length; i++){
         this.ongoingAnimations[i][1].update(currTime);
     }
@@ -188,8 +215,10 @@ MyTabuleiro.prototype.updateAnim = function (currTime){
     if(this.animating && this.scene.fixedCamera){
         if(this.count >= 200){
             this.state = "WAITING_FOR_PIECE";
+            this.scene.timeLeft = MAX_TIME_LEFT;
             this.animating = false;
             this.count = 0;
+            this.fixCamera(this.game.getCurrentPlayerNo());
         }
 
         this.count++;
@@ -356,10 +385,10 @@ MyTabuleiro.prototype.getAnimation = function(piecePos){ //Careful - this functi
 
 
 MyTabuleiro.prototype.fixCamera = function (playerNo) {
-    if(playerNo == WHITES && this.scene.fixedCamera && (this.state != "MOVING_CAMERA" && this.state != "DO_MOVE")){
+    if(playerNo == WHITES && this.scene.fixedCamera){
         this.scene.camera.setPosition(vec3.fromValues(4,18,0));
         this.scene.camera.setTarget(vec3.fromValues(0,3,0));
-    }else if (playerNo == BLACKS && this.scene.fixedCamera && (this.state != "MOVING_CAMERA" && this.state != "DO_MOVE")){
+    }else if (playerNo == BLACKS && this.scene.fixedCamera){
         this.scene.camera.setPosition(vec3.fromValues(-4,18,0));
         this.scene.camera.setTarget(vec3.fromValues(0,3,0));
     }
@@ -367,14 +396,15 @@ MyTabuleiro.prototype.fixCamera = function (playerNo) {
 
 MyTabuleiro.prototype.fullDisplay = function (){
 
-    if((this.state == "WAITING_FOR_PIECE" || this.state == "WAITING_FOR_POS") && this.game.getCurrentPlayerType() != HUMAN_PLAYER){
+    if(((this.state == "WAITING_FOR_PIECE" || this.state == "WAITING_FOR_POS") && this.game.getCurrentPlayerType() != HUMAN_PLAYER) || this.scene.timeLeft <= 0){
         this.state = "WAITING_FOR_GAME";
-        this.game.requestMove("_", "_", "_", this.game.getCurrentPlayerType());
+        var playerType = this.game.getCurrentPlayerType();
+        if (playerType == HUMAN_PLAYER){
+            playerType = HARD_CPU_PLAYER;
+        }
+        this.game.requestMove("_", "_", "_", playerType);
+        this.scene.timeLeft = MAX_TIME_LEFT;
     }
-
-    /*
-    var button = new MyCube(this.scene,[1,5,10]); //TEST CODE; REMOVE
-    button.display();*/
     
     this.generatePieces();
 
@@ -389,19 +419,21 @@ MyTabuleiro.prototype.fullDisplay = function (){
         this.buttonDisplay(false);
         this.fixCamera(this.game.getCurrentPlayerNo());
     }else if(this.state == "WAITING_FOR_GAME") {
+        this.scene.timeLeft = MAX_TIME_LEFT;
         this.fullBoardDisplay();
         this.pieceChoosingDisplay(this.game.getCurrentPlayerNo(), false);
         this.fixCamera(this.game.getCurrentPlayerNo());
     }else if(this.state == "DO_MOVE"){
+        this.scene.timeLeft = MAX_TIME_LEFT;
         this.showIllegalMove = false;
         this.fullBoardDisplay();
-        this.fixCamera(this.game.getCurrentPlayerNo());
-        //this.pieceChoosingDisplay(this.game.getCurrentPlayerNo(), false);
+        this.fixCamera(1-this.game.getCurrentPlayerNo());
         if(this.ongoingAnimations.length == 0){
             this.state = "MOVING_CAMERA";
             this.animating = true;
         }
     }else if(this.state == "MOVING_CAMERA"){
+        this.scene.timeLeft = MAX_TIME_LEFT;
         this.fullBoardDisplay();
         this.pieceChoosingDisplay(this.game.getCurrentPlayerNo(), false);
 
@@ -411,8 +443,10 @@ MyTabuleiro.prototype.fullDisplay = function (){
             this.animating = false;
             this.count = 0;
             this.state = "WAITING_FOR_PIECE";
+            this.scene.timeLeft = MAX_TIME_LEFT;
         }
     }else if(this.state == "GAME_ENDED"){
+        this.scene.timeLeft = MAX_TIME_LEFT;
         this.fullBoardDisplay();
         this.buttonDisplay(false);
     }else{
@@ -448,7 +482,7 @@ MyTabuleiro.prototype.pieceChoosingDisplay = function(playerNo, pickMode){
     if (playerNo == WHITES){
         if(pieceCount[0] > 0){
             var piece = null;
-            if (pickMode) {piece = this.piecePool.getBoundingBox();}
+            if (pickMode) {piece = this.piecePool.getPiece(BOUNDING_BOX_PIECE);}
             else {piece = this.piecePool.getPiece(WHITE_PIECE);}
             piece.pos = [7,3];
             if (pickMode) {this.scene.registerForPick(WHITE_PIECE, piece);}
@@ -463,7 +497,7 @@ MyTabuleiro.prototype.pieceChoosingDisplay = function(playerNo, pickMode){
         }
         if(pieceCount[1] > 0){
             var piece = null;
-            if (pickMode) {piece = this.piecePool.getBoundingBox();}
+            if (pickMode) {piece = this.piecePool.getPiece(BOUNDING_BOX_PIECE);}
             else {piece = this.piecePool.getPiece(HENGE_PIECE);}
             piece.pos = [7,1];
             if (pickMode) {this.scene.registerForPick(HENGE_PIECE, piece);}
@@ -479,7 +513,7 @@ MyTabuleiro.prototype.pieceChoosingDisplay = function(playerNo, pickMode){
     }else if (playerNo == BLACKS){
         if(pieceCount[2] > 0){
             var piece = null;
-            if (pickMode) {piece = this.piecePool.getBoundingBox();}
+            if (pickMode) {piece = this.piecePool.getPiece(BOUNDING_BOX_PIECE);}
             else {piece = this.piecePool.getPiece(BLACK_PIECE);}
             piece.pos = [-2,3];
             if (pickMode) {this.scene.registerForPick(BLACK_PIECE, piece);}
@@ -494,7 +528,7 @@ MyTabuleiro.prototype.pieceChoosingDisplay = function(playerNo, pickMode){
         }
         if(pieceCount[3] > 0){
             var piece = null;
-            if (pickMode) {piece = this.piecePool.getBoundingBox();}
+            if (pickMode) {piece = this.piecePool.getPiece(BOUNDING_BOX_PIECE);}
             else {piece = this.piecePool.getPiece(HENGE_PIECE);}
             piece.pos = [-2,1];
             if (pickMode) {this.scene.registerForPick(HENGE_PIECE, piece);}

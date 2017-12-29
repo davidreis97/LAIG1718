@@ -12,6 +12,12 @@ function XMLscene(interface) {
     this.fixedCamera = false;
     this.backFixedCamera = true;
 
+    this.timeLeft = 0;
+    this.whiteScore = 0;
+    this.blackScore = 0;
+
+    this.debug = false;
+
     this.timeFactor = 10;
 
     this.playerModes = ["Human","Easy CPU","Medium CPU","Hard CPU"];

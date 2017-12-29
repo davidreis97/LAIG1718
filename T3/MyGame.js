@@ -28,7 +28,7 @@ MyGame.prototype.initBuffers = function () {
 
     this.replayStates = [];
 
-    this.gameStates.push([initialState,BLACKS,[1,1,1,1]]);
+    this.gameStates.push([initialState,BLACKS,[10,3,10,2]]);
 }
 
 MyGame.prototype.startReplay = function(){
@@ -111,10 +111,8 @@ MyGame.prototype.getPlayerType = function (playerNo) {
 MyGame.prototype.getCurrentPlayerNo = function (){
     var latestGameState = this.gameStates[this.gameStates.length - 1];
 
-    console.log(1 - latestGameState[1]);
-
-    if (this.winner){
-        return 1 - latestGameState[1];
+    if (this.winner && this.tabuleiro.state == "GAME_ENDED"){
+        return latestGameState[1];
     }else{
         return 1 - latestGameState[1];
     }

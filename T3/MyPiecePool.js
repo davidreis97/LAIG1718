@@ -21,16 +21,15 @@ MyPiecePool.prototype.initBuffers = function() {
 
   this.henges = [];
   this.currentHenge = 0;
+
+  this.boundingBoxes = [];
+  this.currentBoundingBox = 0;
 };
 
-MyPiecePool.prototype.getBoundingBox = function (){
-  return this.getPiece(BLACK_PIECE);
-} //TODO - Create bounding box pool for pieces
-
 MyPiecePool.prototype.getPiece = function(pieceType) {
-  if(this.whites.length > 100 || this.blacks.length > 100 || this.henges.length > 100){
+  if(this.whites.length > 100 || this.blacks.length > 100 || this.henges.length > 100 || this.boundingBoxes.length > 100){
     console.warn("Warning: Abnormally high number of pieces allocated in MyPiecePool");
-    console.warn("Whites: " + this.whites.length + " Blacks: " + this.blacks.length + " Henges: " + this.henges.length);
+    console.warn("Whites: " + this.whites.length + " Blacks: " + this.blacks.length + " Henges: " + this.henges.length + " Bounding Boxes: " + this.boundingBoxes.length);
   }
 
   switch (pieceType) {
@@ -55,6 +54,13 @@ MyPiecePool.prototype.getPiece = function(pieceType) {
       }
       this.currentHenge++;
       return this.henges[this.currentHenge - 1];
+    case BOUNDING_BOX_PIECE:
+      if (this.currentBoundingBox >= this.boundingBoxes.length) {
+        var piece = new MyPiece(this.scene, BOUNDING_BOX_PIECE);
+        this.boundingBoxes.push(piece);
+      }
+      this.currentBoundingBox++;
+      return this.boundingBoxes[this.currentBoundingBox - 1];
     default:
       console.error("Unknown piece type: " + pieceType);
   }
@@ -64,4 +70,5 @@ MyPiecePool.prototype.reset = function() {
     this.currentBlack = 0;
     this.currentWhite = 0;
     this.currentHenge = 0;
+    this.currentBoundingBox = 0;
 };

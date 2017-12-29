@@ -78,6 +78,14 @@ MyInterface.prototype.addGameGroup = function(lights) {
     group.add(this.scene, 'blackPlayer', this.scene.playerModes).name('Black Player');
 
     group.add(this.scene, 'fixedCamera').name('Fixed Camera');
+
+    group.add(this.scene, 'timeLeft', 0, 60).step(1).name('Time Left').listen();
+    group.add(this.scene, 'whiteScore').name('White Score').listen();
+    group.add(this.scene, 'blackScore').name('Black Score').listen();
+
+    var group1 = this.gui.addFolder("Debug");
+
+    group1.add(this.scene, 'debug').name('Bound. Boxs.');
 };
 
 
