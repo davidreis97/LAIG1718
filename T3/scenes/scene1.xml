@@ -152,6 +152,11 @@
      <amplif_factor s="12" t="12" />                           
  </TEXTURE>
 
+ <TEXTURE id="painting2">
+     <file path="images/painting_texture2.jpg" />                
+     <amplif_factor s="12" t="12" />                           
+ </TEXTURE>
+
 </TEXTURES>
 
 <MATERIALS>
@@ -218,7 +223,7 @@
             <NODEREF id="lamp"/>
             <NODEREF id="walls1"/>
             <NODEREF id="door"/>
-            <NODEREF id="painting"/>
+            <NODEREF id="painting2"/>
         </DESCENDANTS>
     </NODE>
 
@@ -226,6 +231,17 @@
     <NODE id="painting">
         <MATERIAL id="null" />     
         <TEXTURE id="painting" />
+        <TRANSLATION x="17" y="10" z="31.99"/>
+        <ROTATION axis="y" angle="180"/>
+
+        <DESCENDANTS>
+            <LEAF type="rectangle" args="0 12 12 0"/>
+        </DESCENDANTS>
+    </NODE>
+
+    <NODE id="painting2">
+        <MATERIAL id="null" />     
+        <TEXTURE id="painting2" />
         <TRANSLATION x="17" y="10" z="31.99"/>
         <ROTATION axis="y" angle="180"/>
 
