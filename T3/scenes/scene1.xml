@@ -162,6 +162,11 @@
      <amplif_factor s="12" t="12" />                           
  </TEXTURE>
 
+ <TEXTURE id="carpet2">
+     <file path="images/carpet_texture2.jpg" />                
+     <amplif_factor s="20" t="20" />                           
+ </TEXTURE>
+
 </TEXTURES>
 
 <MATERIALS>
@@ -224,7 +229,7 @@
             <NODEREF id="table2"/>
             <NODEREF id="chair21"/>
             <NODEREF id="chair22"/>
-            <NODEREF id="floor"/>
+            <NODEREF id="floor2"/>
             <NODEREF id="lamp"/>
             <NODEREF id="walls1"/>
             <NODEREF id="door"/>
@@ -289,6 +294,18 @@
     <NODE id="floor">
         <MATERIAL id="null"/>
         <TEXTURE id="carpet"/>
+        <TRANSLATION x="-8" y="0" z="32"/>
+        <ROTATION axis="x" angle="-90"/>
+
+
+        <DESCENDANTS>
+            <LEAF type="rectangle" args="0 40 40 0"/>
+        </DESCENDANTS>
+    </NODE>
+
+    <NODE id="floor2">
+        <MATERIAL id="null"/>
+        <TEXTURE id="carpet2"/>
         <TRANSLATION x="-8" y="0" z="32"/>
         <ROTATION axis="x" angle="-90"/>
 
