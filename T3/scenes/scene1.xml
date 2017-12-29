@@ -94,6 +94,36 @@
      <amplif_factor s="1" t="1" />                           
  </TEXTURE>
 
+ <TEXTURE id="blacksWon">
+     <file path="images/blacksWon.jpg" />                
+     <amplif_factor s="1" t="1" />                           
+ </TEXTURE>
+
+ <TEXTURE id="whitesWon">
+     <file path="images/whitesWon.jpg" />                
+     <amplif_factor s="1" t="1" />                           
+ </TEXTURE>
+
+ <TEXTURE id="tie">
+     <file path="images/tie.jpg" />                
+     <amplif_factor s="1" t="1" />                           
+ </TEXTURE>
+
+ <TEXTURE id="invalidMove">
+     <file path="images/invalidMove.jpg" />                
+     <amplif_factor s="30" t="30" />                           
+ </TEXTURE>
+
+ <TEXTURE id="reset">
+     <file path="images/reset.jpg" />                
+     <amplif_factor s="1" t="1" />                           
+ </TEXTURE>
+
+ <TEXTURE id="undo">
+     <file path="images/undo.jpg" />                
+     <amplif_factor s="1" t="1" />                           
+ </TEXTURE>
+
 </TEXTURES>
 
 <MATERIALS>
@@ -145,7 +175,7 @@
         <MATERIAL id="null"/>
         <TEXTURE id="board"/>
 
-        <TRANSLATION x="11.4" y="13.7" z="14.5"/>
+        <TRANSLATION x="-2.5" y="13.7" z="2.5"/>
         <ROTATION axis="x" angle="-90"/>
 
         <DESCENDANTS>

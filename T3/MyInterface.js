@@ -76,6 +76,8 @@ MyInterface.prototype.addGameGroup = function(lights) {
 
     group.add(this.scene, 'whitePlayer', this.scene.playerModes).name('White Player');
     group.add(this.scene, 'blackPlayer', this.scene.playerModes).name('Black Player');
+
+    group.add(this.scene, 'fixedCamera').name('Fixed Camera');
 };
 
 

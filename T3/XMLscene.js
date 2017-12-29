@@ -9,6 +9,9 @@ function XMLscene(interface) {
 
     this.interface = interface;
 
+    this.fixedCamera = false;
+    this.backFixedCamera = true;
+
     this.timeFactor = 10;
 
     this.playerModes = ["Human","Easy CPU","Medium CPU","Hard CPU"];
@@ -116,6 +119,14 @@ XMLscene.prototype.onGraphLoaded = function()
 }
 
 XMLscene.prototype.update = function(currTime){
+    if(!this.fixedCamera && this.backFixedCamera){
+        this.interface.setActiveCamera(this.camera);
+    }else if(this.fixedCamera && !this.backFixedCamera){
+        this.interface.setActiveCamera(null);
+    }
+
+    this.backFixedCamera = this.fixedCamera;
+
     var scale = 0.2;
     this.timeFactor = (Math.cos(currTime/150) + 1)/2;
     this.selectableShader.setUniformsValues({normScale: this.timeFactor * scale});
