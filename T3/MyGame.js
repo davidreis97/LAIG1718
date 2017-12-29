@@ -52,6 +52,20 @@ MyGame.prototype.requestMove = function (column, line, selectedPiece, playerType
     this._getPrologRequest("moveRequest(" + board + "," + WPieces + "," + WMixed + "," + BPieces + "," + BMixed + "," + (playerNo+1) + "," + playerType + "," + selectedPiece + "," + line + "," + column + ")", this.processMoveResponse);
 }
 
+MyGame.prototype.getCurrentPlayerType = function (){
+    return this.getPlayerType(this.getCurrentPlayerNo());
+}
+
+MyGame.prototype.getPlayerType = function (playerNo) {
+    if (playerNo == WHITES) {
+        return this.scene.playerModes.indexOf(this.scene.whitePlayer);
+    }else if(playerNo == BLACKS){
+        return this.scene.playerModes.indexOf(this.scene.blackPlayer);
+    }else{
+        console.error("Unknown playerNo: " + playerNo);
+    }
+}
+
 MyGame.prototype.getCurrentPlayerNo = function (){
     var latestGameState = this.gameStates[this.gameStates.length - 1];
 
@@ -98,9 +112,11 @@ MyGame.prototype.processMoveResponse = function (data){
     try{
         var response = eval(data.target.response);
     }catch(e){
-        console.error("Invalid move!"); //TODO - Graphical display
-        console.error(data.target.response);
-
+        this.game.tabuleiro.nextMove = [-1,-1,-1];
+        this.game.tabuleiro.resetGraphics();
+        console.log(this.game.tabuleiro.showIllegalMove);
+        this.game.tabuleiro.showIllegalMove = true;
+        console.log(this.game.tabuleiro.showIllegalMove);
         return;
     }
     
