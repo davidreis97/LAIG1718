@@ -9,7 +9,10 @@ function MyPatch(scene, args) {
     this.degreeU = this.controlPoints.length - 1;
     this.degreeV = this.controlPoints[0].length - 1;
     this.divisionsU = args[0];
-    this.divisionsV = args[1];
+	this.divisionsV = args[1];
+	
+
+	console.log(JSON.stringify(args));
 
     this.surface;
 

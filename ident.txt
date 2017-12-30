@@ -1,3 +1,10 @@
 David Alexandre Gomes Reis - 201607927 - up201607927@fe.up.pt
 Nuno Soares Marques - 201109347 - up201109347@fe.up.pt
 Group 10 Class 3MIEIC06
+
+O código prolog encontra-se em /src/prolog.
+O XML da scene encontra-se em /src/scenes.
+As texturas utilizadas encontram-se em /src/scenes/images
+O shader para as peças selecionadas encontra-se em /src/shaders
+
+Ao abrigo da informação que nos foi transmitida pelo Prof. Augusto de Sousa de que os prazos de entrega seriam flexíveis e que não haveria penalização pela entrega até uns dias depois do prazo estipulado previamente, enviamos este trabalho cerca de 17h após a hora de entrega estipulada no Moodle.

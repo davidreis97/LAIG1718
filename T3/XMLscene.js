@@ -9,7 +9,7 @@ function XMLscene(interface) {
 
     this.interface = interface;
 
-    this.fixedCamera = false;
+    this.fixedCamera = true;
     this.backFixedCamera = true;
 
     this.timeLeft = 0;

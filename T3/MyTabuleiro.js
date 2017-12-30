@@ -42,10 +42,12 @@ MyTabuleiro.prototype.initBuffers = function () {
 
     this.previousTime = 0;
 
-    this.scene.timeLeft = MAX_TIME_LEFT;
+    this.timeLeft = MAX_TIME_LEFT;
 
     this.scene.whiteScore = 0;
     this.scene.blackScore = 0;
+
+    this.board = new MyPatch(this.scene,[4,4,[[[0,0,0,1],[0,10,0,1]],[[10,0,0,1],[10,10,0,1]]]]);
 
     this.resetButton = new MyCube(this.scene,[2,1,2]);
     this.resetButton.setTexScale([this.scene.graph.textures["reset"][1],this.scene.graph.textures["reset"][2]]);
@@ -71,12 +73,12 @@ MyTabuleiro.prototype.resetGraphics = function() {
     this.nextMove = [-1,-1,-1];
     this.showIllegalMove = false;
     this.state = "WAITING_FOR_PIECE";
-    this.scene.timeLeft = MAX_TIME_LEFT;
+    this.timeLeft = MAX_TIME_LEFT;
 }
 
-MyTabuleiro.prototype.resetScores = function() {
-    this.scene.whiteScore = 0;
-    this.scene.blackScore = 0;
+MyTabuleiro.prototype.setCurrentScores = function() {
+    this.scene.whiteScore = this.game.getCurrentEaten(BLACKS);
+    this.scene.blackScore = this.game.getCurrentEaten(WHITES);
 }
 
 /* 
@@ -96,14 +98,12 @@ MyTabuleiro.prototype.processPicks = function ()
                     var index = this.scene.pickResults[i][1];
                     if(index == 30){ //Reset
                         this.resetGraphics();
-                        this.resetScores();
                         this.game.reset();
-                    }else if(index == 31){ //Undo - TODO - Breaks scores
+                    }else if(index == 31){ //Undo
                         this.resetGraphics();
                         this.game.undo();
                     }else if(index == 40){ //Replay
                         this.resetGraphics();
-                        this.resetScores();
                         this.game.startReplay();
                     }else if(this.state == "WAITING_FOR_PIECE") {
                         this.nextMove[2] = index;
@@ -130,6 +130,8 @@ MyTabuleiro.prototype.display = function (){
         this.processPicks();
     
         this.scene.clearPickRegistration();
+
+        this.setCurrentScores();
 
         this.fullDisplay();
     }
@@ -185,13 +187,19 @@ MyTabuleiro.prototype.applyChanges = function(newPiece,removedPieces){
     for(var i = 0; i < removedPieces.length; i++){
         var ctrl_point_1 = [removedPieces[i][0],removedPieces[i][1],0.5];
         var ctrl_point_2 = [removedPieces[i][0],removedPieces[i][1],3];
-        var ctrl_point_3 = [10 - removedPieces[i][0],10 - removedPieces[i][1],3];
-        var ctrl_point_4 = [10 - removedPieces[i][0],10 - removedPieces[i][1],0.5];
+        var ctrl_point_3 = [0,0,3];
+        var ctrl_point_4 = [0,0,0.5];
 
-        if(removedPieces[i][2] == WHITE_PIECE){
-            this.scene.blackScore++;
-        }else{
-            this.scene.whiteScore++;
+        if(removedPieces[i][2] == BLACK_PIECE){
+            ctrl_point_3[0] = -2;
+            ctrl_point_3[1] = 3;
+            ctrl_point_4[0] = -2;
+            ctrl_point_4[1] = 3;
+        }else if(removedPieces[i][2] == WHITE_PIECE){
+            ctrl_point_3[0] = 7;
+            ctrl_point_3[1] = 3;
+            ctrl_point_4[0] = 7;
+            ctrl_point_4[1] = 3;
         }
 
         var anim = new MyBezierAnimation([ctrl_point_1,ctrl_point_2,ctrl_point_3,ctrl_point_4],3);
@@ -203,10 +211,10 @@ MyTabuleiro.prototype.applyChanges = function(newPiece,removedPieces){
 
 MyTabuleiro.prototype.updateAnim = function (currTime){
     if(this.previousTime != 0){
-        this.scene.timeLeft -= (currTime - this.previousTime)/1000;
+        this.timeLeft -= (currTime - this.previousTime)/1000;
     }
-    this.previousTime = currTime;
 
+    this.scene.timeLeft = this.timeLeft;
 
     for(var i = 0; i < this.ongoingAnimations.length; i++){
         this.ongoingAnimations[i][1].update(currTime);
@@ -215,15 +223,17 @@ MyTabuleiro.prototype.updateAnim = function (currTime){
     if(this.animating && this.scene.fixedCamera){
         if(this.count >= 200){
             this.state = "WAITING_FOR_PIECE";
-            this.scene.timeLeft = MAX_TIME_LEFT;
+            this.timeLeft = MAX_TIME_LEFT;
             this.animating = false;
             this.count = 0;
             this.fixCamera(this.game.getCurrentPlayerNo());
         }
 
-        this.count++;
-        this.scene.camera.orbit(vec3.fromValues(0,0,0),Math.PI/200);
+        var delta = (currTime - this.previousTime)/12;
+        this.count += 1 * delta;
+        this.scene.camera.orbit(vec3.fromValues(0,0,0),Math.PI/200 * delta);
     }
+    this.previousTime = currTime;
 }
 
 MyTabuleiro.prototype.buttonDisplay = function (pickMode){
@@ -396,14 +406,14 @@ MyTabuleiro.prototype.fixCamera = function (playerNo) {
 
 MyTabuleiro.prototype.fullDisplay = function (){
 
-    if(((this.state == "WAITING_FOR_PIECE" || this.state == "WAITING_FOR_POS") && this.game.getCurrentPlayerType() != HUMAN_PLAYER) || this.scene.timeLeft <= 0){
+    if(((this.state == "WAITING_FOR_PIECE" || this.state == "WAITING_FOR_POS") && this.game.getCurrentPlayerType() != HUMAN_PLAYER) || this.timeLeft <= 0){
         this.state = "WAITING_FOR_GAME";
         var playerType = this.game.getCurrentPlayerType();
         if (playerType == HUMAN_PLAYER){
             playerType = HARD_CPU_PLAYER;
         }
         this.game.requestMove("_", "_", "_", playerType);
-        this.scene.timeLeft = MAX_TIME_LEFT;
+        this.timeLeft = MAX_TIME_LEFT;
     }
     
     this.generatePieces();
@@ -419,12 +429,12 @@ MyTabuleiro.prototype.fullDisplay = function (){
         this.buttonDisplay(false);
         this.fixCamera(this.game.getCurrentPlayerNo());
     }else if(this.state == "WAITING_FOR_GAME") {
-        this.scene.timeLeft = MAX_TIME_LEFT;
+        this.timeLeft = MAX_TIME_LEFT;
         this.fullBoardDisplay();
         this.pieceChoosingDisplay(this.game.getCurrentPlayerNo(), false);
         this.fixCamera(this.game.getCurrentPlayerNo());
     }else if(this.state == "DO_MOVE"){
-        this.scene.timeLeft = MAX_TIME_LEFT;
+        this.timeLeft = MAX_TIME_LEFT;
         this.showIllegalMove = false;
         this.fullBoardDisplay();
         this.fixCamera(1-this.game.getCurrentPlayerNo());
@@ -433,7 +443,7 @@ MyTabuleiro.prototype.fullDisplay = function (){
             this.animating = true;
         }
     }else if(this.state == "MOVING_CAMERA"){
-        this.scene.timeLeft = MAX_TIME_LEFT;
+        this.timeLeft = MAX_TIME_LEFT;
         this.fullBoardDisplay();
         this.pieceChoosingDisplay(this.game.getCurrentPlayerNo(), false);
 
@@ -443,10 +453,10 @@ MyTabuleiro.prototype.fullDisplay = function (){
             this.animating = false;
             this.count = 0;
             this.state = "WAITING_FOR_PIECE";
-            this.scene.timeLeft = MAX_TIME_LEFT;
+            this.timeLeft = MAX_TIME_LEFT;
         }
     }else if(this.state == "GAME_ENDED"){
-        this.scene.timeLeft = MAX_TIME_LEFT;
+        this.timeLeft = MAX_TIME_LEFT;
         this.fullBoardDisplay();
         this.buttonDisplay(false);
     }else{
@@ -549,13 +559,22 @@ MyTabuleiro.prototype.miniBoardDisplay = function (){
 
     for(i = 0; i < this.boundingBoxes.length; i++) {
         this.scene.registerForPick(i, this.boundingBoxes[i]);
-        
         this.boundingBoxes[i].display();
     }  
 }
 
 MyTabuleiro.prototype.fullBoardDisplay = function (){
-    this.miniBoardDisplay();
+    this.scene.pushMatrix();
+        this.scene.graph.materials["BOARD_MATERIAL"].setTexture(this.scene.graph.textures["boardFull"][0]);
+        this.scene.graph.materials["BOARD_MATERIAL"].apply();
+
+        this.scene.rotate(Math.PI/2, 0,0,1);
+        this.scene.scale(0.585,0.585,0);
+        this.scene.translate(-0.755,-9.245,0);
+
+        this.board.display();
+    this.scene.popMatrix();
+
 }
 
 MyTabuleiro.prototype.generatePieces = function(){

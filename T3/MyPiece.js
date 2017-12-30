@@ -22,6 +22,10 @@ MyPiece.prototype.initBuffers = function () {
     }else{
         this.primitive = new MyCylinder(this.scene,[1,0.5,0.5,10,10,1,1]);
     }
+
+    if(this.type == HENGE_PIECE){
+        this.innerPart = new MyCylinder(this.scene, [1.01, 0.42, 0.42, 10, 10, 1, 1]);
+    }
 }
 
 MyPiece.prototype.display = function (){
@@ -37,7 +41,6 @@ MyPiece.prototype.display = function (){
                 break;
             case HENGE_PIECE:
                 this.scene.pushMatrix();
-                    this.innerPart = new MyCylinder(this.scene, [1.01, 0.42, 0.42, 10, 10, 1, 1]);
                     this.scene.translate(this.pos[0]+0.5,this.pos[1]+0.5,0);
                     this.scene.graph.materials["PIECE_MATERIAL"].setTexture(this.scene.graph.textures["BLACK_PIECE"][0]);
                     this.scene.graph.materials["PIECE_MATERIAL"].apply();

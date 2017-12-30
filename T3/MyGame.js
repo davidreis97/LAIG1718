@@ -111,7 +111,7 @@ MyGame.prototype.getPlayerType = function (playerNo) {
 MyGame.prototype.getCurrentPlayerNo = function (){
     var latestGameState = this.gameStates[this.gameStates.length - 1];
 
-    if (this.winner && this.tabuleiro.state == "GAME_ENDED"){
+    if (this.winner != null && this.tabuleiro.state == "GAME_ENDED"){
         return latestGameState[1];
     }else{
         return 1 - latestGameState[1];
@@ -182,6 +182,30 @@ MyGame.prototype.processMoveResponse = function (data){
     }else if(response[2] > 3 || response[2] < 0){
         console.error("Unknown answer to game over request: " + response[2]);
     }
+}
+
+MyGame.prototype.getCurrentEaten = function (player) {
+    var initialCount = this.gameStates[0][2];
+    var currentCount = this.getCurrentPieceCount();
+
+    if(player == WHITES){
+        return initialCount[0] - (currentCount[0] + this.getOnBoard(WHITE_PIECE));
+    }else{
+        return initialCount[2] - (currentCount[2] + this.getOnBoard(BLACK_PIECE));
+    }
+}
+
+MyGame.prototype.getOnBoard = function(piece){
+    var board = this.getCurrentBoard();
+    var total = 0;
+    for(var i = 0; i < board.length; i++){
+        for (var j = 0; j < board[0].length; j++){
+            if(board[i][j] == piece) {
+                total++;
+            }
+        }
+    }
+    return total;
 }
 
 MyGame.prototype.jsListToProlog = function(list) {

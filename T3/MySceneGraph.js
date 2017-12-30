@@ -18,7 +18,7 @@ const BLACK_PIECE = 2;
 const HENGE_PIECE = 3;
 const BOUNDING_BOX_PIECE = 4;
 
-const MAX_TIME_LEFT = 15;
+const MAX_TIME_LEFT = 30;
 
 const HUMAN_PLAYER = 0;
 const EASY_CPU_PLAYER = 1;
